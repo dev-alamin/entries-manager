@@ -114,7 +114,9 @@ class Export_Entries {
 		$where_sql = 'WHERE ' . implode( ' AND ', $where_clauses );
 
 		// Step 1: Count entries from the submissions table
-		$count_query   = $wpdb->prepare( "SELECT COUNT(*) FROM {$submissions_table} {$where_sql}", ...$query_args );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+		$count_query = $wpdb->prepare( "SELECT COUNT(*) FROM {$submissions_table} {$where_sql}", ...$query_args );
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$total_entries = (int) $wpdb->get_var( $count_query );
 
 		if ( $total_entries === 0 ) {
@@ -127,11 +129,13 @@ class Export_Entries {
 
 		// Step 2: If low volume, fetch directly
 		if ( $total_entries <= 10000 ) {
-			$select_query   = $wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+			$select_query = $wpdb->prepare(
 				"SELECT * FROM {$submissions_table} {$where_sql} ORDER BY created_at ASC",
 				...$query_args
 			);
-			$low_entries    = $wpdb->get_results( $select_query, ARRAY_A );
+			$low_entries  = $wpdb->get_results( $select_query, ARRAY_A );
+            // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 			$all_entry_data = $wpdb->get_results(
 				$wpdb->prepare( "SELECT submission_id, field_key, field_value FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)", ...array_column( $low_entries, 'id' ) ),
 				ARRAY_A
@@ -250,6 +254,7 @@ class Export_Entries {
 		$submission_ids  = array_column( $submissions, 'id' );
 		$ids_placeholder = implode( ',', array_fill( 0, count( $submission_ids ), '%d' ) );
 
+        // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 		$entries_raw = $wpdb->get_results(
 			$wpdb->prepare( "SELECT submission_id, field_key, field_value FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)", ...$submission_ids ),
 			ARRAY_A
@@ -601,6 +606,7 @@ class Export_Entries {
 		// Set headers and echo
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename="fem-entries-' . time() . '.csv"' );
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $csv_content;
 		exit;
 	}

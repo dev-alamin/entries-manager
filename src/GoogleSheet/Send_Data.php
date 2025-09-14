@@ -241,6 +241,7 @@ class Send_Data {
 		$submissions_table = Helper::get_submission_table();
 		$data_table        = Helper::get_data_table();
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$entry = $wpdb->get_row(
 			$wpdb->prepare(
 				"
@@ -272,31 +273,24 @@ class Send_Data {
 
 		// Step 1: Ensure the target sheet is ready.
 		$sheet_info = $this->get_or_create_sheet_for_form( $form_id );
+
 		if ( is_wp_error( $sheet_info ) ) {
 			$this->logger->log( 'GSheet preparation failed for form ' . $form_id . ': ' . $sheet_info->get_error_message(), 'ERROR' );
-			$this->logger->log( print_r( $sheet_info, true ), 'info' );
 
 			$this->handle_sync_failure( $entry_id, $entry->retry_count );
 			return false;
 		}
 
 		$spreadsheet_id = $sheet_info['spreadsheet_id'];
-		$sheet_id       = $sheet_info['sheetId']; // Assuming sheetId is now available from get_or_create_sheet_for_form
+		$sheet_id       = $sheet_info['sheetId'] ?? 'Sheet1';
 		$sheet_title    = $sheet_info['sheet_title'];
 
 		// Enforce Free Version row limitation
-		if ( ! Helper::is_pro_version() ) {
-			$metadata = $this->get_spreadsheet_metadata( $spreadsheet_id );
-			if ( ! is_wp_error( $metadata ) && isset( $metadata['sheets'][0]['properties']['gridProperties']['rowCount'] ) ) {
-				$row_count = $metadata['sheets'][0]['properties']['gridProperties']['rowCount'];
-				if ( $row_count >= 1000 ) { // Check against the current actual row count
-					$this->logger->log( 'GSheet row limit reached for form ' . $form_id . '. Entry ' . $entry_id . ' not synced.', 'ERROR' );
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					$wpdb->update( $submissions_table, array( 'synced_to_gsheet' => 2 ), array( 'id' => $entry_id ) ); // '2' can indicate 'sync_limit_reached'
-					return false;
-				}
-			}
+		if ( ! $this->row_limit( $sheet_title, $spreadsheet_id, $form_id, $entry_id ) ) {
+			return;
 		}
+
+		// error_log( print_r( $this->get_spreadsheet_metadata( $spreadsheet_id ), true ) );
 
 		// Step 2: Prepare the data row, ensuring it matches the header order and is de-duplicated.
 		$row_data = $this->prepare_row_data( $entry ); // This now uses Helper::filter_duplicate_entry_fields
@@ -354,6 +348,97 @@ class Send_Data {
 		return true;
 	}
 
+	private function row_limit( $sheet_title, $spreadsheet_id, $form_id, $entry_id ) {
+		global $wpdb;
+		$submissions_table = Helper::get_submission_table();
+		if ( ! Helper::is_pro_version() ) {
+
+			// Step 1: Request the values of the first column (e.g., 'A:A') to get the number of data rows.
+			$range = rawurlencode( $sheet_title ) . '!A:A';
+			$url   = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}?majorDimension=ROWS";
+
+			$response = $this->_make_google_api_request( $url, array(), 'GET' );
+
+			// Check for API errors
+			if ( is_wp_error( $response ) ) {
+				$this->logger->log( 'GSheet row count check failed for form ' . $form_id . ': ' . $response->get_error_message(), 'ERROR' );
+				return false;
+			}
+
+			$values         = $response['values'] ?? array();
+			$data_row_count = count( $values );
+			$entry_count    = $data_row_count > 0 ? $data_row_count - 1 : 0;
+
+			// Define the limit and notification thresholds
+			$limit         = 300;
+			$remaining_100 = $limit - 100; // 200
+			$remaining_50  = $limit - 50;  // 250
+			$remaining_10  = $limit - 10;  // 290
+
+			// Get the transient to check if emails have been sent
+			$notification_sent = get_transient( 'fem_limit_notification_sent' );
+			if ( false === $notification_sent ) {
+				$notification_sent = array();
+			}
+
+			// Check and send emails based on thresholds
+			if ( $entry_count >= $remaining_100 && ! in_array( '100_remaining', $notification_sent, true ) ) {
+				$this->send_row_limit_email( 100, $form_id );
+				$notification_sent[] = '100_remaining';
+				set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS ); // Keep for one day to prevent spam
+			}
+
+			if ( $entry_count >= $remaining_50 && ! in_array( '50_remaining', $notification_sent, true ) ) {
+				$this->send_row_limit_email( 50, $form_id );
+				$notification_sent[] = '50_remaining';
+				set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
+			}
+
+			if ( $entry_count >= $remaining_10 && ! in_array( '10_remaining', $notification_sent, true ) ) {
+				$this->send_row_limit_email( 10, $form_id );
+				$notification_sent[] = '10_remaining';
+				set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
+			}
+
+			// Check if the entry count has reached the final limit.
+			if ( $entry_count >= $limit ) {
+				// Send final email notification
+				if ( ! in_array( 'limit_reached', $notification_sent, true ) ) {
+					$this->send_row_limit_email( 0, $form_id );
+					$notification_sent[] = 'limit_reached';
+					set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
+				}
+
+				$this->logger->log( 'GSheet row limit of ' . $limit . ' data rows reached for free version. Entry ' . $entry_id . ' not synced.', 'ERROR' );
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->update( $submissions_table, array( 'synced_to_gsheet' => 2 ), array( 'id' => $entry_id ) );
+				return false;
+			}
+		}
+	}
+
+	private function send_row_limit_email( $rows_remaining, $form_id ) {
+		$admin_email = get_option( 'admin_email' );
+		$subject     = 'Entries Manager Free Version Row Limit Alert';
+
+		if ( $rows_remaining > 0 ) {
+			$message = sprintf(
+				"Hello,\n\nYour Entries Manager plugin is approaching its free row limit. You have only %d rows remaining for form ID %d.\n\nTo continue syncing entries, please upgrade to the Pro version.\n\nThank you,\nEntries Manager",
+				$rows_remaining,
+				$form_id
+			);
+		} else {
+			$message = sprintf(
+				"Hello,\n\nYour Entries Manager plugin has reached its free row limit for form ID %d. New entries will no longer be synced to Google Sheets.\n\nTo continue syncing, please upgrade to the Pro version.\n\nThank you,\nEntries Manager",
+				$form_id
+			);
+		}
+
+		$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+
+		wp_mail( $admin_email, $subject, $message, $headers );
+	}
+
 	/**
 	 * Retrieves the canonical headers for a form by inspecting a sample entry.
 	 *
@@ -395,6 +480,7 @@ class Send_Data {
 		}
 
 		// Fetch associated raw entries for the sample submission
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$sample_entry_raw_data = $wpdb->get_results(
 			$wpdb->prepare( "SELECT field_key, field_value FROM {$entries_table} WHERE submission_id = %d", $sample_submission['id'] ),
 			ARRAY_A
@@ -463,7 +549,8 @@ class Send_Data {
 
 		// Fetch associated raw entries for this entry
 		global $wpdb;
-		$entries_table  = Helper::get_data_table();
+		$entries_table = Helper::get_data_table();
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$raw_entry_data = $wpdb->get_results(
 			$wpdb->prepare( "SELECT field_key, field_value FROM {$entries_table} WHERE submission_id = %d", $entry->id ),
 			ARRAY_A
@@ -581,7 +668,6 @@ class Send_Data {
 			return $response;
 		}
 
-		$this->logger->log( 'Applied alternating row color to row ' . ( $row_index + 1 ), 'INFO' );
 		return true;
 	}
 
@@ -590,7 +676,7 @@ class Send_Data {
 	 */
 	protected function handle_sync_failure( int $entry_id, int $current_retry_count ) {
 		global $wpdb;
-		$table = Helper::get_table_name();
+		$table = Helper::get_submission_table();
 
 		if ( $current_retry_count < 5 ) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -624,7 +710,7 @@ class Send_Data {
 		// Validate input.
 		if ( empty( $title ) ) {
 			$this->logger->log( 'Spreadsheet creation failed: Empty title provided.' );
-			return new WP_Error( 'invalid_title', __( 'Spreadsheet title cannot be empty.', 'save-wpf-entries' ) );
+			return new WP_Error( 'invalid_title', __( 'Spreadsheet title cannot be empty.', 'forms-entries-manager' ) );
 		}
 
 		$body = array(
@@ -644,7 +730,7 @@ class Send_Data {
 
 			if ( empty( $response['id'] ) ) {
 				$this->logger->log( 'Spreadsheet creation failed: No ID returned from Google API.', array( 'response' => $response ) );
-				return new WP_Error( 'create_failed', __( 'Google API did not return a spreadsheet ID.', 'save-wpf-entries' ) );
+				return new WP_Error( 'create_failed', __( 'Google API did not return a spreadsheet ID.', 'forms-entries-manager' ) );
 			}
 
 			$this->logger->log( sprintf( 'Spreadsheet created successfully: %s', $response['id'] ), 'info' );
@@ -652,7 +738,7 @@ class Send_Data {
 
 		} catch ( \Exception $e ) {
 			$this->logger->log( sprintf( 'Spreadsheet creation exception: %s', $e->getMessage() ), 'info' );
-			return new WP_Error( 'exception', __( 'Spreadsheet creation encountered an error. Please try again.', 'save-wpf-entries' ) );
+			return new WP_Error( 'exception', __( 'Spreadsheet creation encountered an error. Please try again.', 'forms-entries-manager' ) );
 		}
 	}
 
@@ -726,7 +812,7 @@ class Send_Data {
 	public function enqueue_unsynced_entries( $form_id = null, $batch_size = 50, $delay_between = 5 ) {
 		global $wpdb;
 
-		$table = Helper::get_table_name();
+		$table = Helper::get_submission_table();
 
 		$where  = 'synced_to_gsheet = 0';
 		$params = array();
@@ -769,7 +855,7 @@ class Send_Data {
 	 */
 	public function unsync_entry_from_sheet( int $entry_id ) {
 		global $wpdb;
-		$table = Helper::get_table_name(); // Safe table
+		$table = Helper::get_submission_table(); // Safe table
 
 		// 1. Get Form ID from Entry ID
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -900,7 +986,7 @@ class Send_Data {
 		$db_headers = $this->get_form_headers( $form_id );
 
 		// Step 4: Process and update the local database.
-		$table = Helper::get_table_name();
+		$table = Helper::get_submission_table();
 
 		foreach ( $sheet_rows as $row ) {
 			// A quick check to make sure the row has data.

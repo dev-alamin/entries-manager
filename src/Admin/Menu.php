@@ -82,7 +82,7 @@ class Menu {
 				__( 'Migration', 'forms-entries-manager' ),
 				'manage_options',
 				'form-entries-migration',
-				array( $this )
+				array( $this, 'render_migration_page' )
 			);
 		endif;
 	}

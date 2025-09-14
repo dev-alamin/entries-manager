@@ -37,7 +37,7 @@ class Scheduler {
 
 		$where_sql = 'WHERE ' . implode( ' AND ', $where_clauses );
 
-		$table_name = Helper::get_table_name();
+		$table_name = Helper::get_submission_table();
 
 		$count_sql = $wpdb->prepare(
 			"SELECT COUNT(*) FROM {$table_name} {$where_sql}", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare

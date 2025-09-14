@@ -177,8 +177,6 @@ class Submit_Entry {
 			return;
 		}
 
-		$this->logger->log( print_r( $posted_data, true ), 'info' );
-
 		// Insert individual fields into the entries table.
 		foreach ( $posted_data as $key => $value ) {
 			// Exclude system fields.

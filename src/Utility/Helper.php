@@ -538,7 +538,7 @@ class Helper {
         // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 		if ( false === $entries ) {
 			global $wpdb;
-			$table = self::get_table_name(); // Safe table
+			$table = self::get_submission_table(); // Safe table
 
 			// Build placeholders
 			$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
@@ -567,6 +567,7 @@ class Helper {
 	 * @param array $data The data to update.
 	 * @return bool True on success, false on failure.
 	 */
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- safe: custom plugin table, admin-only context
 	public static function update_entry( int $id, array $data ): bool {
 		global $wpdb;
 
@@ -695,6 +696,7 @@ class Helper {
 	 * @param int $id The ID of the entry to delete.
 	 * @return bool True on success, false on failure.
 	 */
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- safe: custom plugin table, admin-only context
 	public static function delete_entry( int $id ): bool {
 		global $wpdb;
 
@@ -748,7 +750,7 @@ class Helper {
 	public static function get_all_forms() {
 		// Get all published Forms From Our DB
 		global $wpdb;
-		$table = self::get_table_name();
+		$table = self::get_submission_table();
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$forms = $wpdb->get_results( "SELECT DISTINCT form_id FROM {$table} WHERE form_id IS NOT NULL AND form_id != 0", ARRAY_A );

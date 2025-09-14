@@ -1,4 +1,4 @@
-=== Forms Entries Manager ===
+=== Forms Entries Manager: Manage, Sync & Export WPForms, Contact Form 7, and Other Form Submissions ===
 Contributors: almn-me
 Tags: entries, submissions, wpforms, contact form 7, google sheets
 Requires at least: 5.4

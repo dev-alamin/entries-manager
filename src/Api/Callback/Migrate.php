@@ -74,17 +74,18 @@ class Migrate {
 
 		global $wpdb;
 
-		$last_id      = absint( Helper::get_option( self::OPTION_LAST_ID, 0 ) );
-		$source_table = $wpdb->prefix . self::SOURCE_TABLE;
-		$target_table = Helper::get_table_name(); // e.g., AEMFW table
+		$last_id           = absint( Helper::get_option( self::OPTION_LAST_ID, 0 ) );
+		$source_table      = $wpdb->prefix . self::SOURCE_TABLE;
+		$submissions_table = Helper::get_submission_table();
+		$data_table        = Helper::get_data_table();
 
 		if ( ! Helper::table_exists( $source_table ) ) {
 			$logger->log( 'Source table missing: ' . $source_table, 'ERROR' );
 			return;
 		}
 
-		if ( ! Helper::table_exists( $target_table ) ) {
-			$logger->log( 'Target table missing: ' . $target_table, 'ERROR' );
+		if ( ! Helper::table_exists( $submissions_table ) || ! Helper::table_exists( $data_table ) ) {
+			$logger->log( 'Target tables missing.', 'ERROR' );
 			return;
 		}
 
@@ -98,11 +99,12 @@ class Migrate {
 			ARRAY_A
 		);
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$total_entries = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$source_table}" );
-
 		// Save total entries count to option for progress tracking
-		Helper::update_option( 'migration_total_entries', $total_entries );
+		if ( $last_id === 0 ) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$total_entries = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$source_table}" );
+			Helper::update_option( 'migration_total_entries', $total_entries );
+		}
 
 		if ( empty( $entries ) ) {
 			Helper::update_option( self::OPTION_COMPLETE, true );
@@ -112,28 +114,33 @@ class Migrate {
 		$new_last_id = $last_id;
 
 		foreach ( $entries as $entry ) {
+			$source_id  = intval( $entry['form_id'] );
 			$form_id    = absint( $entry['form_post_id'] ?? 0 );
 			$form_value = $entry['form_value'] ?? '';
 
 			$data_array = maybe_unserialize( $form_value );
 			unset( $data_array['WPFormsDB_status'] );
 
-			// Lowercase all keys and values
-			$data_array = array_map( 'strtolower', $data_array );
-			$data_array = array_change_key_case( $data_array, CASE_LOWER );
-
-			$email = isset( $data_array['email'] ) ? sanitize_email( $data_array['email'] ) : '';
+			// The old data is already a flattened array, so we don't need to do complex processing.
+			$email = '';
+			$name  = '';
+			if ( is_array( $data_array ) ) {
+				$data_array = array_change_key_case( $data_array, CASE_LOWER );
+				$email      = isset( $data_array['email'] ) ? sanitize_email( $data_array['email'] ) : '';
+				$name       = isset( $data_array['name'] ) ? sanitize_text_field( $data_array['name'] ) : '';
+			}
 
 			$form_date = sanitize_text_field( $entry['form_date'] ?? current_time( 'mysql' ) );
 
+			// Step 1: Insert into the new submissions table.
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$result = $wpdb->insert(
-				$target_table,
+				$submissions_table,
 				array(
 					'form_id'     => $form_id,
-					'entry'       => $form_value,
+					'name'        => $name,
 					'email'       => $email,
-					'created_at'  => $form_date,  // <-- use created_at instead of submitted_at
+					'created_at'  => $form_date,
 					'status'      => 'unread',
 					'is_favorite' => 0,
 				),
@@ -141,7 +148,37 @@ class Migrate {
 			);
 
 			if ( $result !== false ) {
-				$new_last_id = max( $new_last_id, intval( $entry['form_id'] ) );
+				$submission_id = $wpdb->insert_id;
+
+				// Step 2: Insert individual fields into the new data table.
+				if ( is_array( $data_array ) ) {
+					$data_to_insert = array();
+					$time           = current_time( 'mysql', 1 );
+
+					// Exclude columns that are now in the submissions table.
+					$excluded_keys = array( 'name', 'email', 'form_date' );
+
+					foreach ( $data_array as $key => $value ) {
+						if ( ! in_array( strtolower( $key ), $excluded_keys, true ) ) {
+							$data_to_insert[] = $wpdb->prepare(
+								'(%d, %s, %s, %s, %s)',
+								$submission_id,
+								sanitize_text_field( $key ),
+								sanitize_text_field( $value ),
+								$time,
+								$time
+							);
+						}
+					}
+
+					if ( ! empty( $data_to_insert ) ) {
+						$values = implode( ', ', $data_to_insert );
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+						$wpdb->query( "INSERT INTO `{$data_table}` (`submission_id`, `field_key`, `field_value`, `created_at`, `updated_at`) VALUES {$values}" );
+					}
+				}
+
+				$new_last_id = max( $new_last_id, $source_id );
 			}
 		}
 

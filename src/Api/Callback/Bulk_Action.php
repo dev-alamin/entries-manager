@@ -82,8 +82,26 @@ class Bulk_Action {
 			array(
 				'success'     => true,
 				'message'     => $action === 'delete'
-					? sprintf( _n( '%d entry deleted.', '%d entries deleted.', $affected, 'forms-entries-manager' ), $affected )
-					: sprintf( _n( '%d entry updated.', '%d entries updated.', $affected, 'forms-entries-manager' ), $affected ),
+				? sprintf(
+						// translators: %d: Number of deleted entries.
+					_n(
+						'%d entry deleted.',
+						'%d entries deleted.',
+						$affected,
+						'forms-entries-manager'
+					),
+					$affected
+				)
+					: sprintf(
+						// translators: %d: Number of updated entries.
+						_n(
+							'%d entry updated.',
+							'%d entries updated.',
+							$affected,
+							'forms-entries-manager'
+						),
+						$affected
+					),
 				'deleted_ids' => $deleted_ids,
 				'updated_ids' => $updated_ids,
 				'affected'    => $affected,
@@ -203,9 +221,8 @@ class Bulk_Action {
 		header( 'Content-Disposition: attachment; filename="fem-entries.csv"' );
 
 		// Output the raw CSV content directly.
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $csv_content;
-
-		// Important: Exit the script to prevent any other output.
 		exit;
 	}
 
