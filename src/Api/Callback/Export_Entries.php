@@ -134,7 +134,9 @@ class Export_Entries {
 				"SELECT * FROM {$submissions_table} {$where_sql} ORDER BY created_at ASC",
 				...$query_args
 			);
-			$low_entries  = $wpdb->get_results( $select_query, ARRAY_A );
+
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$low_entries = $wpdb->get_results( $select_query, ARRAY_A );
             // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 			$all_entry_data = $wpdb->get_results(
 				$wpdb->prepare( "SELECT submission_id, field_key, field_value FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)", ...array_column( $low_entries, 'id' ) ),
@@ -239,7 +241,8 @@ class Export_Entries {
 			"SELECT id, name, email, status, note, is_favorite, created_at FROM {$submissions_table} {$where_sql} ORDER BY id ASC LIMIT %d",
 			array_merge( $query_args, array( $job_state['batch_size'] ) )
 		);
-		$submissions       = $wpdb->get_results( $submissions_query, ARRAY_A );
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$submissions = $wpdb->get_results( $submissions_query, ARRAY_A );
 
 		if ( empty( $submissions ) ) {
 			as_schedule_single_action(
@@ -412,26 +415,40 @@ class Export_Entries {
 			return;
 		}
 
-		$file_path   = $upload_dir['path'] . '/' . $job_id . '_batch_' . $page . '.csv';
-		$file_handle = fopen( $file_path, 'a' );
+		$file_path = $upload_dir['path'] . '/' . $job_id . '_batch_' . $page . '.csv';
+		$fs        = new FileSystem();
 
-		if ( $file_handle === false ) {
-			return;
+		// Start with existing content if the file already exists.
+		$content = '';
+		if ( $fs->exists( $file_path ) ) {
+			$content = $fs->read( $file_path );
 		}
 
-		if ( $page === 1 ) {
-			fputcsv( $file_handle, $header );
+		// Open a memory buffer for CSV writing.
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		$buffer = fopen( 'php://temp', 'r+' );
+
+		// If it's a new file (first page), add the header row.
+		if ( $page === 1 && empty( $content ) ) {
+			fputcsv( $buffer, $header );
 		}
 
+		// Add the new rows.
 		foreach ( $entries as $entry ) {
 			$row = array();
 			foreach ( $header as $col ) {
 				$row[] = $entry[ $col ] ?? '';
 			}
-			fputcsv( $file_handle, $row );
+			fputcsv( $buffer, $row );
 		}
 
-		fclose( $file_handle );
+		rewind( $buffer );
+		$new_content = stream_get_contents( $buffer );
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		fclose( $buffer );
+
+		// Merge old + new content and save via WP_Filesystem.
+		$fs->write( $file_path, $content . $new_content );
 	}
 
 	/**

@@ -125,6 +125,7 @@ class Get_Forms {
                 WHERE t2.form_id = %d";
 
 		$fields_raw = $wpdb->get_col(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->prepare( $sql, $form_id )
 		);
 

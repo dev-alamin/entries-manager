@@ -328,7 +328,7 @@ class Admin_Notice {
 			x-show="show"
 			x-cloak
 			x-transition
-			class="mb-5 rounded-xl border border-blue-300 bg-blue-50 text-blue-800 p-4 relative shadow-sm space-y-3">
+			class="mb-5 mt-12 rounded-xl border border-blue-300 bg-blue-50 text-blue-800 p-4 relative shadow-sm space-y-3">
 			<!-- Header Section -->
 			<div class="flex items-start gap-3 mb-0">
 				<!-- Material Info Icon -->
@@ -344,9 +344,10 @@ class Admin_Notice {
 					<?php
 					echo wp_kses_post(
 						sprintf(
-							/* translators: %s: documentation URL */
-							__( 'Need help managing entries or exporting them to Google Sheets? <a href="%s" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">Visit the documentation</a>.', 'forms-entries-manager' ),
-							esc_url( 'https://entriesmanager.com/doc' )
+							/* translators: 1: documentation URL, 2: pro pricing URL */
+							__( 'Need help managing entries or exporting them to Google Sheets? <a href="%1$s" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">Visit the documentation</a>. Syncing more than 500 rows? <a href="%2$s" class="text-green-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">Get our full-featured Pro for unlimited rows sync</a>.', 'forms-entries-manager' ),
+							esc_url( 'https://entriesmanager.com/doc/?utm_source=plugin_backend' ),
+							esc_url( 'https://entriesmanager.com/pricing/?utm_source=plugin_backend' )
 						)
 					);
 					?>

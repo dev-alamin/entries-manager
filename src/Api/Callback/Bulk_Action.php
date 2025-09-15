@@ -41,7 +41,8 @@ class Bulk_Action {
 			case 'delete':
 				// Use a single query for a more efficient bulk delete.
 				// The FOREIGN KEY with ON DELETE CASCADE will handle the entries table.
-				$sql         = $wpdb->prepare( "DELETE FROM `$submissions_table` WHERE id IN ($ids_placeholder)", ...$ids );
+				$sql = $wpdb->prepare( "DELETE FROM `$submissions_table` WHERE id IN ($ids_placeholder)", ...$ids );
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 				$affected    = $wpdb->query( $sql );
 				$deleted_ids = $ids; // Assume all requested IDs were deleted.
 
@@ -64,6 +65,7 @@ class Bulk_Action {
 						...array_merge( $params, $ids )
 					);
 
+                    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 					$affected    = $wpdb->query( $sql );
 					$updated_ids = $ids; // Assume all requested IDs were updated.
 				}

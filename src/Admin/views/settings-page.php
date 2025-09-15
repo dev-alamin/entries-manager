@@ -127,4 +127,7 @@ $custom_columns = Helper::get_option( 'cusom_form_columns_settings', array() );
 		</form>
 
 	</div>
+
+		<?php do_action( 'fem_before_end_entries_ui' ); ?>
+		<!-- Powered by message ends -->
 </div>

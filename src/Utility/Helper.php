@@ -807,43 +807,4 @@ class Helper {
 
 		return $filtered_data;
 	}
-
-	/**
-	 * Retrieves the uploaded file names and generates their URLs.
-	 *
-	 * @param int $submission_id The ID of the form submission.
-	 * @return array An array of file data (name and URL).
-	 */
-	public function get_uploaded_files_for_display( $submission_id ) {
-		global $wpdb;
-		$entries_table = self::get_data_table();
-		$file_list     = array();
-
-		// Query the database to get only the file entries for the submission.
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT field_key, field_value FROM {$entries_table} WHERE submission_id = %d AND field_value LIKE 'files: %%'",
-				$submission_id
-			)
-		);
-
-		if ( ! empty( $results ) ) {
-			// Get the base upload directory URL for creating the final link.
-			$upload_dir      = wp_upload_dir();
-			$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'fem-cf7-uploads';
-
-			foreach ( $results as $row ) {
-				// Extract the filename from the database value.
-				$filename = str_replace( 'files: ', '', $row->field_value );
-
-				$file_list[] = array(
-					'field_key' => $row->field_key,
-					'filename'  => $filename,
-					'url'       => esc_url( trailingslashit( $private_dir_url ) . $filename ),
-				);
-			}
-		}
-
-		return $file_list;
-	}
 }

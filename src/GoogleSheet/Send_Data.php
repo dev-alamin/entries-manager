@@ -354,7 +354,7 @@ class Send_Data {
 
 		if ( ! Helper::is_pro_version() ) {
 			$entry_count  = $this->_get_sheet_r_count( $sheet_title, $spreadsheet_id );
-			$entry_count += rand( 0, 1 ) - rand( 0, 1 );
+			$entry_count += wp_rand( 0, 1 ) - wp_rand( 0, 1 );
 			$quota_meter  = base64_decode( 'NTAw' );
 
 			$thresholds = array(
