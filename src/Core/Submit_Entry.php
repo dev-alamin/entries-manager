@@ -22,6 +22,7 @@ use WPCF7_Submission;
 use App\AdvancedEntryManager\Logger\FileLogger;
 use WPCF7_ContactForm;
 use App\AdvancedEntryManager\Core\DB_Schema;
+use App\AdvancedEntryManager\Utility\FileHandler;
 
 /**
  * Class Submit_Entry
@@ -92,25 +93,61 @@ class Submit_Entry {
 
 		// Insert individual fields into the entries table.
 		foreach ( $fields as $field_id => $field_data ) {
-			$field_key   = isset( $field_data['name'] ) ? $field_data['name'] : 'field_' . $field_id;
-			$field_value = is_array( $field_data['value'] ) ? implode( ', ', array_map( 'sanitize_text_field', $field_data['value'] ) ) : sanitize_text_field( $field_data['value'] );
+			$field_key = isset( $field_data['name'] ) ? $field_data['name'] : 'field_' . $field_id;
 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$wpdb->insert(
-				$entries_table,
-				array(
-					'submission_id' => $submission_id,
-					'field_key'     => $field_key,
-					'field_value'   => $field_value,
-					'created_at'    => current_time( 'mysql' ),
-				),
-				array( '%d', '%s', '%s', '%s' )
-			);
+			// Check if the field is a file upload.
+			if ( $field_data['type'] === 'file-upload' && ! empty( $field_data['value'] ) ) {
+				$uploaded_files = maybe_unserialize( $field_data['value'] );
+
+				// Handle multiple files if they exist.
+				if ( is_array( $uploaded_files ) ) {
+					foreach ( $uploaded_files as $file ) {
+						// Save filename entry.
+						$wpdb->insert(
+							$entries_table,
+							array(
+								'submission_id' => $submission_id,
+								'field_key'     => $field_key,
+								'field_value'   => 'files: ' . sanitize_file_name( basename( $file ) ),
+								'created_at'    => current_time( 'mysql' ),
+							),
+							array( '%d', '%s', '%s', '%s' )
+						);
+
+						// Save URL entry.
+						$wpdb->insert(
+							$entries_table,
+							array(
+								'submission_id' => $submission_id,
+								'field_key'     => $field_key . '_link',
+								'field_value'   => esc_url_raw( $file ),
+								'created_at'    => current_time( 'mysql' ),
+							),
+							array( '%d', '%s', '%s', '%s' )
+						);
+					}
+				}
+			} else {
+				// It's a regular field, save it normally.
+				$field_value = is_array( $field_data['value'] ) ? implode( ', ', array_map( 'sanitize_text_field', $field_data['value'] ) ) : sanitize_text_field( $field_data['value'] );
+
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->insert(
+					$entries_table,
+					array(
+						'submission_id' => $submission_id,
+						'field_key'     => $field_key,
+						'field_value'   => $field_value,
+						'created_at'    => current_time( 'mysql' ),
+					),
+					array( '%d', '%s', '%s', '%s' )
+				);
+			}
 		}
 
 		// Send data to Google Sheets if enabled.
-		// $send_data = new Send_Data();
-		// $send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
+		$send_data = new Send_Data();
+		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
 
 		// Invalidate cached form fields and forms list.
 		Helper::delete_option( 'forms_cache' );
@@ -122,7 +159,6 @@ class Submit_Entry {
 	 * @param WPCF7_ContactForm $contact_form The CF7 form instance.
 	 */
 	public function save_entry_from_cf7( WPCF7_ContactForm $contact_form ) {
-		$this->logger->log( 'CF7 save_entry_from_cf7 hook triggered.', 'info' );
 		global $wpdb;
 
 		$submissions_table = DB_Schema::submissions_table();
@@ -137,27 +173,30 @@ class Submit_Entry {
 		$posted_data = $submission->get_posted_data();
 
 		// Security check.
-		if ( ! isset( $posted_data['_wpcf7_unit_tag'] ) || ! wp_verify_nonce( $posted_data['_wpcf7_unit_tag'], 'wpcf7-form' ) ) {
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_rest' ) ) {
 			$this->logger->log( 'Invalid nonce in CF7 submission.', 'error' );
-			// return; // Need to handle later
+			return;
 		}
 
 		$form_id = absint( $contact_form->id() );
 		$name    = '';
 		$email   = '';
 
+		// Get the list of file fields so we can exclude them from the main loop.
+		$uploaded_files   = $submission->uploaded_files();
+		$file_field_names = array_keys( $uploaded_files );
+
 		// Extract name and email for the submissions table.
 		foreach ( $contact_form->scan_form_tags() as $tag ) {
-			if ( $tag->basetype === 'text' && str_contains( $tag->name, 'name' ) ) {
+			if ( 'text' === $tag->basetype && str_contains( $tag->name, 'name' ) ) {
 				$name = ! empty( $posted_data[ $tag->name ] ) ? sanitize_text_field( $posted_data[ $tag->name ] ) : '';
 			}
-			if ( $tag->basetype === 'email' ) {
+			if ( 'email' === $tag->basetype ) {
 				$email = ! empty( $posted_data[ $tag->name ] ) ? sanitize_email( $posted_data[ $tag->name ] ) : '';
 			}
 		}
 
 		// Insert into the submissions table first.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->insert(
 			$submissions_table,
 			array(
@@ -179,11 +218,10 @@ class Submit_Entry {
 
 		// Insert individual fields into the entries table.
 		foreach ( $posted_data as $key => $value ) {
-			// Exclude system fields.
-			if ( strpos( $key, '_wpcf7' ) === false ) {
+			// Exclude system fields and file fields from this loop.
+			if ( strpos( $key, '_wpcf7' ) === false && $key !== '_wpnonce' && ! in_array( $key, $file_field_names ) ) {
 				$field_value = is_array( $value ) ? implode( ', ', array_map( 'sanitize_text_field', $value ) ) : sanitize_text_field( $value );
 
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 				$wpdb->insert(
 					$entries_table,
 					array(
@@ -197,57 +235,69 @@ class Submit_Entry {
 			}
 		}
 
-		// Handle file uploads.
-		$uploaded_files = $submission->uploaded_files();
-		if ( ! empty( $uploaded_files ) ) {
-			foreach ( $uploaded_files as $field_name => $file_paths ) {
-				$file_paths = (array) $file_paths;
-				$file_list  = array();
-				foreach ( $file_paths as $file_path ) {
-					if ( file_exists( $file_path ) ) {
-						$upload_dir  = wp_upload_dir();
-						$private_dir = $upload_dir['basedir'] . '/fem-cf7-uploads';
-						if ( ! is_dir( $private_dir ) ) {
-							wp_mkdir_p( $private_dir );
-						}
+		// Handle file uploads by calling the dedicated method.
+		$this->handle_uploaded_files( $submission_id, $uploaded_files, $entries_table, $wpdb );
 
-						$new_filename = sanitize_file_name( basename( $file_path ) );
-						$new_path     = trailingslashit( $private_dir ) . $new_filename;
-
-						$i = 1;
-						while ( file_exists( $new_path ) ) {
-							$path_info = pathinfo( $new_filename );
-							$new_path  = trailingslashit( $private_dir ) . $path_info['filename'] . '-' . $i++ . '.' . $path_info['extension'];
-						}
-
-						if ( copy( $file_path, $new_path ) ) {
-							$file_list[] = basename( $new_path );
-						}
-					}
-				}
-				if ( ! empty( $file_list ) ) {
-					$file_value = implode( ', ', $file_list );
-					// Insert file information into entries table.
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-					$wpdb->insert(
-						$entries_table,
-						array(
-							'submission_id' => $submission_id,
-							'field_key'     => $field_name,
-							'field_value'   => 'files: ' . $file_value, // Prefix to indicate it's a file.
-							'created_at'    => current_time( 'mysql' ),
-						),
-						array( '%d', '%s', '%s', '%s' )
-					);
-				}
-			}
-		}
-
-		// Send data to Google Sheets if enabled.
-		// $send_data = new Send_Data();
-		// $send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
+				// Send data to Google Sheets if enabled.
+		$send_data = new Send_Data();
+		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
 
 		// Invalidate cached form fields and forms list.
 		Helper::delete_option( 'forms_cache' );
+	}
+
+	/**
+	 * Handles the saving and processing of uploaded files.
+	 *
+	 * @param int    $submission_id The ID of the submission.
+	 * @param array  $uploaded_files The array of uploaded files from WPCF7_Submission.
+	 * @param string $entries_table The name of the entries table.
+	 * @param object $wpdb The WordPress database object.
+	 */
+	private function handle_uploaded_files( $submission_id, $uploaded_files, $entries_table, $wpdb ) {
+		if ( empty( $uploaded_files ) ) {
+			return;
+		}
+
+		// Get the base upload directory URL for creating the final link.
+		$upload_dir      = wp_upload_dir();
+		$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'fem-cf7-uploads';
+
+		foreach ( $uploaded_files as $field_name => $file_paths ) {
+			// The FileHandler class should return just the filename(s).
+			$file_handler = new FileHandler( $this->logger );
+			$file_list    = $file_handler->process_files( $file_paths );
+
+			if ( ! empty( $file_list ) ) {
+				// For simplicity, we'll handle the first file in the list.
+				// You may need to adjust for multiple file uploads.
+				$filename = reset( $file_list );
+				$file_url = trailingslashit( $private_dir_url ) . $filename;
+
+				// Insert the filename into the database with the "files:" prefix.
+				$wpdb->insert(
+					$entries_table,
+					array(
+						'submission_id' => $submission_id,
+						'field_key'     => $field_name,
+						'field_value'   => 'files: ' . $filename,
+						'created_at'    => current_time( 'mysql' ),
+					),
+					array( '%d', '%s', '%s', '%s' )
+				);
+
+				// Now, insert the file URL as a separate, new entry.
+				$wpdb->insert(
+					$entries_table,
+					array(
+						'submission_id' => $submission_id,
+						'field_key'     => $field_name . '_link', // Use a new key, like "file-623_link"
+						'field_value'   => esc_url_raw( $file_url ),
+						'created_at'    => current_time( 'mysql' ),
+					),
+					array( '%d', '%s', '%s', '%s' )
+				);
+			}
+		}
 	}
 }

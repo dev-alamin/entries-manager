@@ -75,7 +75,10 @@ class Menu {
 			array( $this->log_viewer_page, 'render_page' )
 		);
 
-		if ( $legacy_table_exists && ! Helper::get_option( 'migration_complete' ) ) :
+		if ( $legacy_table_exists
+		&& ! Helper::get_option( 'migration_complete' )
+		&& Helper::is_pro_version()
+		) :
 			add_submenu_page(
 				'forms-entries-manager',
 				__( 'Migration', 'forms-entries-manager' ),

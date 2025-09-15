@@ -131,3 +131,5 @@ function fem_init() {
 
 // Kick-off the plugin initialization
 fem_init();
+
+add_filter( 'wpcf7_verify_nonce', '__return_true' );

@@ -224,6 +224,10 @@ class Get_Entries {
 			$entries_by_submission[ $entry->submission_id ][] = $entry;
 		}
 
+		// Get the base upload URL once for efficiency.
+		$upload_dir      = wp_upload_dir();
+		$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'fem-cf7-uploads';
+
 		// Iterate through submissions and build the final data structure.
 		foreach ( $submissions as $submission ) {
 			$normalized_entry = array();
@@ -232,16 +236,27 @@ class Get_Entries {
 					$key   = $entry_field->field_key;
 					$value = $entry_field->field_value;
 
-					$normalized_key = $key; // or just use $key directly
+					// Check if the value is a file field by looking for the "files: " prefix.
+					if ( strpos( $value, 'files: ' ) === 0 ) {
+						$filename = str_replace( 'files: ', '', $value );
+						$file_url = trailingslashit( $private_dir_url ) . $filename;
 
-					$normalized_entry[ $normalized_key ] = $value;
+						// Format the value for the REST response to include both the filename and URL.
+						$normalized_entry[ $key ] = array(
+							'filename' => $filename,
+							'url'      => esc_url( $file_url ),
+						);
+					} else {
+						// It's a regular field, so use the value as is.
+						$normalized_entry[ $key ] = $value;
+					}
 
-					if ( ! in_array( $normalized_key, $all_entry_keys ) ) {
-						$all_entry_keys[] = $normalized_key;
+					if ( ! in_array( $key, $all_entry_keys ) ) {
+						$all_entry_keys[] = $key;
 					}
 				}
 			}
-			// The rest of your code remains the same.
+
 			$formatted_entries[] = array(
 				'id'          => (int) $submission->id,
 				'form_title'  => get_the_title( $submission->form_id ),
@@ -266,6 +281,7 @@ class Get_Entries {
 			if ( $this->is_system_key( $key ) ) {
 				continue;
 			}
+			// This part needs to be modified on the frontend to handle the new structured file data.
 			$entry_schema[] = array(
 				'key'   => $key,
 				'label' => $key,

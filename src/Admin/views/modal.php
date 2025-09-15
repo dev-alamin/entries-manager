@@ -62,9 +62,12 @@
 								x-text="key.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) + ':'">
 							</strong>
 
-							<span class="ml-1" x-html="Array.isArray(value) 
-								? value.map(f => `<a href='${f.url}' target='_blank'>${f.url.split('/').pop()}</a>`).join('<br>') 
-								: value || '<?php echo esc_js( __( '-', 'forms-entries-manager' ) ); ?>'">
+							<span class="ml-1" x-html="typeof value === 'object' && value !== null && 'url' in value
+								? `<a href='${value.url}' target='_blank'>${value.filename}</a>`
+								: (Array.isArray(value) 
+									? value.map(f => `<a href='${f.url}' target='_blank'>${f.url.split('/').pop()}</a>`).join('<br>') 
+									: value || '<?php echo esc_js( __( '-', 'forms-entries-manager' ) ); ?>')
+							">
 							</span>
 						</div>
 					</template>

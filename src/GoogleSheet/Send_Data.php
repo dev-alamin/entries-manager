@@ -286,8 +286,8 @@ class Send_Data {
 		$sheet_title    = $sheet_info['sheet_title'];
 
 		// Enforce Free Version row limitation
-		if ( ! $this->row_limit( $sheet_title, $spreadsheet_id, $form_id, $entry_id ) ) {
-			return;
+		if ( ! $this->_meter_submission( $sheet_title, $spreadsheet_id, $form_id, $entry_id ) ) {
+			return false; // Exit if the row limit was reached
 		}
 
 		// error_log( print_r( $this->get_spreadsheet_metadata( $spreadsheet_id ), true ) );
@@ -348,76 +348,93 @@ class Send_Data {
 		return true;
 	}
 
-	private function row_limit( $sheet_title, $spreadsheet_id, $form_id, $entry_id ) {
+	private function _meter_submission( $sheet_title, $spreadsheet_id, $form_id, $entry_id ) {
 		global $wpdb;
 		$submissions_table = Helper::get_submission_table();
+
 		if ( ! Helper::is_pro_version() ) {
+			$entry_count  = $this->_get_sheet_r_count( $sheet_title, $spreadsheet_id );
+			$entry_count += rand( 0, 1 ) - rand( 0, 1 );
+			$quota_meter  = base64_decode( 'NTAw' );
 
-			// Step 1: Request the values of the first column (e.g., 'A:A') to get the number of data rows.
-			$range = rawurlencode( $sheet_title ) . '!A:A';
-			$url   = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}?majorDimension=ROWS";
+			$thresholds = array(
+				'100' => $quota_meter - 100,
+				'50'  => $quota_meter - 50,
+				'10'  => $quota_meter - 10,
+			);
 
-			$response = $this->_make_google_api_request( $url, array(), 'GET' );
+			// Step 3: Track notifications
+			$notification_sent = get_transient( 'fem_limit_notification_sent' ) ?: array();
 
-			// Check for API errors
-			if ( is_wp_error( $response ) ) {
-				$this->logger->log( 'GSheet row count check failed for form ' . $form_id . ': ' . $response->get_error_message(), 'ERROR' );
-				return false;
-			}
-
-			$values         = $response['values'] ?? array();
-			$data_row_count = count( $values );
-			$entry_count    = $data_row_count > 0 ? $data_row_count - 1 : 0;
-
-			// Define the limit and notification thresholds
-			$limit         = 300;
-			$remaining_100 = $limit - 100; // 200
-			$remaining_50  = $limit - 50;  // 250
-			$remaining_10  = $limit - 10;  // 290
-
-			// Get the transient to check if emails have been sent
-			$notification_sent = get_transient( 'fem_limit_notification_sent' );
-			if ( false === $notification_sent ) {
-				$notification_sent = array();
-			}
-
-			// Check and send emails based on thresholds
-			if ( $entry_count >= $remaining_100 && ! in_array( '100_remaining', $notification_sent, true ) ) {
-				$this->send_row_limit_email( 100, $form_id );
-				$notification_sent[] = '100_remaining';
-				set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS ); // Keep for one day to prevent spam
-			}
-
-			if ( $entry_count >= $remaining_50 && ! in_array( '50_remaining', $notification_sent, true ) ) {
-				$this->send_row_limit_email( 50, $form_id );
-				$notification_sent[] = '50_remaining';
-				set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
-			}
-
-			if ( $entry_count >= $remaining_10 && ! in_array( '10_remaining', $notification_sent, true ) ) {
-				$this->send_row_limit_email( 10, $form_id );
-				$notification_sent[] = '10_remaining';
-				set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
-			}
-
-			// Check if the entry count has reached the final limit.
-			if ( $entry_count >= $limit ) {
-				// Send final email notification
-				if ( ! in_array( 'limit_reached', $notification_sent, true ) ) {
-					$this->send_row_limit_email( 0, $form_id );
-					$notification_sent[] = 'limit_reached';
-					set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
+			foreach ( $thresholds as $key => $val ) {
+				if ( $entry_count >= $val ) {
+					$this->_notify_max_cap( $key, $form_id, $notification_sent );
 				}
+			}
 
-				$this->logger->log( 'GSheet row limit of ' . $limit . ' data rows reached for free version. Entry ' . $entry_id . ' not synced.', 'ERROR' );
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$wpdb->update( $submissions_table, array( 'synced_to_gsheet' => 2 ), array( 'id' => $entry_id ) );
+			// Step 4: Check final limit
+			if ( $entry_count >= $quota_meter ) {
+				$this->_notify_max_cap( '0', $form_id, $notification_sent );
+
+				$this->logger->log( "GSheet row limit of {$quota_meter} reached for free version. Entry {$entry_id} not synced.", 'ERROR' );
+
+				$wpdb->update(
+					$submissions_table,
+					array( 'synced_to_gsheet' => 2 ),
+					array( 'id' => $entry_id )
+				);
+
+				// Unschedule AS jobs for this form
+				as_unschedule_all_actions( 'fem_every_five_minute_sync' );
+				as_unschedule_action( 'fem_daily_sync' );
+
+				$this->logger->log( 'Action Scheduler jobs for form ' . $form_id . ' unscheduled due to row limit.', 'INFO' );
+
 				return false;
 			}
 		}
+
+		// Ensure Action Scheduler jobs are scheduled
+		if ( ! as_has_scheduled_action( 'fem_daily_sync' ) ) {
+			as_schedule_recurring_action( strtotime( 'tomorrow 2am' ), DAY_IN_SECONDS, 'fem_daily_sync' );
+		}
+		if ( ! as_next_scheduled_action( 'fem_every_five_minute_sync' ) ) {
+			as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 1, 'fem_every_five_minute_sync' );
+		}
+
+		return true;
 	}
 
-	private function send_row_limit_email( $rows_remaining, $form_id ) {
+	private function _get_sheet_r_count( $sheet_title, $spreadsheet_id ) {
+		$range    = rawurlencode( $sheet_title ) . '!A:A';
+		$response = $this->_make_google_api_request(
+			"https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}?majorDimension=ROWS",
+			array(),
+			'GET'
+		);
+
+		if ( is_wp_error( $response ) ) {
+			$this->logger->log( 'GSheet quota count check failed for sheet ' . $sheet_title . ': ' . $response->get_error_message(), 'ERROR' );
+			return 0;
+		}
+
+		$values = $response['values'] ?? array();
+		return count( $values ) > 0 ? count( $values ) - 1 : 0;
+	}
+
+	/**
+	 * Notify user about row limit thresholds.
+	 */
+	private function _notify_max_cap( $threshold, $form_id, &$notification_sent ) {
+		if ( ! in_array( $threshold, $notification_sent, true ) ) {
+			$this->_send_email( $threshold === '0' ? 0 : (int) $threshold, $form_id );
+			$notification_sent[] = $threshold;
+			set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
+		}
+	}
+
+
+	private function _send_email( $rows_remaining, $form_id ) {
 		$admin_email = get_option( 'admin_email' );
 		$subject     = 'Entries Manager Free Version Row Limit Alert';
 

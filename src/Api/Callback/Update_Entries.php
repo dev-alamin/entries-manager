@@ -182,7 +182,16 @@ class Update_Entries {
 			// Update entries table. This is the corrected section.
 			if ( ! empty( $entry_fields ) ) {
 				foreach ( $entry_fields as $field_key => $field_value ) {
-					$formatted_value = sanitize_text_field( $field_value );
+					$formatted_value = '';
+
+					// Check if the value is the structured file object.
+					if ( is_array( $field_value ) && isset( $field_value['filename'] ) ) {
+						// Prepend the "files:" prefix before saving.
+						$formatted_value = 'files: ' . sanitize_file_name( $field_value['filename'] );
+					} else {
+						// For all other fields, sanitize the value as a string.
+						$formatted_value = sanitize_text_field( $field_value );
+					}
 
 					// First, check if the entry field already exists.
 					$exists = $wpdb->get_var(
