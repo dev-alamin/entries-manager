@@ -40,6 +40,9 @@ class Submit_Entry {
 		if ( class_exists( 'WPCF7_Submission' ) ) {
 			add_action( 'wpcf7_before_send_mail', array( $this, 'save_entry_from_cf7' ), 10, 1 );
 		}
+
+		// Elementor Forms Hook
+		add_action( 'elementor_pro/forms/new_record', array( $this, 'save_entry_from_elementor' ), 10, 2 );
 	}
 
 	/**
@@ -299,5 +302,113 @@ class Submit_Entry {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Handles Elementor Forms entries.
+	 *
+	 * @param \ElementorPro\Modules\Forms\Classes\Form_Record  $record The form record instance.
+	 * @param \ElementorPro\Modules\Forms\Classes\Ajax_Handler $handler The Ajax handler instance.
+	 */
+	public function save_entry_from_elementor( $record, $handler ) {
+		global $wpdb;
+
+		$submissions_table = Helper::get_submission_table();
+		$entries_table     = Helper::get_data_table();
+		$name              = '';
+		$email             = '';
+		$form_id           = $record->get_form_settings( 'id' );
+		$raw_fields        = $record->get_formatted_data( false );
+
+		// Extract name and email for the submissions table.
+		foreach ( $raw_fields as $field ) {
+			if ( str_contains( $field['type'], 'text' ) && str_contains( strtolower( $field['label'] ), 'name' ) ) {
+				$name = $field['value'] ?? '';
+			} elseif ( $field['type'] === 'email' ) {
+				$email = $field['value'] ?? '';
+			}
+		}
+
+		// Insert into the submissions table first.
+		$wpdb->insert(
+			$submissions_table,
+			array(
+				'form_id'    => absint( $form_id ),
+				'name'       => sanitize_text_field( $name ),
+				'email'      => sanitize_email( $email ),
+				'status'     => 'unread',
+				'created_at' => current_time( 'mysql' ),
+			),
+			array( '%d', '%s', '%s', '%s', '%s' )
+		);
+
+		$submission_id = $wpdb->insert_id;
+
+		if ( ! $submission_id ) {
+			$this->logger->log( 'Failed to insert into submissions table.', 'error' );
+			return;
+		}
+
+		// Insert individual fields into the entries table.
+		foreach ( $raw_fields as $field ) {
+			$field_key   = $field['id'];
+			$field_type  = $field['type'];
+			$field_value = $field['value'];
+
+			// Check for file uploads.
+			if ( $field_type === 'upload' && ! empty( $field_value ) ) {
+				// Elementor's upload value is a link, but can be a comma-separated string for multiple files.
+				$uploaded_files = explode( ', ', $field_value );
+
+				foreach ( $uploaded_files as $file_url ) {
+					$filename = basename( wp_parse_url( $file_url, PHP_URL_PATH ) );
+
+					// Save filename entry.
+					$wpdb->insert(
+						$entries_table,
+						array(
+							'submission_id' => $submission_id,
+							'field_key'     => $field_key,
+							'field_value'   => 'files: ' . sanitize_file_name( $filename ),
+							'created_at'    => current_time( 'mysql' ),
+						),
+						array( '%d', '%s', '%s', '%s' )
+					);
+
+					// Save URL entry.
+					$wpdb->insert(
+						$entries_table,
+						array(
+							'submission_id' => $submission_id,
+							'field_key'     => $field_key . '_link',
+							'field_value'   => esc_url_raw( $file_url ),
+							'created_at'    => current_time( 'mysql' ),
+						),
+						array( '%d', '%s', '%s', '%s' )
+					);
+				}
+			} else {
+				// It's a regular field, save it normally.
+				$sanitized_value = is_array( $field_value ) ? implode( ', ', array_map( 'sanitize_text_field', $field_value ) ) : sanitize_text_field( $field_value );
+
+				$wpdb->insert(
+					$entries_table,
+					array(
+						'submission_id' => $submission_id,
+						'field_key'     => $field_key,
+						'field_value'   => $sanitized_value,
+						'created_at'    => current_time( 'mysql' ),
+					),
+					array( '%d', '%s', '%s', '%s' )
+				);
+			}
+		}
+
+		// Send data to Google Sheets.
+		$send_data = new Send_Data();
+		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
+
+		// Invalidate caches.
+		Helper::delete_option( 'forms_cache' );
 	}
 }
