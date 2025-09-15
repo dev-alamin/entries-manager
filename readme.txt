@@ -8,7 +8,7 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The ultimate dashboard to manage, search, and sync entries from WPForms, Contact Form 7, and more. Transform your WordPress site into a mini-CRM.
+The ultimate dashboard to manage, search, and sync entries from WPForms, Contact Form 7, Elementor and more. Transform your WordPress site into a mini-CRM.
 
 == Description ==
 

@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-02T15:17:50+00:00\n"
+"POT-Creation-Date: 2025-09-15T17:08:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: forms-entries-manager\n"
 
 #. Plugin Name of the plugin
 #: forms-entries-manager.php
-#: src/Admin/views/settings-page.php:34
+#: src/Admin/views/settings-page.php:35
 #: src/Admin/views/view-entries.php:32
 msgid "Forms Entries Manager"
 msgstr ""
@@ -41,100 +41,116 @@ msgstr ""
 msgid "https://almn.me"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:52
+#. translators: %s: URL to the review page
+#: src/Admin/Admin_Notice.php:81
+msgid "Enjoying Advanced Entries Manager? We would appreciate it if you could <a href=\"%s\" class=\"text-yellow-600 hover:underline font-medium\" target=\"_blank\" rel=\"noopener noreferrer\">leave us a 5-star review</a> on WordPress.org! Your support helps us continue improving the plugin."
+msgstr ""
+
+#: src/Admin/Admin_Notice.php:92
+#: src/Admin/Admin_Notice.php:93
+msgid "Maybe later"
+msgstr ""
+
+#: src/Admin/Admin_Notice.php:99
+#: src/Admin/Admin_Notice.php:100
+msgid "Never Ask"
+msgstr ""
+
+#: src/Admin/Admin_Notice.php:107
+#: src/Admin/Admin_Notice.php:312
+msgid "Dismiss review request"
+msgstr ""
+
+#: src/Admin/Admin_Notice.php:167
 msgid "Powered by"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:71
+#: src/Admin/Admin_Notice.php:186
 #: src/Admin/Menu.php:62
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:77
+#: src/Admin/Admin_Notice.php:192
 msgid "Docs"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:83
+#: src/Admin/Admin_Notice.php:198
 msgid "Upgrade PRO"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:101
+#: src/Admin/Admin_Notice.php:216
 msgid "🚫 Your site is blocking REST API access required by Advanced Entries Manager. Please whitelist /wp-json/fem/entries/v1/* to ensure full functionality."
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:132
+#: src/Admin/Admin_Notice.php:247
 msgid "Your site is blocking the REST API endpoints required by Advanced Entries Manager. Please whitelist <code>/wp-json/wpforms/entries/v1/*</code> in your firewall or security plugin (e.g., Wordfence, Sucuri) to ensure full functionality."
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:143
+#: src/Admin/Admin_Notice.php:258
 msgid "Dismiss REST API alert"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:180
-msgid "Action Required: Improve Cron Reliability"
-msgstr ""
-
 #. translators: %s: a URL to the WordPress documentation
-#: src/Admin/Admin_Notice.php:187
+#: src/Admin/Admin_Notice.php:299
 msgid "Your site has the <code>DISABLE_WP_CRON</code> constant enabled, which can prevent scheduled tasks (like Google Sheets syncing) from running reliably. For consistent background processing, we recommend setting up a server-side cron job. %s"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:191
+#: src/Admin/Admin_Notice.php:303
 msgid "Learn more about this here."
 msgstr ""
 
-#. translators: %s: documentation URL
-#: src/Admin/Admin_Notice.php:224
-msgid "Need help managing entries or exporting them to Google Sheets? <a href=\"%s\" class=\"text-blue-600 hover:underline font-medium\" target=\"_blank\" rel=\"noopener noreferrer\">Visit the documentation</a>."
+#. translators: 1: documentation URL, 2: pro pricing URL
+#: src/Admin/Admin_Notice.php:348
+msgid "Need help managing entries or exporting them to Google Sheets? <a href=\"%1$s\" class=\"text-blue-600 hover:underline font-medium\" target=\"_blank\" rel=\"noopener noreferrer\">Visit the documentation</a>. Syncing more than 500 rows? <a href=\"%2$s\" class=\"text-green-600 hover:underline font-semibold\" target=\"_blank\" rel=\"noopener noreferrer\">Get our full-featured Pro for unlimited rows sync</a>."
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:235
+#: src/Admin/Admin_Notice.php:360
 msgid "Collapse details"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:235
+#: src/Admin/Admin_Notice.php:360
 msgid "Expand details"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:245
-#: src/Assets.php:148
-#: src/Assets.php:169
+#: src/Admin/Admin_Notice.php:370
+#: src/Assets.php:158
+#: src/Assets.php:179
 msgid "Dismiss"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:262
+#: src/Admin/Admin_Notice.php:387
 msgid "Getting Started Guide"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:270
+#: src/Admin/Admin_Notice.php:395
 msgid "View Full Entry in Modal"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:278
+#: src/Admin/Admin_Notice.php:403
 msgid "Bulk Actions & Filters"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:286
+#: src/Admin/Admin_Notice.php:411
 msgid "CSV Export & Field Exclusion"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:294
+#: src/Admin/Admin_Notice.php:419
 msgid "Comment on Entries"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:302
+#: src/Admin/Admin_Notice.php:427
 msgid "Print Friendly Entries"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:310
+#: src/Admin/Admin_Notice.php:435
 msgid "Sync to Google Sheets"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:318
+#: src/Admin/Admin_Notice.php:443
 msgid "Entry Migration Guide"
 msgstr ""
 
-#: src/Admin/Admin_Notice.php:325
+#: src/Admin/Admin_Notice.php:450
 msgid "Fix Cron Issues Guide"
 msgstr ""
 
@@ -221,8 +237,8 @@ msgstr ""
 msgid "Logs"
 msgstr ""
 
-#: src/Admin/Menu.php:81
-#: src/Admin/Menu.php:82
+#: src/Admin/Menu.php:84
+#: src/Admin/Menu.php:85
 msgid "Migration"
 msgstr ""
 
@@ -238,8 +254,8 @@ msgid ""
 msgstr ""
 
 #: src/Admin/views/migration-page.php:8
-#: src/Assets.php:145
-#: src/Assets.php:166
+#: src/Assets.php:155
+#: src/Assets.php:176
 msgid "Migrate from WPFormsDB"
 msgstr ""
 
@@ -268,8 +284,8 @@ msgid "50"
 msgstr ""
 
 #: src/Admin/views/migration-page.php:85
-#: src/Assets.php:147
-#: src/Assets.php:168
+#: src/Assets.php:157
+#: src/Assets.php:178
 msgid "Start Migration"
 msgstr ""
 
@@ -314,93 +330,83 @@ msgid "Entry Details"
 msgstr ""
 
 #: src/Admin/views/modal.php:31
-#: src/Admin/views/modal.php:63
-#: src/Admin/views/modal.php:72
-#: src/Admin/views/modal.php:85
+#: src/Admin/views/modal.php:69
 msgid "-"
 msgstr ""
 
-#: src/Admin/views/modal.php:60
-msgid "Name: "
-msgstr ""
-
-#: src/Admin/views/modal.php:69
-msgid "Email: "
-msgstr ""
-
-#: src/Admin/views/modal.php:118
+#: src/Admin/views/modal.php:103
 msgid "Close Note"
 msgstr ""
 
-#: src/Admin/views/modal.php:120
+#: src/Admin/views/modal.php:105
 #: src/Admin/views/table/action-column.php:38
 msgid "Edit Note"
 msgstr ""
 
-#: src/Admin/views/modal.php:121
+#: src/Admin/views/modal.php:106
 #: src/Admin/views/table/action-column.php:39
 msgid "Add Note"
 msgstr ""
 
-#: src/Admin/views/modal.php:138
+#: src/Admin/views/modal.php:123
 msgid "Your Note"
 msgstr ""
 
-#: src/Admin/views/modal.php:146
+#: src/Admin/views/modal.php:131
 msgid "Write something helpful for this entry…"
 msgstr ""
 
-#: src/Admin/views/modal.php:151
+#: src/Admin/views/modal.php:136
 msgid "Max 1000 characters. Avoid sensitive data."
 msgstr ""
 
-#: src/Admin/views/modal.php:162
+#: src/Admin/views/modal.php:147
 msgid "Saved Note"
 msgstr ""
 
-#: src/Admin/views/modal.php:162
+#: src/Admin/views/modal.php:147
 msgid "Save Note"
 msgstr ""
 
-#: src/Admin/views/modal.php:176
+#: src/Admin/views/modal.php:161
 #: src/Admin/views/template-functions.php:13
 msgid "Mark as Read"
 msgstr ""
 
-#: src/Admin/views/modal.php:179
+#: src/Admin/views/modal.php:164
 msgid "Mark as unread"
 msgstr ""
 
-#: src/Admin/views/modal.php:186
+#: src/Admin/views/modal.php:171
 msgid "Delete"
 msgstr ""
 
-#: src/Admin/views/settings-page.php:37
+#: src/Admin/views/settings-page.php:38
 msgid "Forms Entries Manager Settings"
 msgstr ""
 
-#: src/Admin/views/settings-page.php:41
+#: src/Admin/views/settings-page.php:42
 #: src/Admin/views/view-entries.php:39
 msgid "Browse and manage form entries submitted by users. Click on a form to view its submissions, mark entries as read/unread, or delete them as needed."
 msgstr ""
 
-#: src/Admin/views/settings-page.php:50
+#: src/Admin/views/settings-page.php:51
 msgid "✅ Connection to Google Sheets has been successfully revoked. You can connect again with the below button."
 msgstr ""
 
-#: src/Admin/views/settings-page.php:69
+#: src/Admin/views/settings-page.php:70
 msgid "Google Sync"
 msgstr ""
 
-#: src/Admin/views/settings-page.php:83
+#: src/Admin/views/settings-page.php:84
 msgid "Advanced Export"
 msgstr ""
 
-#: src/Admin/views/settings-page.php:97
+#: src/Admin/views/settings-page.php:98
 msgid "General Settings"
 msgstr ""
 
-#: src/Admin/views/settings-page.php:122
+#: src/Admin/views/settings-page.php:123
 msgid "Save Changes"
 msgstr ""
 
@@ -487,51 +493,47 @@ msgstr ""
 msgid "Google Account Connection"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:19
+#: src/Admin/views/tab/google-connection.php:20
 msgid "Connected to Google Sheets"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:23
-msgid "Reconnect or switch Google Account"
-msgstr ""
-
-#: src/Admin/views/tab/google-connection.php:24
+#: src/Admin/views/tab/google-connection.php:49
 msgid "Switch Account"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:27
+#: src/Admin/views/tab/google-connection.php:51
 msgid "Live data sync is active. Streaming enabled ✅"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:34
+#: src/Admin/views/tab/google-connection.php:57
 msgid "Your WPForms submissions are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis."
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:41
+#: src/Admin/views/tab/google-connection.php:64
 msgid "Connected Google Sheets"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:60
+#: src/Admin/views/tab/google-connection.php:83
 msgid "View Sheet"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:66
+#: src/Admin/views/tab/google-connection.php:89
 msgid "No forms are currently connected to Google Sheets."
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:73
+#: src/Admin/views/tab/google-connection.php:96
 msgid "Revoke Google Connection. It won't remove your sheets just no sync anymore."
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:91
+#: src/Admin/views/tab/google-connection.php:114
 msgid "Revoke Connection"
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:97
+#: src/Admin/views/tab/google-connection.php:120
 msgid "To start syncing WPForms entries with Google Sheets, please connect your Google account. This will enable live synchronization and easy data management."
 msgstr ""
 
-#: src/Admin/views/tab/google-connection.php:117
+#: src/Admin/views/tab/google-connection.php:140
 msgid "Connect with Google"
 msgstr ""
 
@@ -684,10 +686,11 @@ msgid "Entries table for form"
 msgstr ""
 
 #: src/Admin/views/view-entries.php:193
-#: src/Assets.php:156
-#: src/Assets.php:204
-#: src/GoogleSheet/Send_Data.php:349
-#: src/GoogleSheet/Send_Data.php:407
+#: src/Assets.php:166
+#: src/Assets.php:214
+#: src/GoogleSheet/Send_Data.php:491
+#: src/GoogleSheet/Send_Data.php:530
+#: src/GoogleSheet/Send_Data.php:604
 msgid "Email"
 msgstr ""
 
@@ -696,8 +699,9 @@ msgid "Date"
 msgstr ""
 
 #: src/Admin/views/view-entries.php:207
-#: src/GoogleSheet/Send_Data.php:364
-#: src/GoogleSheet/Send_Data.php:410
+#: src/GoogleSheet/Send_Data.php:492
+#: src/GoogleSheet/Send_Data.php:541
+#: src/GoogleSheet/Send_Data.php:607
 msgid "Status"
 msgstr ""
 
@@ -709,39 +713,43 @@ msgstr ""
 msgid "Click for details"
 msgstr ""
 
-#: src/Api/Callback/Bulk_Action.php:21
+#: src/Api/Callback/Bulk_Action.php:27
 msgid "Invalid or missing entry IDs."
 msgstr ""
 
-#: src/Api/Callback/Bulk_Action.php:32
+#: src/Api/Callback/Bulk_Action.php:77
 msgid "Invalid action provided."
 msgstr ""
 
-#. translators: %d is the number of deleted entries
-#: src/Api/Callback/Bulk_Action.php:103
+#. translators: %d: Number of deleted entries.
+#: src/Api/Callback/Bulk_Action.php:89
 msgid "%d entry deleted."
 msgid_plural "%d entries deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: %d is the number of updated entries
-#: src/Api/Callback/Bulk_Action.php:108
+#. translators: %d: Number of updated entries.
+#: src/Api/Callback/Bulk_Action.php:99
 msgid "%d entry updated."
 msgid_plural "%d entries updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Api/Callback/Bulk_Action.php:123
+#: src/Api/Callback/Bulk_Action.php:172
 msgid "No entries selected."
 msgstr ""
 
-#: src/Api/Callback/Bulk_Action.php:129
-#: src/Api/Callback/Export_Entries.php:660
+#: src/Api/Callback/Bulk_Action.php:190
+#: src/Api/Callback/Export_Entries.php:600
 msgid "No data found."
 msgstr ""
 
-#: src/Api/Callback/Bulk_Action.php:142
+#: src/Api/Callback/Bulk_Action.php:206
 msgid "Unable to create temp file."
+msgstr ""
+
+#: src/Api/Callback/Bulk_Action.php:218
+msgid "Unable to write to temp file."
 msgstr ""
 
 #: src/Api/Callback/Create_Entries.php:47
@@ -772,62 +780,58 @@ msgstr ""
 msgid "Entry not found or already deleted."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:72
+#: src/Api/Callback/Export_Entries.php:85
 msgid "Action Scheduler is required but not available."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:77
+#: src/Api/Callback/Export_Entries.php:90
 msgid "A valid Form ID is required."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:111
+#: src/Api/Callback/Export_Entries.php:125
 msgid "No entries found for the selected criteria."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:169
+#: src/Api/Callback/Export_Entries.php:189
 msgid "CSV export has been successfully queued."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:368
+#: src/Api/Callback/Export_Entries.php:372
+#: src/Api/Callback/Export_Entries.php:494
 #: src/Api/Callback/Export_Entries.php:554
-#: src/Api/Callback/Export_Entries.php:614
 msgid "Job ID is required."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:373
+#: src/Api/Callback/Export_Entries.php:377
 msgid "Export job not found or has expired."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:525
+#: src/Api/Callback/Export_Entries.php:466
 msgid "Could not create temporary export directory."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:565
-#: src/Api/Callback/Export_Entries.php:623
+#: src/Api/Callback/Export_Entries.php:505
+#: src/Api/Callback/Export_Entries.php:563
 msgid "Export job not found or not yet complete."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:576
+#: src/Api/Callback/Export_Entries.php:516
 msgid "Export file not found on the server."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:634
+#: src/Api/Callback/Export_Entries.php:574
 msgid "File was already deleted."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:647
+#: src/Api/Callback/Export_Entries.php:587
 msgid "Export file deleted successfully."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:652
+#: src/Api/Callback/Export_Entries.php:592
 msgid "Failed to delete the export file."
 msgstr ""
 
-#: src/Api/Callback/Export_Entries.php:671
-msgid "Could not open output stream."
-msgstr ""
-
-#: src/Api/Callback/Get_Forms.php:103
+#: src/Api/Callback/Get_Forms.php:80
 msgid "Invalid or missing form ID."
 msgstr ""
 
@@ -843,44 +847,40 @@ msgstr ""
 msgid "Migration started in background."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:41
-msgid "Missing or invalid entry ID or form ID."
+#: src/Api/Callback/Update_Entries.php:36
+msgid "Missing or invalid entry ID."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:102
+#: src/Api/Callback/Update_Entries.php:49
 msgid "No valid fields provided for update."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:131
-msgid "Database update failed."
-msgstr ""
-
-#: src/Api/Callback/Update_Entries.php:149
+#: src/Api/Callback/Update_Entries.php:71
 msgid "Entry updated successfully."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:169
-#: src/Api/Callback/Update_Entries.php:230
+#: src/Api/Callback/Update_Entries.php:248
+#: src/Api/Callback/Update_Entries.php:309
 msgid "Invalid or missing entry ID."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:190
+#: src/Api/Callback/Update_Entries.php:269
 msgid "Failed to unsync entry from Google Sheet."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:199
+#: src/Api/Callback/Update_Entries.php:278
 msgid "Entry successfully unsynced from Google Sheet."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:218
+#: src/Api/Callback/Update_Entries.php:297
 msgid "You have not authorize google, please do it from settings page."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:244
+#: src/Api/Callback/Update_Entries.php:323
 msgid "Entry successfully sync to Google Sheet."
 msgstr ""
 
-#: src/Api/Callback/Update_Entries.php:252
+#: src/Api/Callback/Update_Entries.php:331
 msgid "Failed to sync entry to Google Sheet. Please check the logs."
 msgstr ""
 
@@ -961,167 +961,193 @@ msgstr ""
 msgid "Entry ID to update."
 msgstr ""
 
-#: src/Assets.php:146
-#: src/Assets.php:167
+#: src/Assets.php:156
+#: src/Assets.php:177
 msgid "We found data in the legacy"
 msgstr ""
 
-#: src/Assets.php:146
-#: src/Assets.php:167
+#: src/Assets.php:156
+#: src/Assets.php:177
 msgid "table. You can migrate all your entries into our advanced manager in just a few clicks."
 msgstr ""
 
-#: src/Assets.php:157
-#: src/Assets.php:205
-#: src/GoogleSheet/Send_Data.php:348
-#: src/GoogleSheet/Send_Data.php:404
+#: src/Assets.php:167
+#: src/Assets.php:215
+#: src/GoogleSheet/Send_Data.php:490
+#: src/GoogleSheet/Send_Data.php:529
+#: src/GoogleSheet/Send_Data.php:601
 msgid "Name"
 msgstr ""
 
-#: src/Assets.php:158
-#: src/Assets.php:206
-#: src/GoogleSheet/Send_Data.php:346
-#: src/GoogleSheet/Send_Data.php:398
+#: src/Assets.php:168
+#: src/Assets.php:216
+#: src/GoogleSheet/Send_Data.php:488
+#: src/GoogleSheet/Send_Data.php:527
+#: src/GoogleSheet/Send_Data.php:595
 msgid "Entry ID"
 msgstr ""
 
-#: src/Assets.php:171
+#: src/Assets.php:181
 msgid "✅ CSV exported successfully!"
 msgstr ""
 
-#: src/Assets.php:172
+#: src/Assets.php:182
 msgid "✅ Saved changes successfully!"
 msgstr ""
 
-#: src/Assets.php:173
+#: src/Assets.php:183
 msgid "✅ Settings saved successfully!"
 msgstr ""
 
-#: src/Assets.php:176
+#: src/Assets.php:186
 msgid "just now"
 msgstr ""
 
 #. translators: %d is the number of minutes ago
-#: src/Assets.php:178
+#: src/Assets.php:188
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d is the number of hours ago
-#: src/Assets.php:180
+#: src/Assets.php:190
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Assets.php:181
+#: src/Assets.php:191
 msgid "Yesterday"
 msgstr ""
 
-#: src/Assets.php:184
+#: src/Assets.php:194
 msgid "Note is too long. Please limit to 1000 characters."
 msgstr ""
 
-#: src/Assets.php:185
+#: src/Assets.php:195
 msgid "Failed to delete entry: Unknown error"
 msgstr ""
 
-#: src/Assets.php:186
+#: src/Assets.php:196
 msgid "Delete request failed. Check console for details."
 msgstr ""
 
-#: src/Assets.php:187
+#: src/Assets.php:197
 msgid "A network error occurred. Please try again."
 msgstr ""
 
-#: src/Assets.php:188
+#: src/Assets.php:198
 msgid "❌ Entry not found in the list."
 msgstr ""
 
-#: src/Assets.php:189
+#: src/Assets.php:199
 msgid "Bulk action failed:"
 msgstr ""
 
-#: src/Assets.php:190
+#: src/Assets.php:200
 msgid "Failed to start export."
 msgstr ""
 
-#: src/Assets.php:191
+#: src/Assets.php:201
 msgid "Failed to fetch export progress."
 msgstr ""
 
-#: src/Assets.php:192
+#: src/Assets.php:202
+#: src/Assets.php:221
 msgid "Please select a form before exporting."
 msgstr ""
 
-#: src/Assets.php:193
+#: src/Assets.php:203
+#: src/Assets.php:222
 msgid "Invalid CSV content."
 msgstr ""
 
-#: src/Assets.php:194
+#: src/Assets.php:204
 msgid "Export complete! Your download should start shortly."
 msgstr ""
 
-#: src/Assets.php:195
+#: src/Assets.php:205
 msgid "Failed to fetch forms:"
 msgstr ""
 
-#: src/Assets.php:196
+#: src/Assets.php:206
 msgid "Failed to fetch entries:"
 msgstr ""
 
-#: src/Assets.php:197
+#: src/Assets.php:207
 msgid "Failed to fetch form fields. Please try again."
 msgstr ""
 
-#: src/Assets.php:198
+#: src/Assets.php:208
 msgid "❌ Unexpected error occurred."
 msgstr ""
 
-#: src/Assets.php:199
+#: src/Assets.php:209
 msgid "Entry synchronization Done!"
 msgstr ""
 
-#: src/Assets.php:200
+#: src/Assets.php:210
 msgid "❌ Synchronization failed."
 msgstr ""
 
-#: src/Assets.php:201
+#: src/Assets.php:211
 msgid "❌ Save failed."
 msgstr ""
 
 #. translators: %s is the text for id, name or email
-#: src/Assets.php:203
+#: src/Assets.php:213
 msgid "🔍 Search by %s..."
 msgstr ""
 
-#: src/Assets.php:207
+#: src/Assets.php:217
 msgid "Copy Entry"
 msgstr ""
 
-#: src/Assets.php:208
+#: src/Assets.php:218
 msgid "Copied!"
 msgstr ""
 
-#: src/Assets.php:209
+#: src/Assets.php:219
 msgid "Copy all to clipboard"
 msgstr ""
 
-#: src/GoogleSheet/Send_Data.php:347
-#: src/GoogleSheet/Send_Data.php:401
+#: src/Assets.php:220
+msgid "Copy Failed"
+msgstr ""
+
+#: src/Assets.php:223
+msgid "Cannot download file: Export Job ID is missing."
+msgstr ""
+
+#: src/GoogleSheet/Send_Data.php:489
+#: src/GoogleSheet/Send_Data.php:528
+#: src/GoogleSheet/Send_Data.php:598
 msgid "Submission Date"
 msgstr ""
 
-#: src/GoogleSheet/Send_Data.php:365
-#: src/GoogleSheet/Send_Data.php:413
+#: src/GoogleSheet/Send_Data.php:493
+#: src/GoogleSheet/Send_Data.php:542
+#: src/GoogleSheet/Send_Data.php:610
 msgid "Note"
 msgstr ""
 
-#: src/Utility/Helper.php:435
+#: src/GoogleSheet/Send_Data.php:730
+msgid "Spreadsheet title cannot be empty."
+msgstr ""
+
+#: src/GoogleSheet/Send_Data.php:750
+msgid "Google API did not return a spreadsheet ID."
+msgstr ""
+
+#: src/GoogleSheet/Send_Data.php:758
+msgid "Spreadsheet creation encountered an error. Please try again."
+msgstr ""
+
+#: src/Utility/Helper.php:502
 msgid "Expired"
 msgstr ""
 
-#: src/Utility/Helper.php:445
+#: src/Utility/Helper.php:512
 msgid "Less than a minute"
 msgstr ""
