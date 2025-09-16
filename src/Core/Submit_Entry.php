@@ -153,7 +153,7 @@ class Submit_Entry {
 		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
 
 		// Invalidate cached form fields and forms list.
-		Helper::delete_option( 'forms_cache' );
+		Helper::delete_option( 'forms_cache_' );
 	}
 
 	/**
@@ -246,7 +246,7 @@ class Submit_Entry {
 		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
 
 		// Invalidate cached form fields and forms list.
-		Helper::delete_option( 'forms_cache' );
+		Helper::delete_option( 'forms_cache_' );
 	}
 
 	/**
@@ -409,6 +409,6 @@ class Submit_Entry {
 		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
 
 		// Invalidate caches.
-		Helper::delete_option( 'forms_cache' );
+		Helper::delete_option( 'forms_cache_' );
 	}
 }

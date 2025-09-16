@@ -75,7 +75,7 @@ class Delete_Single_Entry {
 			do_action( 'fem_after_entry_delete', $id, $form_id );
 
 			// Invalidate cached form fields and forms list
-			Helper::delete_option( 'forms_cache' );
+			Helper::delete_option( 'forms_cache_' );
 
 			return new WP_REST_Response(
 				array(

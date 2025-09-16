@@ -38,19 +38,19 @@ class Assets {
 				'src'       => FEM_ASSETS_URL . 'admin/admin.js',
 				'deps'      => array(),
 				'version'   => filemtime( FEM_PATH . 'assets/admin/admin.js' ),
-				'in_footer' => true,
+				'in_footer' => false,
 			),
 			'fem-collapse'     => array(
 				'src'       => FEM_ASSETS_URL . 'admin/collapse.js',
 				'deps'      => array(),
 				'version'   => null,
-				'in_footer' => true,
+				'in_footer' => false,
 			),
 			'fem-alpine'       => array(
 				'src'       => FEM_ASSETS_URL . 'admin/alpine.min.js',
 				'deps'      => array( 'fem-collapse' ),
 				'version'   => null,
-				'in_footer' => true,
+				'in_footer' => false,
 			),
 			'fem-lottie'       => array(
 				'src'       => FEM_ASSETS_URL . 'admin/lottie-player.js',

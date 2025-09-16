@@ -47,7 +47,7 @@ class Bulk_Action {
 				$deleted_ids = $ids; // Assume all requested IDs were deleted.
 
 				// Invalidate cached form fields and forms list
-				Helper::delete_option( 'forms_cache' );
+				Helper::delete_option( 'forms_cache_' );
 				break;
 
 			case 'mark_read':
