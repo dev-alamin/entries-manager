@@ -48,7 +48,7 @@ do_action( 'fem_before_entries_ui' );
 
 	use Amin\FormsEntriesManager\Utility\Helper;
 
-	if ( ! Helper::table_exists( 'wpforms_db' ) && ! Helper::get_option( 'migration_complete' ) ) :
+	if ( Helper::table_exists( 'wpforms_db' ) && ! Helper::get_option( 'migration_complete' ) ) :
 		?>
 		<div
 			x-data="{ showMigrationNotice: true }"

@@ -4,8 +4,8 @@
  * Plugin URI:  https://entriesmanager.com/
  * Description: A centralized dashboard to manage, search, and sync form submissions from WPForms, Contact Form 7, Elementor, and more. Transform your WordPress into a mini-CRM.
  * Version:     1.0.0
- * Author:      Md. Al Amin
- * Author URI:  https://almn.me
+ * Author:      EntriesManager
+ * Author URI:  https://entriesmanager.com/
  * Text Domain: entrydashboard
  * Domain Path: /languages
  * License:     GPL-2.0+
@@ -15,8 +15,8 @@
  * Requires PHP: 7.0
  *
  * @package     EntryDashboard
- * @author      Md. Al Amin
- * @copyright   Md. Al Amin
+ * @author      EntriesManager
+ * @copyright   EntriesManager
  * @license     GPL-2.0+
  *
  * @wordpress-plugin
