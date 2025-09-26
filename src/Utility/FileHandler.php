@@ -2,6 +2,8 @@
 
 namespace Amin\FormsEntriesManager\Utility;
 
+defined( 'ABSPATH' ) || exit;
+
 // We need to import the FileSystem class
 use Amin\FormsEntriesManager\Utility\FileSystem;
 

@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+
 <div
 	x-data="customColumnsForm()"
 	x-init="init()"

@@ -1,3 +1,6 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
 <div x-data="exportSettings()" x-init="init();
 	$watch('selectedFormId', value => fetchFormFields());
 " class="bg-white border border-indigo-100 shadow p-6 space-y-6 rounded-lg">

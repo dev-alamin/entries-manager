@@ -31,7 +31,6 @@ class Menu {
 	public function __construct() {
 		$this->log_viewer_page = new LogViewerPage();
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
-		add_action( 'admin_head', array( $this, 'hide_update_notices' ) );
 	}
 
 	/**
@@ -61,7 +60,7 @@ class Menu {
 			__( 'WPForms Entry Sync Settings', 'entrydashboard' ),
 			__( 'Settings', 'entrydashboard' ),
 			'manage_options',
-			'form-entries-settings',
+			'entrydashboard-settings',
 			array( $this, 'render_settings_page' ),
 			65
 		);
@@ -84,7 +83,7 @@ class Menu {
 				__( 'Migration', 'entrydashboard' ),
 				__( 'Migration', 'entrydashboard' ),
 				'manage_options',
-				'form-entries-migration',
+				'entrydashboard-migration',
 				array( $this, 'render_migration_page' )
 			);
 		endif;
@@ -121,30 +120,5 @@ class Menu {
 	 */
 	public function render_migration_page() {
 		include __DIR__ . '/views/migration-page.php';
-	}
-
-	/**
-	 * Hide update notices on plugin admin pages.
-	 *
-	 * Prevents update nags, warnings, and other notices from
-	 * displaying on the plugin's admin screens to keep UI clean.
-	 *
-	 * @return void
-	 */
-	public function hide_update_notices() {
-		$screen = get_current_screen();
-
-		if ( $screen && strpos( $screen->id, 'fem' ) !== false ) {
-			echo '<style>
-                .update-nag, 
-                .updated, 
-                .notice, 
-                .update-message,
-                div.notice.notice-warning,
-                .notice.is-dismissible {
-                    display: none !important;
-                }
-            </style>';
-		}
 	}
 }

@@ -22,7 +22,6 @@ class Options {
 	 * enqueue assets, register settings, and hide update notices on plugin pages.
 	 */
 	public function __construct() {
-		add_action( 'admin_head', array( $this, 'hide_update_notices' ) );
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
@@ -105,30 +104,5 @@ class Options {
 				'default'           => true,
 			)
 		);
-	}
-
-	/**
-	 * Hide update notices on plugin admin pages.
-	 *
-	 * Prevents update nags, warnings, and other notices from
-	 * displaying on the plugin's admin screens to keep UI clean.
-	 *
-	 * @return void
-	 */
-	public function hide_update_notices() {
-		$screen = get_current_screen();
-
-		if ( $screen && strpos( $screen->id, 'fem' ) !== false ) {
-			echo '<style>
-                .update-nag, 
-                .updated, 
-                .notice, 
-                .update-message,
-                div.notice.notice-warning,
-                .notice.is-dismissible {
-                    display: none !important;
-                }
-            </style>';
-		}
 	}
 }

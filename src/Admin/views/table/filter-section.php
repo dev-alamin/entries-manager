@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+
 <div class="flex flex-wrap gap-4 items-center py-4 px-4">
 	<?php
 	require_once __DIR__ . '/../template-functions.php';

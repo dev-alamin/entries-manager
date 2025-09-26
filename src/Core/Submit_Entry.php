@@ -16,6 +16,8 @@
  */
 namespace Amin\FormsEntriesManager\Core;
 
+defined( 'ABSPATH' ) || exit;
+
 use Amin\FormsEntriesManager\Utility\Helper;
 use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
 use WPCF7_Submission;

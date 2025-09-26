@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+
 <div class="mt-4 flex justify-center items-center gap-1 text-gray-700 text-sm font-medium select-none mb-4">
 	<p class="!mr-3">
 		<span class="bg-blue-100 text-blue-700 px-4 py-3 rounded-full font-bold" x-text="totalEntries"></span>

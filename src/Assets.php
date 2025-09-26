@@ -38,25 +38,25 @@ class Assets {
 				'src'       => FEM_ASSETS_URL . 'admin/admin.js',
 				'deps'      => array(),
 				'version'   => filemtime( FEM_PATH . 'assets/admin/admin.js' ),
-				'in_footer' => false,
+				'in_footer' => true,
 			),
 			'fem-collapse'     => array(
 				'src'       => FEM_ASSETS_URL . 'admin/collapse.js',
 				'deps'      => array(),
 				'version'   => null,
-				'in_footer' => false,
+				'in_footer' => true,
 			),
 			'fem-alpine'       => array(
 				'src'       => FEM_ASSETS_URL . 'admin/alpine.min.js',
 				'deps'      => array( 'fem-collapse' ),
 				'version'   => null,
-				'in_footer' => false,
+				'in_footer' => true,
 			),
 			'fem-lottie'       => array(
 				'src'       => FEM_ASSETS_URL . 'admin/lottie-player.js',
 				'deps'      => array(),
 				'version'   => '5.12.0',
-				'in_footer' => false,
+				'in_footer' => true,
 			),
 		);
 	}
@@ -88,9 +88,9 @@ class Assets {
 		if ( ! in_array(
 			$hook,
 			array(
-				'toplevel_page_forms-entries-manager',
-				'forms-entries_page_form-entries-settings',
-				'forms-entries_page_form-entries-migration',
+				'toplevel_page_entrydashboard',
+				'forms-entries_page_entrydashboard-settings',
+				'forms-entries_page_entrydashboard-migration',
 			),
 			true
 		) ) {
@@ -103,7 +103,7 @@ class Assets {
 				$handle,
 				$style['src'],
 				$style['deps'] ?? array(),
-				$style['version'] ?? false
+				$style['version'] ?? false,
 			);
 
 			wp_enqueue_style( $handle );

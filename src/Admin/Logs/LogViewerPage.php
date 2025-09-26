@@ -86,7 +86,7 @@ class LogViewerPage {
 		}
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Forms Entries Manager Logs', 'entrydashboard' ); ?></h1>
+			<h1><?php esc_html_e( 'EntryDashboard Logs', 'entrydashboard' ); ?></h1>
 			
 			<?php if ( $message ) : ?>
 				<div class="notice notice-<?php echo esc_attr( $message_type ); ?> is-dismissible">

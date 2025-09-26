@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+
 <template x-if="selectedEntry">
 	<div
 		x-show="entryModalOpen"

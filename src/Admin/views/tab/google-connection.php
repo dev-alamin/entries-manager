@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+
 <section class="">
 	<div class="bg-white shadow-md border border-indigo-100 p-8 text-center">
 		<h3 class="!text-2xl font-semibold !mb-4">

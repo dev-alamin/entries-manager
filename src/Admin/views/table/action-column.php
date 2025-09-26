@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+
 <div class="flex justify-end items-center space-x-2">
 	<!-- Toggle Read/Unread -->
 	<button @click="toggleRead(i)" title="<?php esc_attr_e( 'Mark as Read/Unread', 'entrydashboard' ); ?>" class=" mr-4 cursor-pointer">

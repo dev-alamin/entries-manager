@@ -32,10 +32,10 @@ $custom_columns = Helper::get_option( 'cusom_form_columns_settings', array() );
 	<!-- Header -->
 	<div class="mb-8 bg-slate-700 text-white px-4 py-2 rounded-lg">
 		<div class="flex items-center gap-4">
-				<img src="<?php echo esc_url( FEM_ASSETS_URL . 'images/logo.jpg' ); ?>" alt="<?php esc_attr_e( 'Forms Entries Manager', 'entrydashboard' ); ?>" class="w-16 h-16 object-cover rounded-sm" />
+				<img src="<?php echo esc_url( FEM_ASSETS_URL . 'images/logo.jpg' ); ?>" alt="<?php esc_attr_e( 'EntryDashboard', 'entrydashboard' ); ?>" class="w-16 h-16 object-cover rounded-sm" />
 				<div>
 					<h1 class="!text-3xl !font-extrabold !text-indigo-100 !tracking-tight mb-2 flex items-center gap-3">
-					<?php esc_html_e( 'Forms Entries Manager Settings', 'entrydashboard' ); ?>
+					<?php esc_html_e( 'EntryDashboard Settings', 'entrydashboard' ); ?>
 				</h1>
 				<p class="text-gray-200 !text-[15px] leading-relaxed !m-0 !mt-2">
 					<?php
