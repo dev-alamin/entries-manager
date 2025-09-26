@@ -26,9 +26,9 @@
 			</button>
 
 			<div class="flex items-center justify-between mb-6">
-				<h2 class="text-2xl font-extrabold text-indigo-700"> <?php esc_html_e( 'Entry Details', 'forms-entries-manager' ); ?>
+				<h2 class="text-2xl font-extrabold text-indigo-700"> <?php esc_html_e( 'Entry Details', 'entrydashboard' ); ?>
 					<br />
-					<span class="text-sm font-normal" x-text="selectedEntry.date || '<?php echo esc_js( __( '-', 'forms-entries-manager' ) ); ?>'"></span>
+					<span class="text-sm font-normal" x-text="selectedEntry.date || '<?php echo esc_js( __( '-', 'entrydashboard' ) ); ?>'"></span>
 				</h2>
 
 				<button
@@ -66,7 +66,7 @@
 								? `<a href='${value.url}' target='_blank'>${value.filename}</a>`
 								: (Array.isArray(value) 
 									? value.map(f => `<a href='${f.url}' target='_blank'>${f.url.split('/').pop()}</a>`).join('<br>') 
-									: value || '<?php echo esc_js( __( '-', 'forms-entries-manager' ) ); ?>')
+									: value || '<?php echo esc_js( __( '-', 'entrydashboard' ) ); ?>')
 							">
 							</span>
 						</div>
@@ -100,10 +100,10 @@
 					</template>
 
 					<span x-text="noteOpen
-						? '<?php echo esc_js( __( 'Close Note', 'forms-entries-manager' ) ); ?>'
+						? '<?php echo esc_js( __( 'Close Note', 'entrydashboard' ) ); ?>'
 						: (selectedEntry.note && selectedEntry.note.trim() !== ''
-							? '<?php echo esc_js( __( 'Edit Note', 'forms-entries-manager' ) ); ?>'
-							: '<?php echo esc_js( __( 'Add Note', 'forms-entries-manager' ) ); ?>'
+							? '<?php echo esc_js( __( 'Edit Note', 'entrydashboard' ) ); ?>'
+							: '<?php echo esc_js( __( 'Add Note', 'entrydashboard' ) ); ?>'
 						)">
 					</span>
 				</button>
@@ -120,7 +120,7 @@
 					x-collapse
 					class="mt-4 overflow-hidden transition-all duration-300 ease-in-out">
 					<label for="fem_note_fields" class="block text-sm font-medium text-gray-700 mb-1">
-						<?php esc_html_e( 'Your Note', 'forms-entries-manager' ); ?>
+						<?php esc_html_e( 'Your Note', 'entrydashboard' ); ?>
 					</label>
 					<textarea
 						id="fem_note_fields"
@@ -128,12 +128,12 @@
 						x-model="selectedEntry.note"
 						rows="5"
 						maxlength="1000"
-						placeholder="<?php echo esc_attr( __( 'Write something helpful for this entry…', 'forms-entries-manager' ) ); ?>"
+						placeholder="<?php echo esc_attr( __( 'Write something helpful for this entry…', 'entrydashboard' ) ); ?>"
 						class="w-full bg-white border border-indigo-200 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-400 transition"></textarea>
 
 					<div class="mt-2 flex justify-between items-center">
 						<p class="text-sm text-gray-500">
-							<?php esc_html_e( 'Max 1000 characters. Avoid sensitive data.', 'forms-entries-manager' ); ?>
+							<?php esc_html_e( 'Max 1000 characters. Avoid sensitive data.', 'entrydashboard' ); ?>
 						</p>
 						<button
 							@click="validateAndSaveNote"
@@ -144,7 +144,7 @@
 							<svg xmlns="http://www.w3.org/2000/svg" class="mr-2" height="20px" viewBox="0 -960 960 960" width="20px" fill="#fff">
 								<path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Z" />
 							</svg>
-							<span x-text="saved ? '<?php echo esc_js( __( 'Saved Note', 'forms-entries-manager' ) ); ?>' : '<?php echo esc_js( __( 'Save Note', 'forms-entries-manager' ) ); ?>'"></span>
+							<span x-text="saved ? '<?php echo esc_js( __( 'Saved Note', 'entrydashboard' ) ); ?>' : '<?php echo esc_js( __( 'Save Note', 'entrydashboard' ) ); ?>'"></span>
 						</button>
 
 					</div>
@@ -158,17 +158,17 @@
 					@click="toggleModalReadStatus()"
 					class="px-5 py-2.5 cursor-pointer bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
 					<template x-if="selectedEntry.status === 'unread'">
-						✅ <span><?php esc_html_e( 'Mark as Read', 'forms-entries-manager' ); ?></span>
+						✅ <span><?php esc_html_e( 'Mark as Read', 'entrydashboard' ); ?></span>
 					</template>
 					<template x-if="selectedEntry.status === 'read'">
-						🕓 <span><?php esc_html_e( 'Mark as unread', 'forms-entries-manager' ); ?></span>
+						🕓 <span><?php esc_html_e( 'Mark as unread', 'entrydashboard' ); ?></span>
 					</template>
 				</button>
 
 				<button
 					@click="deleteEntry()"
 					class="px-5 py-2.5 cursor-pointer bg-red-600 text-white rounded-lg !font-bold hover:bg-red-700 transition">
-					🗑️ <?php esc_html_e( 'Delete', 'forms-entries-manager' ); ?>
+					🗑️ <?php esc_html_e( 'Delete', 'entrydashboard' ); ?>
 				</button>
 
 			</div>

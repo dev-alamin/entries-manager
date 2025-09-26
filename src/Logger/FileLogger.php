@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AdvancedEntryManager\Logger;
+namespace Amin\FormsEntriesManager\Logger;
 
 use Error;
 
@@ -77,6 +77,6 @@ class FileLogger extends AbstractLogger {
 	 */
 	public function get_log_directory() {
 		$upload_dir = wp_upload_dir();
-		return $upload_dir['basedir'] . '/forms-entries-manager-logs';
+		return $upload_dir['basedir'] . '/entrydashboard-logs';
 	}
 }

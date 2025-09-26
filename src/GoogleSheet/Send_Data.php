@@ -1,11 +1,11 @@
 <?php
 
-namespace App\AdvancedEntryManager\GoogleSheet;
+namespace Amin\FormsEntriesManager\GoogleSheet;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
-use App\AdvancedEntryManager\Logger\FileLogger;
+use Amin\FormsEntriesManager\Utility\Helper;
+use Amin\FormsEntriesManager\Logger\FileLogger;
 use WP_Error;
 
 class Send_Data {
@@ -34,7 +34,7 @@ class Send_Data {
 		if ( check_admin_referer( 'revoke_connection_nonce' ) === false ) {
 			printf(
 				'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-				esc_html__( 'Security check failed. Please try again.', 'forms-entries-manager' )
+				esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
 			);
 		}
 
@@ -485,12 +485,12 @@ class Send_Data {
 		if ( empty( $sample_submission ) ) {
 			// If no submission, return a default header set.
 			$headers = array(
-				__( 'Entry ID', 'forms-entries-manager' ),
-				__( 'Submission Date', 'forms-entries-manager' ),
-				__( 'Name', 'forms-entries-manager' ),
-				__( 'Email', 'forms-entries-manager' ),
-				__( 'Status', 'forms-entries-manager' ),
-				__( 'Note', 'forms-entries-manager' ),
+				__( 'Entry ID', 'entrydashboard' ),
+				__( 'Submission Date', 'entrydashboard' ),
+				__( 'Name', 'entrydashboard' ),
+				__( 'Email', 'entrydashboard' ),
+				__( 'Status', 'entrydashboard' ),
+				__( 'Note', 'entrydashboard' ),
 			);
 			Helper::update_option( "gsheet_headers_{$form_id}", $headers );
 			return $headers;
@@ -524,10 +524,10 @@ class Send_Data {
 		$headers = array();
 
 		// Standard fields (in order)
-		$headers[] = __( 'Entry ID', 'forms-entries-manager' );
-		$headers[] = __( 'Submission Date', 'forms-entries-manager' );
-		$headers[] = __( 'Name', 'forms-entries-manager' );
-		$headers[] = __( 'Email', 'forms-entries-manager' );
+		$headers[] = __( 'Entry ID', 'entrydashboard' );
+		$headers[] = __( 'Submission Date', 'entrydashboard' );
+		$headers[] = __( 'Name', 'entrydashboard' );
+		$headers[] = __( 'Email', 'entrydashboard' );
 
 		// Dynamic fields (from filtered_entry_data)
 		// We should get these in a consistent order, perhaps alphabetical.
@@ -538,8 +538,8 @@ class Send_Data {
 		}
 
 		// Final standard fields
-		$headers[] = __( 'Status', 'forms-entries-manager' );
-		$headers[] = __( 'Note', 'forms-entries-manager' );
+		$headers[] = __( 'Status', 'entrydashboard' );
+		$headers[] = __( 'Note', 'entrydashboard' );
 
 		// Ensure all headers are unique (though with the de-duplication, they should be)
 		$headers = array_values( array_unique( $headers ) );
@@ -592,22 +592,22 @@ class Send_Data {
 			$value = '';
 
 			switch ( $header_title ) {
-				case __( 'Entry ID', 'forms-entries-manager' ):
+				case __( 'Entry ID', 'entrydashboard' ):
 					$value = $entry->id;
 					break;
-				case __( 'Submission Date', 'forms-entries-manager' ):
+				case __( 'Submission Date', 'entrydashboard' ):
 					$value = get_date_from_gmt( $entry->created_at, 'Y-m-d H:i:s' );
 					break;
-				case __( 'Name', 'forms-entries-manager' ):
+				case __( 'Name', 'entrydashboard' ):
 					$value = $entry->name;
 					break;
-				case __( 'Email', 'forms-entries-manager' ):
+				case __( 'Email', 'entrydashboard' ):
 					$value = $entry->email;
 					break;
-				case __( 'Status', 'forms-entries-manager' ):
+				case __( 'Status', 'entrydashboard' ):
 					$value = $entry->status ?? '';
 					break;
-				case __( 'Note', 'forms-entries-manager' ):
+				case __( 'Note', 'entrydashboard' ):
 					$value = $entry->note ?? '';
 					break;
 				default:
@@ -727,7 +727,7 @@ class Send_Data {
 		// Validate input.
 		if ( empty( $title ) ) {
 			$this->logger->log( 'Spreadsheet creation failed: Empty title provided.' );
-			return new WP_Error( 'invalid_title', __( 'Spreadsheet title cannot be empty.', 'forms-entries-manager' ) );
+			return new WP_Error( 'invalid_title', __( 'Spreadsheet title cannot be empty.', 'entrydashboard' ) );
 		}
 
 		$body = array(
@@ -747,7 +747,7 @@ class Send_Data {
 
 			if ( empty( $response['id'] ) ) {
 				$this->logger->log( 'Spreadsheet creation failed: No ID returned from Google API.', array( 'response' => $response ) );
-				return new WP_Error( 'create_failed', __( 'Google API did not return a spreadsheet ID.', 'forms-entries-manager' ) );
+				return new WP_Error( 'create_failed', __( 'Google API did not return a spreadsheet ID.', 'entrydashboard' ) );
 			}
 
 			$this->logger->log( sprintf( 'Spreadsheet created successfully: %s', $response['id'] ), 'info' );
@@ -755,7 +755,7 @@ class Send_Data {
 
 		} catch ( \Exception $e ) {
 			$this->logger->log( sprintf( 'Spreadsheet creation exception: %s', $e->getMessage() ), 'info' );
-			return new WP_Error( 'exception', __( 'Spreadsheet creation encountered an error. Please try again.', 'forms-entries-manager' ) );
+			return new WP_Error( 'exception', __( 'Spreadsheet creation encountered an error. Please try again.', 'entrydashboard' ) );
 		}
 	}
 

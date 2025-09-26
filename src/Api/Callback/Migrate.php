@@ -1,13 +1,13 @@
 <?php
 
-namespace App\AdvancedEntryManager\Api\Callback;
+namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 class Migrate {
 
@@ -26,12 +26,12 @@ class Migrate {
 	 */
 	public function trigger_migration() {
 		if ( ! class_exists( 'ActionScheduler' ) ) {
-			return new WP_Error( 'missing_scheduler', __( 'Action Scheduler not available', 'forms-entries-manager' ) );
+			return new WP_Error( 'missing_scheduler', __( 'Action Scheduler not available', 'entrydashboard' ) );
 		}
 
 		// Prevent triggering if migration already running and not complete
 		if ( Helper::get_option( 'migration_started_at' ) && ! Helper::get_option( self::OPTION_COMPLETE ) ) {
-			return new WP_Error( 'migration_already_running', __( 'Migration is already in progress.', 'forms-entries-manager' ) );
+			return new WP_Error( 'migration_already_running', __( 'Migration is already in progress.', 'entrydashboard' ) );
 		}
 
 		// Now safe to reset progress and start fresh
@@ -56,7 +56,7 @@ class Migrate {
 		return rest_ensure_response(
 			array(
 				'success' => true,
-				'message' => __( 'Migration started in background.', 'forms-entries-manager' ),
+				'message' => __( 'Migration started in background.', 'entrydashboard' ),
 				'code'    => 'fem_migration_started',
 			)
 		);
@@ -69,7 +69,7 @@ class Migrate {
 	 * @return void
 	 */
 	public function migrate_from_wpformsdb_plugin( int $batch_size = self::BATCH_SIZE ): void {
-		$logger = new \App\AdvancedEntryManager\Logger\FileLogger();
+		$logger = new \Amin\FormsEntriesManager\Logger\FileLogger();
 		$logger->log( 'migrate_from_wpformsdb_plugin called, batch size: ' . $batch_size, 'INFO' );
 
 		global $wpdb;

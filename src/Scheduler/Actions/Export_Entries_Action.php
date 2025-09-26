@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Scheduler\Actions;
+namespace Amin\FormsEntriesManager\Scheduler\Actions;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Api\Callback\Export_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Export_Entries;
 
 class Export_Entries_Action {
 
@@ -33,7 +33,7 @@ class Export_Entries_Action {
 	 * @return void
 	 */
 	public function fem_clean_old_exports() {
-		$dir = wp_upload_dir()['basedir'] . '/forms-entries-manager-exports';
+		$dir = wp_upload_dir()['basedir'] . '/entrydashboard-exports';
 		foreach ( glob( $dir . '/*.csv' ) as $file ) {
 			if ( filemtime( $file ) < strtotime( '-2 days' ) ) {
 				wp_delete_file( $file );

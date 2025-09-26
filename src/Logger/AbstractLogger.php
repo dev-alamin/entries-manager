@@ -1,8 +1,8 @@
 <?php
 
-namespace App\AdvancedEntryManager\Logger;
+namespace Amin\FormsEntriesManager\Logger;
 
-use App\AdvancedEntryManager\Utility\FileSystem;
+use Amin\FormsEntriesManager\Utility\FileSystem;
 use Error;
 
 defined( 'ABSPATH' ) || exit;
@@ -55,7 +55,7 @@ abstract class AbstractLogger {
 	 */
 	protected function get_log_directory() {
 		$upload_dir = wp_upload_dir();
-		return $upload_dir['basedir'] . '/forms-entries-manager-logs';
+		return $upload_dir['basedir'] . '/entrydashboard-logs';
 	}
 
 	/**

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Scheduler\Actions;
+namespace Amin\FormsEntriesManager\Scheduler\Actions;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Api\Callback\Migrate;
+use Amin\FormsEntriesManager\Api\Callback\Migrate;
 
 class Migrate_Batch_Action {
 

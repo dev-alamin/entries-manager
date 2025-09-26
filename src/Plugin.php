@@ -1,37 +1,37 @@
 <?php
 
-namespace App\AdvancedEntryManager;
+namespace Amin\FormsEntriesManager;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Core\DB_Schema;
-use App\AdvancedEntryManager\Api\Route;
-use App\AdvancedEntryManager\Core\Submit_Entry;
-use App\AdvancedEntryManager\Scheduler\Actions\Migrate_Batch_Action;
-use App\AdvancedEntryManager\Scheduler\Actions\Export_Entries_Action;
-use App\AdvancedEntryManager\Admin\Admin;
+use Amin\FormsEntriesManager\Core\DB_Schema;
+use Amin\FormsEntriesManager\Api\Route;
+use Amin\FormsEntriesManager\Core\Submit_Entry;
+use Amin\FormsEntriesManager\Scheduler\Actions\Migrate_Batch_Action;
+use Amin\FormsEntriesManager\Scheduler\Actions\Export_Entries_Action;
+use Amin\FormsEntriesManager\Admin\Admin;
 
 // Import All Routes' Callback Classes
-use App\AdvancedEntryManager\Api\Callback\Bulk_Action;
-use App\AdvancedEntryManager\Api\Callback\Get_Entries;
-use App\AdvancedEntryManager\Api\Callback\Get_Forms;
-use App\AdvancedEntryManager\Api\Callback\Update_Entries;
-use App\AdvancedEntryManager\Api\Callback\Create_Entries;
-use App\AdvancedEntryManager\Api\Callback\Export_Entries;
-use App\AdvancedEntryManager\Api\Callback\Delete_Single_Entry;
-use App\AdvancedEntryManager\Api\Callback\Migrate;
+use Amin\FormsEntriesManager\Api\Callback\Bulk_Action;
+use Amin\FormsEntriesManager\Api\Callback\Get_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Get_Forms;
+use Amin\FormsEntriesManager\Api\Callback\Update_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Create_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Export_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Delete_Single_Entry;
+use Amin\FormsEntriesManager\Api\Callback\Migrate;
 
 // Import All Core Classes
-use App\AdvancedEntryManager\Assets;
-use App\AdvancedEntryManager\Admin\Options;
-use App\AdvancedEntryManager\Admin\Menu;
-use App\AdvancedEntryManager\Core\Capabilities;
-use App\AdvancedEntryManager\Admin\Admin_Notice;
-use App\AdvancedEntryManager\Core\Handle_Cache;
-use App\AdvancedEntryManager\GoogleSheet\Send_Data;
-use App\AdvancedEntryManager\Scheduler\Actions\Sync_Google_Sheet_Action;
-use App\AdvancedEntryManager\Admin\Logs\HandleLogAction;
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Assets;
+use Amin\FormsEntriesManager\Admin\Options;
+use Amin\FormsEntriesManager\Admin\Menu;
+use Amin\FormsEntriesManager\Core\Capabilities;
+use Amin\FormsEntriesManager\Admin\Admin_Notice;
+use Amin\FormsEntriesManager\Core\Handle_Cache;
+use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
+use Amin\FormsEntriesManager\Scheduler\Actions\Sync_Google_Sheet_Action;
+use Amin\FormsEntriesManager\Admin\Logs\HandleLogAction;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 /**
  * Bootstrap Plugin for the Advanced Entries Manager plugin.

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\AdvancedEntryManager\Admin\Logs;
+namespace Amin\FormsEntriesManager\Admin\Logs;
 
-use App\AdvancedEntryManager\Utility\FileSystem;
+use Amin\FormsEntriesManager\Utility\FileSystem;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
@@ -30,14 +30,14 @@ class Log_List_Table extends \WP_List_Table {
 
 	protected function get_log_directory() {
 		$upload_dir = wp_upload_dir();
-		return trailingslashit( $upload_dir['basedir'] ) . 'forms-entries-manager-logs';
+		return trailingslashit( $upload_dir['basedir'] ) . 'entrydashboard-logs';
 	}
 
 	public function get_columns() {
 		return array(
-			'file_name'     => __( 'File Name', 'forms-entries-manager' ),
-			'file_size'     => __( 'Size', 'forms-entries-manager' ),
-			'date_modified' => __( 'Last Modified', 'forms-entries-manager' ),
+			'file_name'     => __( 'File Name', 'entrydashboard' ),
+			'file_size'     => __( 'Size', 'entrydashboard' ),
+			'date_modified' => __( 'Last Modified', 'entrydashboard' ),
 		);
 	}
 
@@ -59,10 +59,10 @@ class Log_List_Table extends \WP_List_Table {
 		// Correctly link to the single log view page.
 		$view_url = add_query_arg(
 			array(
-				'page'     => 'forms-entries-manager-logs',
+				'page'     => 'entrydashboard-logs',
 				'action'   => 'view_log',
 				'file'     => urlencode( $item['file_name'] ),
-				'_wpnonce' => wp_create_nonce( 'forms-entries-manager-view' ),
+				'_wpnonce' => wp_create_nonce( 'entrydashboard-view' ),
 			),
 			admin_url( 'admin.php' )
 		);
@@ -124,6 +124,6 @@ class Log_List_Table extends \WP_List_Table {
 	}
 
 	public function no_items() {
-		esc_html_e( 'No log files found.', 'forms-entries-manager' );
+		esc_html_e( 'No log files found.', 'entrydashboard' );
 	}
 }

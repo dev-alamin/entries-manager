@@ -1,9 +1,9 @@
 <?php
 
-namespace App\AdvancedEntryManager\Utility;
+namespace Amin\FormsEntriesManager\Utility;
 
 // We need to import the FileSystem class
-use App\AdvancedEntryManager\Utility\FileSystem;
+use Amin\FormsEntriesManager\Utility\FileSystem;
 
 class FileHandler {
 

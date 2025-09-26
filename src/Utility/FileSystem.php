@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AdvancedEntryManager\Utility;
+namespace Amin\FormsEntriesManager\Utility;
 
 defined( 'ABSPATH' ) || exit;
 

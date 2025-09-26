@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: Forms Entries Manager
+ * Plugin Name: EntryDashboard – Forms Entries Manager
  * Plugin URI:  https://entriesmanager.com/
- * Description: The ultimate dashboard to manage, search, and sync entries from WPForms, Contact Form 7, and more.
+ * Description: A centralized dashboard to manage, search, and sync form submissions from WPForms, Contact Form 7, Elementor, and more. Transform your WordPress into a mini-CRM.
  * Version:     1.0.0
  * Author:      Md. Al Amin
  * Author URI:  https://almn.me
- * Text Domain: forms-entries-manager
+ * Text Domain: entrydashboard
  * Domain Path: /languages
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -14,14 +14,14 @@
  * Requires at least: 5.4
  * Requires PHP: 7.0
  *
- * @package     forms-entries-manager
+ * @package     EntryDashboard
  * @author      Md. Al Amin
- * @copyright   Al Amin
+ * @copyright   Md. Al Amin
  * @license     GPL-2.0+
  *
  * @wordpress-plugin
  *
- * Prefix:     fem
+ * Prefix:     edb
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -118,7 +118,7 @@ define( 'FEM_PLUGIN_BASE', plugin_basename( __FILE__ ) );
 
 define( 'FEM_PLUGIN_BASE_FILE', __FILE__ );
 
-use App\AdvancedEntryManager\Plugin;
+use Amin\FormsEntriesManager\Plugin;
 
 /**
  * Initialize the plugin.

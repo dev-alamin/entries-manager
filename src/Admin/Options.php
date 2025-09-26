@@ -1,8 +1,8 @@
 <?php
 
-namespace App\AdvancedEntryManager\Admin;
+namespace Amin\FormsEntriesManager\Admin;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 defined( 'ABSPATH' ) || exit;
 

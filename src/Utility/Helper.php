@@ -1,13 +1,13 @@
 <?php
 
-namespace App\AdvancedEntryManager\Utility;
+namespace Amin\FormsEntriesManager\Utility;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Logger\FileLogger;
+use Amin\FormsEntriesManager\Logger\FileLogger;
 use WP_Error;
 use WP_REST_Response;
-use App\AdvancedEntryManager\Utility\DB;
+use Amin\FormsEntriesManager\Utility\DB;
 
 class Helper {
 
@@ -499,7 +499,7 @@ class Helper {
 	 */
 	public static function seconds_to_human_readable( int $seconds ): string {
 		if ( $seconds <= 0 ) {
-			return esc_html__( 'Expired', 'forms-entries-manager' );
+			return esc_html__( 'Expired', 'entrydashboard' );
 		}
 
 		$h = floor( $seconds / 3600 );
@@ -509,7 +509,7 @@ class Helper {
 			return trim( ( $h ? $h . 'h ' : '' ) . ( $m ? $m . 'm' : '' ) );
 		}
 
-		return esc_html__( 'Less than a minute', 'forms-entries-manager' );
+		return esc_html__( 'Less than a minute', 'entrydashboard' );
 	}
 
 	/**
@@ -524,7 +524,7 @@ class Helper {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		return is_plugin_active( 'forms-entries-manager-pro/forms-entries-manager-pro.php' );
+		return is_plugin_active( 'entrydashboard-pro/entrydashboard-pro.php' );
 	}
 
 		// Get entries by IDs with caching

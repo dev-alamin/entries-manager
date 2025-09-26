@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Forms Entries Manager 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/forms-entries-manager\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/entrydashboard\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,32 +12,32 @@ msgstr ""
 "POT-Creation-Date: 2025-09-15T17:08:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
-"X-Domain: forms-entries-manager\n"
+"X-Domain: entrydashboard\n"
 
 #. Plugin Name of the plugin
-#: forms-entries-manager.php
+#: entrydashboard.php
 #: src/Admin/views/settings-page.php:35
 #: src/Admin/views/view-entries.php:32
 msgid "Forms Entries Manager"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: forms-entries-manager.php
+#: entrydashboard.php
 msgid "https://entriesmanager.com/"
 msgstr ""
 
 #. Description of the plugin
-#: forms-entries-manager.php
+#: entrydashboard.php
 msgid "The ultimate dashboard to manage, search, and sync entries from WPForms, Contact Form 7, and more."
 msgstr ""
 
 #. Author of the plugin
-#: forms-entries-manager.php
+#: entrydashboard.php
 msgid "Md. Al Amin"
 msgstr ""
 
 #. Author URI of the plugin
-#: forms-entries-manager.php
+#: entrydashboard.php
 msgid "https://almn.me"
 msgstr ""
 

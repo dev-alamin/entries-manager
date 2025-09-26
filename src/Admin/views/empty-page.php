@@ -13,7 +13,7 @@
 	</lottie-player>
 
 	<h2 class="!text-2xl sm:text-3xl !font-extrabold text-gray-800">
-		<?php esc_html_e( 'No Entries Found', 'forms-entries-manager' ); ?>
+		<?php esc_html_e( 'No Entries Found', 'entrydashboard' ); ?>
 	</h2>
 
 	<p class="!text-base !sm:text-lg text-gray-500 max-w-md text-center">
@@ -24,7 +24,7 @@
 					"Looks like you haven't received any submissions yet.
             <br class='hidden sm:block'>Sit back and relax — 
             we’ll show the entries here as soon as they arrive! 📨",
-					'forms-entries-manager'
+					'entrydashboard'
 				)
 			)
 		);

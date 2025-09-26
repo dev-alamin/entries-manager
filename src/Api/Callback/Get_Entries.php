@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Api\Callback;
+namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;

@@ -8,7 +8,7 @@
  * @package advanced-entries-manager
  * @since 1.0.0
  */
-namespace App\AdvancedEntryManager\Core;
+namespace Amin\FormsEntriesManager\Core;
 
 defined( 'ABSPATH' ) || exit;
 

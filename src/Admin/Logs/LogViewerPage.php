@@ -1,9 +1,9 @@
 <?php
 
-namespace App\AdvancedEntryManager\Admin\Logs;
+namespace Amin\FormsEntriesManager\Admin\Logs;
 
-use App\AdvancedEntryManager\Logger\FileLogger;
-use App\AdvancedEntryManager\Utility\FileSystem;
+use Amin\FormsEntriesManager\Logger\FileLogger;
+use Amin\FormsEntriesManager\Utility\FileSystem;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -38,16 +38,16 @@ class LogViewerPage {
 		$nonce_valid = false;
 
 		if ( isset( $_GET['_wpnonce'] ) ) {
-			$nonce_valid = wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'forms-entries-manager-view' );
+			$nonce_valid = wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'entrydashboard-view' );
 		}
 
 		// Verify nonce for POST requests (actions like clear logs)
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-			if ( check_admin_referer( 'forms-entries-manager-clear' ) === false ) {
+			if ( check_admin_referer( 'entrydashboard-clear' ) === false ) {
 
 				printf(
 					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-					esc_html__( 'Security check failed. Please try again.', 'forms-entries-manager' )
+					esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
 				);
 
 				return;
@@ -86,7 +86,7 @@ class LogViewerPage {
 		}
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Forms Entries Manager Logs', 'forms-entries-manager' ); ?></h1>
+			<h1><?php esc_html_e( 'Forms Entries Manager Logs', 'entrydashboard' ); ?></h1>
 			
 			<?php if ( $message ) : ?>
 				<div class="notice notice-<?php echo esc_attr( $message_type ); ?> is-dismissible">
@@ -95,24 +95,24 @@ class LogViewerPage {
 			<?php endif; ?>
 
 			<div class="">
-				<h2><?php esc_html_e( 'Log Files', 'forms-entries-manager' ); ?></h2>
-				<p><?php esc_html_e( 'View and download log files. Logs are cleaned up automatically after 30 days.', 'forms-entries-manager' ); ?></p>
+				<h2><?php esc_html_e( 'Log Files', 'entrydashboard' ); ?></h2>
+				<p><?php esc_html_e( 'View and download log files. Logs are cleaned up automatically after 30 days.', 'entrydashboard' ); ?></p>
 				
 				<?php
 				// We use Log_List_Table to render the actual list.
-				$log_list_table = new \App\AdvancedEntryManager\Admin\Logs\Log_List_Table( $log_files );
+				$log_list_table = new \Amin\FormsEntriesManager\Admin\Logs\Log_List_Table( $log_files );
 				$log_list_table->prepare_items();
 				$log_list_table->display();
 				?>
 			</div>
 
 			<div class="card">
-				<h2><?php esc_html_e( 'Clear Old Logs', 'forms-entries-manager' ); ?></h2>
-				<p><?php esc_html_e( 'You can manually trigger the log cleanup process.', 'forms-entries-manager' ); ?></p>
+				<h2><?php esc_html_e( 'Clear Old Logs', 'entrydashboard' ); ?></h2>
+				<p><?php esc_html_e( 'You can manually trigger the log cleanup process.', 'entrydashboard' ); ?></p>
 				<form method="post" action="">
 					<input type="hidden" name="action" value="clear_logs">
-					<?php wp_nonce_field( 'forms-entries-manager-clear' ); ?>
-					<input type="submit" name="submit" class="button button-danger" value="<?php esc_attr_e( 'Clear Logs Now', 'forms-entries-manager' ); ?>">
+					<?php wp_nonce_field( 'entrydashboard-clear' ); ?>
+					<input type="submit" name="submit" class="button button-danger" value="<?php esc_attr_e( 'Clear Logs Now', 'entrydashboard' ); ?>">
 				</form>
 			</div>
 		</div>
@@ -137,17 +137,17 @@ class LogViewerPage {
 		if ( $this->fs->exists( $file_path ) && strpos( realpath( $file_path ), realpath( $log_dir ) ) === 0 ) {
 			$content = $this->fs->read( $file_path );
 		} else {
-			$content = __( 'File not found or invalid.', 'forms-entries-manager' );
+			$content = __( 'File not found or invalid.', 'entrydashboard' );
 		}
 		?>
 		<div class="wrap">
 			<h1>
 			<?php
 			/* translators: %s is the log file name */
-			printf( esc_html__( 'Viewing Log File: %s', 'forms-entries-manager' ), esc_html( $file_name ) );
+			printf( esc_html__( 'Viewing Log File: %s', 'entrydashboard' ), esc_html( $file_name ) );
 			?>
 			</h1>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=forms-entries-manager-logs' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Back to Logs', 'forms-entries-manager' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=entrydashboard-logs' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Back to Logs', 'entrydashboard' ); ?></a>
 			<a href="
 			<?php
 			echo esc_url(
@@ -155,12 +155,12 @@ class LogViewerPage {
 					array(
 						'action'   => 'download_log',
 						'file'     => $file_name,
-						'_wpnonce' => wp_create_nonce( 'forms-entries-manager-download' ),
+						'_wpnonce' => wp_create_nonce( 'entrydashboard-download' ),
 					)
 				)
 			);
 			?>
-						" class="button button-primary"><?php esc_html_e( 'Download Log', 'forms-entries-manager' ); ?></a>
+						" class="button button-primary"><?php esc_html_e( 'Download Log', 'entrydashboard' ); ?></a>
 			<div class="card" style="margin-top: 20px; max-width:fit-content;">
 				<pre style="white-space: pre-wrap; word-wrap: break-word;"><?php echo esc_html( $content ); ?></pre>
 			</div>
@@ -206,6 +206,6 @@ class LogViewerPage {
 	 */
 	protected function get_log_directory() {
 		$upload_dir = wp_upload_dir();
-		return trailingslashit( $upload_dir['basedir'] ) . 'forms-entries-manager-logs';
+		return trailingslashit( $upload_dir['basedir'] ) . 'entrydashboard-logs';
 	}
 }

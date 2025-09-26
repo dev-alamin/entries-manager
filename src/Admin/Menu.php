@@ -1,11 +1,11 @@
 <?php
 
-namespace App\AdvancedEntryManager\Admin;
+namespace Amin\FormsEntriesManager\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
-use App\AdvancedEntryManager\Admin\Logs\LogViewerPage;
+use Amin\FormsEntriesManager\Utility\Helper;
+use Amin\FormsEntriesManager\Admin\Logs\LogViewerPage;
 
 /**
  * Class Menu
@@ -47,19 +47,19 @@ class Menu {
 		$legacy_table_exists = Helper::table_exists( 'wpforms_db' );
 
 		add_menu_page(
-			__( 'Forms Entries', 'forms-entries-manager' ),
-			__( 'Forms Entries', 'forms-entries-manager' ),
+			__( 'Forms Entries', 'entrydashboard' ),
+			__( 'Forms Entries', 'entrydashboard' ),
 			'manage_options',
-			'forms-entries-manager',
+			'entrydashboard',
 			array( $this, 'render_page' ),
 			'dashicons-feedback',
 			25
 		);
 
 		add_submenu_page(
-			'forms-entries-manager',
-			__( 'WPForms Entry Sync Settings', 'forms-entries-manager' ),
-			__( 'Settings', 'forms-entries-manager' ),
+			'entrydashboard',
+			__( 'WPForms Entry Sync Settings', 'entrydashboard' ),
+			__( 'Settings', 'entrydashboard' ),
 			'manage_options',
 			'form-entries-settings',
 			array( $this, 'render_settings_page' ),
@@ -67,11 +67,11 @@ class Menu {
 		);
 
 		add_submenu_page(
-			'forms-entries-manager',
-			__( 'Logs', 'forms-entries-manager' ),
-			__( 'Logs', 'forms-entries-manager' ),
+			'entrydashboard',
+			__( 'Logs', 'entrydashboard' ),
+			__( 'Logs', 'entrydashboard' ),
 			'manage_options',
-			'forms-entries-manager-logs',
+			'entrydashboard-logs',
 			array( $this->log_viewer_page, 'render_page' )
 		);
 
@@ -80,9 +80,9 @@ class Menu {
 		&& Helper::is_pro_version()
 		) :
 			add_submenu_page(
-				'forms-entries-manager',
-				__( 'Migration', 'forms-entries-manager' ),
-				__( 'Migration', 'forms-entries-manager' ),
+				'entrydashboard',
+				__( 'Migration', 'entrydashboard' ),
+				__( 'Migration', 'entrydashboard' ),
 				'manage_options',
 				'form-entries-migration',
 				array( $this, 'render_migration_page' )

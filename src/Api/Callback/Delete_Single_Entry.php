@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Api\Callback;
+namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -41,7 +41,7 @@ class Delete_Single_Entry {
 			return new WP_REST_Response(
 				array(
 					'deleted' => false,
-					'message' => __( 'Missing required parameters.', 'forms-entries-manager' ),
+					'message' => __( 'Missing required parameters.', 'entrydashboard' ),
 				),
 				400
 			);
@@ -51,7 +51,7 @@ class Delete_Single_Entry {
 			return new WP_REST_Response(
 				array(
 					'deleted' => false,
-					'message' => __( 'You are not allowed to delete entries.', 'forms-entries-manager' ),
+					'message' => __( 'You are not allowed to delete entries.', 'entrydashboard' ),
 				),
 				403
 			);
@@ -80,7 +80,7 @@ class Delete_Single_Entry {
 			return new WP_REST_Response(
 				array(
 					'deleted' => true,
-					'message' => __( 'Entry has been deleted successfully!', 'forms-entries-manager' ),
+					'message' => __( 'Entry has been deleted successfully!', 'entrydashboard' ),
 				),
 				200
 			);
@@ -89,7 +89,7 @@ class Delete_Single_Entry {
 		return new WP_REST_Response(
 			array(
 				'deleted' => false,
-				'message' => __( 'Entry not found or already deleted.', 'forms-entries-manager' ),
+				'message' => __( 'Entry not found or already deleted.', 'entrydashboard' ),
 			),
 			404
 		);

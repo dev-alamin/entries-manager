@@ -1,14 +1,14 @@
 <?php
 
-namespace App\AdvancedEntryManager\Api\Callback;
+namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Core\Handle_Cache;
+use Amin\FormsEntriesManager\Core\Handle_Cache;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 use Error;
 /**
  * Class Get_Forms
@@ -77,7 +77,7 @@ class Get_Forms {
 		if ( $form_id <= 0 ) {
 			return new WP_Error(
 				'fem_invalid_form_id',
-				__( 'Invalid or missing form ID.', 'forms-entries-manager' ),
+				__( 'Invalid or missing form ID.', 'entrydashboard' ),
 				array( 'status' => 400 )
 			);
 		}

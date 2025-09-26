@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Scheduler;
+namespace Amin\FormsEntriesManager\Scheduler;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 class Scheduler {
 

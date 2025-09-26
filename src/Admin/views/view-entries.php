@@ -23,20 +23,20 @@ do_action( 'fem_before_entries_ui' );
 	x-init="fetchForms()"
 	class="wrap fem-admin-page min-h-screen !m-auto px-8 py-10 text-[15px] font-inter"
 	role="main"
-	aria-label="<?php echo esc_attr__( 'Forms Entries Manager Overview', 'forms-entries-manager' ); ?>">
+	aria-label="<?php echo esc_attr__( 'Forms Entries Manager Overview', 'entrydashboard' ); ?>">
 
 	<?php do_action( 'fem_before_entries_ui_header' ); ?>
 	<!-- Header -->
 	<div class="mb-8 bg-slate-700 text-white px-4 py-2 rounded-lg">
 		<div class="flex items-center gap-4">
-				<img src="<?php echo esc_url( FEM_ASSETS_URL . 'images/logo.jpg' ); ?>" alt="<?php esc_attr_e( 'Forms Entries Manager', 'forms-entries-manager' ); ?>" class="w-16 h-16 object-cover rounded-sm" />
+				<img src="<?php echo esc_url( FEM_ASSETS_URL . 'images/logo.jpg' ); ?>" alt="<?php esc_attr_e( 'Forms Entries Manager', 'entrydashboard' ); ?>" class="w-16 h-16 object-cover rounded-sm" />
 				<div>
 					<h1 class="!text-3xl !font-extrabold !text-indigo-100 !tracking-tight mb-2 flex items-center gap-3">
-					<?php esc_html_e( 'Forms Entries Manager Overview', 'forms-entries-manager' ); ?>
+					<?php esc_html_e( 'Forms Entries Manager Overview', 'entrydashboard' ); ?>
 				</h1>
 				<p class="text-gray-200 !text-[15px] leading-relaxed !m-0 !mt-2">
 					<?php
-					esc_html_e( 'Browse and manage form entries submitted by users. Click on a form to view its submissions, mark entries as read/unread, or delete them as needed.', 'forms-entries-manager' );
+					esc_html_e( 'Browse and manage form entries submitted by users. Click on a form to view its submissions, mark entries as read/unread, or delete them as needed.', 'entrydashboard' );
 					?>
 				</p>
 				</div>
@@ -46,7 +46,7 @@ do_action( 'fem_before_entries_ui' );
 	<!-- Migration Prompt -->
 	<?php
 
-	use App\AdvancedEntryManager\Utility\Helper;
+	use Amin\FormsEntriesManager\Utility\Helper;
 
 	if ( ! Helper::table_exists( 'wpforms_db' ) && ! Helper::get_option( 'migration_complete' ) ) :
 		?>
@@ -120,16 +120,16 @@ do_action( 'fem_before_entries_ui' );
 						<h2 class="text-xl sm:text-2xl font-semibold text-gray-800 !m-2" x-text="form.form_title"></h2>
 						<p class="text-xs sm:text-sm text-gray-600 font-medium flex items-center gap-2 mt-1 !m-0">
 							<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-bold">
-								<?php esc_html_e( 'ID:', 'forms-entries-manager' ); ?> <span x-text="form.form_id"></span>
+								<?php esc_html_e( 'ID:', 'entrydashboard' ); ?> <span x-text="form.form_id"></span>
 							</span>
 
 							<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">
-								<?php esc_html_e( 'Entries:', 'forms-entries-manager' ); ?>
+								<?php esc_html_e( 'Entries:', 'entrydashboard' ); ?>
 								<span
 									x-text="formatNumber(form.entry_count)"
 									:title="formatFullNumber(form.entry_count)"
 									class="cursor-help"
-									aria-label="<?php esc_attr_e( 'Total number of entries', 'forms-entries-manager' ); ?>">
+									aria-label="<?php esc_attr_e( 'Total number of entries', 'entrydashboard' ); ?>">
 								</span>
 							</span>
 
@@ -137,9 +137,9 @@ do_action( 'fem_before_entries_ui' );
 								class="px-2 py-0.5 rounded-full font-bold"
 								:class="{ 'bg-orange-100 text-orange-700': form.number_unread > 0, 'bg-gray-100 text-gray-500': form.number_unread === 0 }"
 								x-show="form.number_unread > 0"
-								title="<?php esc_attr_e( 'Number of unread entries', 'forms-entries-manager' ); ?>"
-								aria-label="<?php esc_attr_e( 'Total number of unread entries', 'forms-entries-manager' ); ?>">
-								<?php esc_html_e( 'Unread:', 'forms-entries-manager' ); ?> <span x-text="form.number_unread"></span>
+								title="<?php esc_attr_e( 'Number of unread entries', 'entrydashboard' ); ?>"
+								aria-label="<?php esc_attr_e( 'Total number of unread entries', 'entrydashboard' ); ?>">
+								<?php esc_html_e( 'Unread:', 'entrydashboard' ); ?> <span x-text="form.number_unread"></span>
 							</span>
 						</p>
 					</div>
@@ -147,10 +147,10 @@ do_action( 'fem_before_entries_ui' );
 
 				<div class="text-sm font-medium flex items-center gap-1 px-2 py-1 rounded-md text-indigo-700 transition cursor-pointer select-none mb-4 sm:mb-0 sm:mt-0 w-full sm:w-auto justify-center sm:justify-start">
 					<span x-show="!open" class="group-hover:underline" aria-hidden="true">
-						<?php esc_html_e( 'Click to view entries', 'forms-entries-manager' ); ?>
+						<?php esc_html_e( 'Click to view entries', 'entrydashboard' ); ?>
 					</span>
 					<span x-show="open" class="group-hover:underline" aria-hidden="true">
-						<?php esc_html_e( 'Hide entries', 'forms-entries-manager' ); ?>
+						<?php esc_html_e( 'Hide entries', 'entrydashboard' ); ?>
 					</span>
 					<svg :class="open ? 'rotate-180' : ''"
 						class="w-4 h-4 transition-transform duration-300"
@@ -173,7 +173,7 @@ do_action( 'fem_before_entries_ui' );
 				:id="'entries-table-' + form.form_id"
 				role="region"
 				aria-live="polite"
-				aria-label="<?php esc_attr_e( 'Entries table for form', 'forms-entries-manager' ); ?>"
+				aria-label="<?php esc_attr_e( 'Entries table for form', 'entrydashboard' ); ?>"
 				class="overflow-x-auto">
 				<div class="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 min-w-[600px]">
 					<?php
@@ -190,7 +190,7 @@ do_action( 'fem_before_entries_ui' );
 							<input type="checkbox" id="bulk_action_main" @change="toggleSelectAll($event)" class="cursor-pointer" />
 						</div>
 
-						<div role="columnheader"><?php esc_html_e( 'Email', 'forms-entries-manager' ); ?></div>
+						<div role="columnheader"><?php esc_html_e( 'Email', 'entrydashboard' ); ?></div>
 
 						<!-- Custom Columns -->
 						<template x-for="field in chosenFields" :key="field.key">
@@ -200,14 +200,14 @@ do_action( 'fem_before_entries_ui' );
 						</template>
 
 						<div role="columnheader" class="text-center cursor-pointer select-none flex items-center justify-center gap-1" @click="sortByDate">
-							<span><?php esc_html_e( 'Date', 'forms-entries-manager' ); ?></span>
+							<span><?php esc_html_e( 'Date', 'entrydashboard' ); ?></span>
 							<span x-text="sortAsc ? '⬆️' : '⬇️'"></span>
 						</div>
 						<div role="columnheader" class="text-center cursor-pointer select-none flex items-center justify-center gap-1" @click="sortByStatus">
-							<span><?php esc_html_e( 'Status', 'forms-entries-manager' ); ?></span>
+							<span><?php esc_html_e( 'Status', 'entrydashboard' ); ?></span>
 							<span x-text="sortAscStatus ? '⬆️' : '⬇️'"></span>
 						</div>
-						<div role="columnheader" class="text-right"><?php esc_html_e( 'Actions', 'forms-entries-manager' ); ?></div>
+						<div role="columnheader" class="text-right"><?php esc_html_e( 'Actions', 'entrydashboard' ); ?></div>
 					</div>
 
 					<div class="relative min-h-60">
@@ -225,7 +225,7 @@ do_action( 'fem_before_entries_ui' );
 
 								<div
 									class="cursor-pointer truncate flex items-center gap-2"
-									title="<?php echo esc_attr__( 'Click for details', 'forms-entries-manager' ); ?>"
+									title="<?php echo esc_attr__( 'Click for details', 'entrydashboard' ); ?>"
 									@click="showEntry(i)">
 									<span x-text="entry.name + ' - ' || 'no name found'"></span>
 									<span x-text="entry.email || '-'"></span>
@@ -242,7 +242,7 @@ do_action( 'fem_before_entries_ui' );
 									<span
 										class="inline-block px-3 py-1 rounded-full text-xs font-semibold"
 										:class="entry.status === 'unread' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'"
-										x-text="entry.status === 'unread' ? '<?php echo esc_html__( 'Unread', 'forms-entries-manager' ); ?>' : '<?php echo esc_html__( 'Read', 'forms-entries-manager' ); ?>'"></span>
+										x-text="entry.status === 'unread' ? '<?php echo esc_html__( 'Unread', 'entrydashboard' ); ?>' : '<?php echo esc_html__( 'Read', 'entrydashboard' ); ?>'"></span>
 								</div>
 								<?php require __DIR__ . '/table/action-column.php'; ?>
 							</div>

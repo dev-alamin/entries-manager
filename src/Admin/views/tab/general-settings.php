@@ -5,14 +5,14 @@
 
 	<!-- Existing Pagination Settings block (unmodified) -->
 	<div class="bg-white border border-indigo-100 shadow p-6">
-		<h3 class="text-xl font-bold text-indigo-700 mb-3"><?php esc_html_e( '📄 Pagination Settings', 'forms-entries-manager' ); ?></h3>
+		<h3 class="text-xl font-bold text-indigo-700 mb-3"><?php esc_html_e( '📄 Pagination Settings', 'entrydashboard' ); ?></h3>
 		<p class="text-sm text-gray-600 mb-4">
-			<?php esc_html_e( 'Set how many entries are shown per page in the admin UI.', 'forms-entries-manager' ); ?>
+			<?php esc_html_e( 'Set how many entries are shown per page in the admin UI.', 'entrydashboard' ); ?>
 		</p>
 
 		<div>
 			<label for="fem_entries_per_page" class="block text-sm font-medium text-gray-700 mb-1">
-				<?php esc_html_e( 'Entries per Page', 'forms-entries-manager' ); ?>
+				<?php esc_html_e( 'Entries per Page', 'entrydashboard' ); ?>
 			</label>
 			<input type="number" name="fem_entries_per_page" id="fem_entries_per_page"
 				value="<?php echo esc_attr( $per_page ); ?>" min="5" max="200"
@@ -23,10 +23,10 @@
 	<!-- New block for Custom Columns -->
 	<div class="bg-white border border-indigo-100 shadow p-6">
 		<h3 class="text-xl font-bold text-indigo-700 mb-3">
-			<?php esc_html_e( '📊 Table Columns', 'forms-entries-manager' ); ?>
+			<?php esc_html_e( '📊 Table Columns', 'entrydashboard' ); ?>
 		</h3>
 		<p class="text-sm text-gray-600 mb-4">
-			<?php esc_html_e( 'Select which form fields you want to display as columns in the entries table.', 'forms-entries-manager' ); ?>
+			<?php esc_html_e( 'Select which form fields you want to display as columns in the entries table.', 'entrydashboard' ); ?>
 		</p>
 
 		<!-- Render all forms with their fields -->
@@ -56,7 +56,7 @@
 					</template>
 
 					<p x-show="!allFields[form.form_id]" class="text-gray-500 text-xs mt-1">
-						<?php esc_html_e( 'Loading fields...', 'forms-entries-manager' ); ?>
+						<?php esc_html_e( 'Loading fields...', 'entrydashboard' ); ?>
 					</p>
 				</div>
 			</div>

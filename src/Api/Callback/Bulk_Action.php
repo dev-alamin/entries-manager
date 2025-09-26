@@ -1,9 +1,9 @@
 <?php
-namespace App\AdvancedEntryManager\Api\Callback;
+namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -24,7 +24,7 @@ class Bulk_Action {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Invalid or missing entry IDs.', 'forms-entries-manager' ),
+					'message' => __( 'Invalid or missing entry IDs.', 'entrydashboard' ),
 				),
 				400
 			);
@@ -74,7 +74,7 @@ class Bulk_Action {
 				return new WP_REST_Response(
 					array(
 						'success' => false,
-						'message' => __( 'Invalid action provided.', 'forms-entries-manager' ),
+						'message' => __( 'Invalid action provided.', 'entrydashboard' ),
 					),
 					400
 				);
@@ -90,7 +90,7 @@ class Bulk_Action {
 						'%d entry deleted.',
 						'%d entries deleted.',
 						$affected,
-						'forms-entries-manager'
+						'entrydashboard'
 					),
 					$affected
 				)
@@ -100,7 +100,7 @@ class Bulk_Action {
 							'%d entry updated.',
 							'%d entries updated.',
 							$affected,
-							'forms-entries-manager'
+							'entrydashboard'
 						),
 						$affected
 					),
@@ -169,7 +169,7 @@ class Bulk_Action {
 		$ids = array_unique( array_map( 'absint', $request->get_param( 'ids' ) ) );
 
 		if ( empty( $ids ) ) {
-			return new WP_Error( 'invalid_data', __( 'No entries selected.', 'forms-entries-manager' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_data', __( 'No entries selected.', 'entrydashboard' ), array( 'status' => 400 ) );
 		}
 
 		$submissions_table = Helper::get_submission_table();
@@ -187,7 +187,7 @@ class Bulk_Action {
 		);
 
 		if ( empty( $submissions ) ) {
-			return new WP_Error( 'no_data', __( 'No data found.', 'forms-entries-manager' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no_data', __( 'No data found.', 'entrydashboard' ), array( 'status' => 404 ) );
 		}
 
 		// Process and structure the data.
@@ -203,7 +203,7 @@ class Bulk_Action {
 		// Create a temp file path using WordPress temp path.
 		$tmp_file = wp_tempnam( 'fem-entries.csv' );
 		if ( ! $tmp_file ) {
-			return new WP_Error( 'fs_error', __( 'Unable to create temp file.', 'forms-entries-manager' ), array( 'status' => 500 ) );
+			return new WP_Error( 'fs_error', __( 'Unable to create temp file.', 'entrydashboard' ), array( 'status' => 500 ) );
 		}
 
 		// Build CSV content in memory.
@@ -215,7 +215,7 @@ class Bulk_Action {
 
 		// Write the full CSV content to the file using put_contents().
 		if ( ! $wp_filesystem->put_contents( $tmp_file, $csv_content, FS_CHMOD_FILE ) ) {
-			return new WP_Error( 'fs_write_error', __( 'Unable to write to temp file.', 'forms-entries-manager' ), array( 'status' => 500 ) );
+			return new WP_Error( 'fs_write_error', __( 'Unable to write to temp file.', 'entrydashboard' ), array( 'status' => 500 ) );
 		}
 
 		// Set HTTP headers for file download

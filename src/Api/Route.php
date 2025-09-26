@@ -1,20 +1,20 @@
 <?php
 
-namespace App\AdvancedEntryManager\Api;
+namespace Amin\FormsEntriesManager\Api;
 
 defined( 'ABSPATH' ) || exit;
 
 use WP_REST_Server;
-use App\AdvancedEntryManager\Api\Callback\Bulk_Action;
-use App\AdvancedEntryManager\Api\Callback\Get_Entries;
-use App\AdvancedEntryManager\Api\Callback\Get_Forms;
-use App\AdvancedEntryManager\Api\Callback\Update_Entries;
-use App\AdvancedEntryManager\Api\Callback\Create_Entries;
-use App\AdvancedEntryManager\Api\Callback\Export_Entries;
-use App\AdvancedEntryManager\Api\Callback\Delete_Single_Entry;
-use App\AdvancedEntryManager\Api\Callback\Migrate;
+use Amin\FormsEntriesManager\Api\Callback\Bulk_Action;
+use Amin\FormsEntriesManager\Api\Callback\Get_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Get_Forms;
+use Amin\FormsEntriesManager\Api\Callback\Update_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Create_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Export_Entries;
+use Amin\FormsEntriesManager\Api\Callback\Delete_Single_Entry;
+use Amin\FormsEntriesManager\Api\Callback\Migrate;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 /**
  * Class Route
@@ -27,7 +27,7 @@ use App\AdvancedEntryManager\Utility\Helper;
  * * The routes are registered during the 'rest_api_init' action,
  * allowing WordPress to recognize them
  * and process requests accordingly.
- * * @package App\AdvancedEntryManager\Api
+ * * @package Amin\FormsEntriesManager\Api
  * * @since 1.0.0
  * * @see https://developer.wordpress.org/rest-api/extending-the-rest-api/adding-custom-endpoints/
  * * @see https://developer.wordpress.org/rest-api/reference/
@@ -169,7 +169,7 @@ class Route {
 					'permission_callback' => $this->permission_callback_by_method( WP_REST_Server::READABLE ),
 					'args'                => array(
 						'per_page'  => array(
-							'description'       => __( 'Number of entries per page.', 'forms-entries-manager' ),
+							'description'       => __( 'Number of entries per page.', 'entrydashboard' ),
 							'type'              => 'integer',
 							'default'           => 20,
 							'sanitize_callback' => 'absint',
@@ -178,25 +178,25 @@ class Route {
 							},
 						),
 						'page'      => array(
-							'description'       => __( 'Page number.', 'forms-entries-manager' ),
+							'description'       => __( 'Page number.', 'entrydashboard' ),
 							'type'              => 'integer',
 							'default'           => 1,
 							'sanitize_callback' => 'absint',
 						),
 						'form_id'   => array(
-							'description'       => __( 'Limit entries to a specific form ID.', 'forms-entries-manager' ),
+							'description'       => __( 'Limit entries to a specific form ID.', 'entrydashboard' ),
 							'type'              => 'integer',
 							'required'          => false,
 							'sanitize_callback' => 'absint',
 						),
 						'search'    => array(
-							'description'       => __( 'Search within entry values.', 'forms-entries-manager' ),
+							'description'       => __( 'Search within entry values.', 'entrydashboard' ),
 							'type'              => 'string',
 							'required'          => false,
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'status'    => array(
-							'description'       => __( 'Filter by read/unread status.', 'forms-entries-manager' ),
+							'description'       => __( 'Filter by read/unread status.', 'entrydashboard' ),
 							'type'              => 'string',
 							'validate_callback' => function ( $value ) {
 								return in_array( $value, array( 'read', 'unread', '', null ), true );
@@ -204,7 +204,7 @@ class Route {
 							'required'          => false,
 						),
 						'date_from' => array(
-							'description'       => __( 'Filter by submission start date (YYYY-MM-DD)', 'forms-entries-manager' ),
+							'description'       => __( 'Filter by submission start date (YYYY-MM-DD)', 'entrydashboard' ),
 							'type'              => 'string',
 							'required'          => false,
 							'sanitize_callback' => 'sanitize_text_field',
@@ -213,7 +213,7 @@ class Route {
 							},
 						),
 						'date_to'   => array(
-							'description'       => __( 'Filter by submission end date (YYYY-MM-DD)', 'forms-entries-manager' ),
+							'description'       => __( 'Filter by submission end date (YYYY-MM-DD)', 'entrydashboard' ),
 							'type'              => 'string',
 							'required'          => false,
 							'sanitize_callback' => 'sanitize_text_field',
@@ -234,7 +234,7 @@ class Route {
 					'permission_callback' => $this->permission_callback_by_method( WP_REST_Server::CREATABLE ),
 					'args'                => array(
 						'form_id'          => array(
-							'description'       => __( 'Form ID for the entry.', 'forms-entries-manager' ),
+							'description'       => __( 'Form ID for the entry.', 'entrydashboard' ),
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
 								return is_string( $param ) || is_numeric( $param );
@@ -242,14 +242,14 @@ class Route {
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'entry'            => array(
-							'description'       => __( 'Entry data as an associative array.', 'forms-entries-manager' ),
+							'description'       => __( 'Entry data as an associative array.', 'entrydashboard' ),
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
 								return is_array( $param );
 							},
 						),
 						'status'           => array(
-							'description'       => __( 'Read/unread status for the entry.', 'forms-entries-manager' ),
+							'description'       => __( 'Read/unread status for the entry.', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return in_array( $param, array( 'unread', 'read' ), true );
@@ -258,7 +258,7 @@ class Route {
 							'default'           => 'unread',
 						),
 						'is_favorite'      => array(
-							'description'       => __( 'Mark entry as favorite (0 or 1).', 'forms-entries-manager' ),
+							'description'       => __( 'Mark entry as favorite (0 or 1).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param ) && in_array( $param, array( 0, 1 ), true );
@@ -267,7 +267,7 @@ class Route {
 							'default'           => 0,
 						),
 						'note'             => array(
-							'description'       => __( 'Internal note for the entry (max 500 words).', 'forms-entries-manager' ),
+							'description'       => __( 'Internal note for the entry (max 500 words).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_string( $param ) && str_word_count( $param ) <= 500;
@@ -275,7 +275,7 @@ class Route {
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'exported_to_csv'  => array(
-							'description'       => __( 'Exported to CSV flag (0 or 1).', 'forms-entries-manager' ),
+							'description'       => __( 'Exported to CSV flag (0 or 1).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param ) && in_array( $param, array( 0, 1 ), true );
@@ -284,7 +284,7 @@ class Route {
 							'default'           => 0,
 						),
 						'synced_to_gsheet' => array(
-							'description'       => __( 'Synced to Google Sheet flag (0 or 1).', 'forms-entries-manager' ),
+							'description'       => __( 'Synced to Google Sheet flag (0 or 1).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param ) && in_array( $param, array( 0, 1 ), true );
@@ -293,7 +293,7 @@ class Route {
 							'default'           => 0,
 						),
 						'printed_at'       => array(
-							'description'       => __( 'Printed at datetime (Y-m-d H:i:s).', 'forms-entries-manager' ),
+							'description'       => __( 'Printed at datetime (Y-m-d H:i:s).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return strtotime( $param ) !== false;
@@ -303,7 +303,7 @@ class Route {
 							},
 						),
 						'resent_at'        => array(
-							'description'       => __( 'Resent at datetime (Y-m-d H:i:s).', 'forms-entries-manager' ),
+							'description'       => __( 'Resent at datetime (Y-m-d H:i:s).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return strtotime( $param ) !== false;
@@ -345,7 +345,7 @@ class Route {
 					'permission_callback' => $this->permission_callback_by_method( WP_REST_Server::EDITABLE ),
 					'args'                => array(
 						'id'               => array(
-							'description'       => __( 'Entry ID to update.', 'forms-entries-manager' ),
+							'description'       => __( 'Entry ID to update.', 'entrydashboard' ),
 							'required'          => true,
 							'sanitize_callback' => 'absint',
 							'validate_callback' => function ( $param ) {
@@ -353,7 +353,7 @@ class Route {
 							},
 						),
 						'form_id'          => array(
-							'description'       => __( 'Form ID for the entry.', 'forms-entries-manager' ),
+							'description'       => __( 'Form ID for the entry.', 'entrydashboard' ),
 							'required'          => true,
 							'sanitize_callback' => 'absint',
 							'validate_callback' => function ( $param ) {
@@ -361,14 +361,14 @@ class Route {
 							},
 						),
 						'entry'            => array(
-							'description'       => __( 'Entry data as an associative array.', 'forms-entries-manager' ),
+							'description'       => __( 'Entry data as an associative array.', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_array( $param );
 							},
 						),
 						'status'           => array(
-							'description'       => __( 'Read/unread status for the entry.', 'forms-entries-manager' ),
+							'description'       => __( 'Read/unread status for the entry.', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return in_array( $param, array( 'unread', 'read' ), true );
@@ -377,7 +377,7 @@ class Route {
 							'default'           => 'unread',
 						),
 						'note'             => array(
-							'description'       => __( 'Internal note for the entry (max 500 words).', 'forms-entries-manager' ),
+							'description'       => __( 'Internal note for the entry (max 500 words).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_string( $param ) && str_word_count( $param ) <= 500;
@@ -385,7 +385,7 @@ class Route {
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'is_favorite'      => array(
-							'description'       => __( 'Mark entry as favorite (0 or 1).', 'forms-entries-manager' ),
+							'description'       => __( 'Mark entry as favorite (0 or 1).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param ) && in_array( $param, array( 0, 1 ), true );
@@ -394,7 +394,7 @@ class Route {
 							'default'           => 0,
 						),
 						'exported_to_csv'  => array(
-							'description'       => __( 'Exported to CSV flag (0 or 1).', 'forms-entries-manager' ),
+							'description'       => __( 'Exported to CSV flag (0 or 1).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param ) && in_array( $param, array( 0, 1 ), true );
@@ -403,7 +403,7 @@ class Route {
 							'default'           => 0,
 						),
 						'synced_to_gsheet' => array(
-							'description'       => __( 'Synced to Google Sheet flag (0 or 1).', 'forms-entries-manager' ),
+							'description'       => __( 'Synced to Google Sheet flag (0 or 1).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param ) && in_array( $param, array( 0, 1 ), true );
@@ -412,7 +412,7 @@ class Route {
 							'default'           => 0,
 						),
 						'printed_at'       => array(
-							'description'       => __( 'Printed at datetime (Y-m-d H:i:s).', 'forms-entries-manager' ),
+							'description'       => __( 'Printed at datetime (Y-m-d H:i:s).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return strtotime( $param ) !== false;
@@ -429,7 +429,7 @@ class Route {
 							},
 						),
 						'resent_at'        => array(
-							'description'       => __( 'Resent at datetime (Y-m-d H:i:s).', 'forms-entries-manager' ),
+							'description'       => __( 'Resent at datetime (Y-m-d H:i:s).', 'entrydashboard' ),
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								return strtotime( $param ) !== false;
@@ -590,7 +590,7 @@ class Route {
 				'data'  => array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => function ( \WP_REST_Request $request ) {
-						$migrate = new \App\AdvancedEntryManager\Api\Callback\Migrate();
+						$migrate = new \Amin\FormsEntriesManager\Api\Callback\Migrate();
 						return $migrate->trigger_migration();
 					},
 					'permission_callback' => $this->permission_callback_by_method( WP_REST_Server::CREATABLE ),

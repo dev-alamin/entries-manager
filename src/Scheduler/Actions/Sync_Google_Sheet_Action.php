@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Scheduler\Actions;
+namespace Amin\FormsEntriesManager\Scheduler\Actions;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\GoogleSheet\Send_Data;
+use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
 
 class Sync_Google_Sheet_Action {
 

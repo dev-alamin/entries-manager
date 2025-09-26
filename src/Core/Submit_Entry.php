@@ -14,15 +14,15 @@
  * @author     Al Amin
  * @since      1.0.0
  */
-namespace App\AdvancedEntryManager\Core;
+namespace Amin\FormsEntriesManager\Core;
 
-use App\AdvancedEntryManager\Utility\Helper;
-use App\AdvancedEntryManager\GoogleSheet\Send_Data;
+use Amin\FormsEntriesManager\Utility\Helper;
+use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
 use WPCF7_Submission;
-use App\AdvancedEntryManager\Logger\FileLogger;
+use Amin\FormsEntriesManager\Logger\FileLogger;
 use WPCF7_ContactForm;
-use App\AdvancedEntryManager\Core\DB_Schema;
-use App\AdvancedEntryManager\Utility\FileHandler;
+use Amin\FormsEntriesManager\Core\DB_Schema;
+use Amin\FormsEntriesManager\Utility\FileHandler;
 
 /**
  * Class Submit_Entry

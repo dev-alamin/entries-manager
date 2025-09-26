@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdvancedEntryManager\Api\Callback;
+namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -31,7 +31,7 @@ class Create_Entries {
 		$table = Helper::get_submission_table(); // e.g., 'fem_entries_manager'
 
 		// Temp off
-		// return rest_ensure_response( ['success' => false, 'message' => __('This endpoint is temporarily disabled.', 'forms-entries-manager')] );
+		// return rest_ensure_response( ['success' => false, 'message' => __('This endpoint is temporarily disabled.', 'entrydashboard')] );
 
 		// Get parameters from JSON body
 		$params = $request->get_json_params();
@@ -44,7 +44,7 @@ class Create_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Invalid or missing form_id or entry data.', 'forms-entries-manager' ),
+					'message' => __( 'Invalid or missing form_id or entry data.', 'entrydashboard' ),
 				),
 				400
 			);
@@ -64,7 +64,7 @@ class Create_Entries {
 		// if ( ! current_user_can( 'manage_options' ) ) {
 		// return new WP_REST_Response([
 		// 'success' => false,
-		// 'message' => __( 'Insufficient permissions to create entry.', 'forms-entries-manager' ),
+		// 'message' => __( 'Insufficient permissions to create entry.', 'entrydashboard' ),
 		// ], 403);
 		// }
 
@@ -113,7 +113,7 @@ class Create_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Database insert failed.', 'forms-entries-manager' ),
+					'message' => __( 'Database insert failed.', 'entrydashboard' ),
 				),
 				500
 			);
@@ -133,7 +133,7 @@ class Create_Entries {
 		return new WP_REST_Response(
 			array(
 				'success'  => true,
-				'message'  => __( 'Entry created successfully.', 'forms-entries-manager' ),
+				'message'  => __( 'Entry created successfully.', 'entrydashboard' ),
 				'entry_id' => $wpdb->insert_id,
 			),
 			201

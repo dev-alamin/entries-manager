@@ -15,7 +15,7 @@
 			},
 			bulkLabel() {
 				const action = this.bulkActions.find(a => a.key === this.selectedBulkAction);
-				return action ? action.label : "<?php echo esc_js( __( 'Select Action', 'forms-entries-manager' ) ); ?>";
+				return action ? action.label : "<?php echo esc_js( __( 'Select Action', 'entrydashboard' ) ); ?>";
 			}
 		}'
 		x-cloak>
@@ -56,26 +56,26 @@
 			@click="performBulkAction(selectedBulkAction)"
 			:disabled="bulkSelected.length === 0 || !selectedBulkAction"
 			class="px-5 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold">
-			<?php esc_html_e( 'Apply', 'forms-entries-manager' ); ?>
+			<?php esc_html_e( 'Apply', 'entrydashboard' ); ?>
 		</button>
 	</div>
 
 	<div class="flex items-center gap-4">
 		<div class="relative md:w-[150px]">
-			<label for="status-filter" class="sr-only"><?php esc_html_e( 'Filter by Status', 'forms-entries-manager' ); ?></label>
+			<label for="status-filter" class="sr-only"><?php esc_html_e( 'Filter by Status', 'entrydashboard' ); ?></label>
 			<select
 				id="status-filter"
 				x-model="filterStatus"
 				@change="handleStatusChange()"
 				class="md:w-[150px] !px-3 !py-[6px] !border !border-gray-300 !rounded-lg !text-gray-800 !font-medium !focus:outline-none !focus:ring-2 !focus:ring-indigo-500 !transition !hover:border-indigo-500">
-				<option value="all"><?php esc_html_e( 'All Statuses', 'forms-entries-manager' ); ?></option>
-				<option value="read"><?php esc_html_e( 'Read', 'forms-entries-manager' ); ?></option>
-				<option value="unread"><?php esc_html_e( 'Unread', 'forms-entries-manager' ); ?></option>
+				<option value="all"><?php esc_html_e( 'All Statuses', 'entrydashboard' ); ?></option>
+				<option value="read"><?php esc_html_e( 'Read', 'entrydashboard' ); ?></option>
+				<option value="unread"><?php esc_html_e( 'Unread', 'entrydashboard' ); ?></option>
 			</select>
 		</div>
 
 		<div class="relative md:w-[150px]">
-			<label for="date-from-filter" class="sr-only"><?php esc_html_e( 'Date From', 'forms-entries-manager' ); ?></label>
+			<label for="date-from-filter" class="sr-only"><?php esc_html_e( 'Date From', 'entrydashboard' ); ?></label>
 			<input
 				id="date-from-filter"
 				type="date"
@@ -85,7 +85,7 @@
 		</div>
 
 		<div class="relative md:w-[150px]">
-			<label for="date-to-filter" class="sr-only"><?php esc_html_e( 'Date To', 'forms-entries-manager' ); ?></label>
+			<label for="date-to-filter" class="sr-only"><?php esc_html_e( 'Date To', 'entrydashboard' ); ?></label>
 			<input
 				id="date-to-filter"
 				type="date"
@@ -100,7 +100,7 @@
 			<button @click="dropdownOpen = !dropdownOpen"
 				class="!px-3 !py-[10px] !text-gray-800 !font-medium !hover:border-indigo-500 !transition !text-sm flex items-center gap-1"
 				type="button"
-				aria-label="<?php esc_attr_e( 'Select search type', 'forms-entries-manager' ); ?>">
+				aria-label="<?php esc_attr_e( 'Select search type', 'entrydashboard' ); ?>">
 				<span x-text="searchType"></span>
 				<svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
 					viewBox="0 0 24 24">
@@ -133,7 +133,7 @@
 				x-show="searchQuery && !entries.length && !loading"
 				x-transition
 				class="absolute z-50 top-[100%] left-0 mt-1 !w-full !bg-white !border !border-gray-200 !rounded-lg !shadow !px-4 !py-3 text-sm !text-gray-500">
-				<?php esc_html_e( 'No matching entries found.', 'forms-entries-manager' ); ?>
+				<?php esc_html_e( 'No matching entries found.', 'entrydashboard' ); ?>
 			</div>
 
 			<div
@@ -141,7 +141,7 @@
 				class="absolute top-2 right-3 text-xs !text-indigo-500 animate-pulse"
 				aria-live="assertive"
 				aria-atomic="true">
-				<?php esc_html_e( 'Searching...', 'forms-entries-manager' ); ?>
+				<?php esc_html_e( 'Searching...', 'entrydashboard' ); ?>
 			</div>
 		</div>
 	</div>

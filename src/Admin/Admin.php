@@ -1,16 +1,16 @@
 <?php
 
-namespace App\AdvancedEntryManager\Admin;
+namespace Amin\FormsEntriesManager\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use App\AdvancedEntryManager\Assets;
-use App\AdvancedEntryManager\Admin\Options;
-use App\AdvancedEntryManager\Admin\Menu;
-use App\AdvancedEntryManager\Admin\Admin_Notice;
-use App\AdvancedEntryManager\GoogleSheet\Admin_UI;
-use App\AdvancedEntryManager\GoogleSheet\Send_Data;
-use App\AdvancedEntryManager\Admin\Logs\HandleLogAction;
+use Amin\FormsEntriesManager\Assets;
+use Amin\FormsEntriesManager\Admin\Options;
+use Amin\FormsEntriesManager\Admin\Menu;
+use Amin\FormsEntriesManager\Admin\Admin_Notice;
+use Amin\FormsEntriesManager\GoogleSheet\Admin_UI;
+use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
+use Amin\FormsEntriesManager\Admin\Logs\HandleLogAction;
 
 /**
  * Class Admin

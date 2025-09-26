@@ -1,9 +1,9 @@
 <?php
 
-namespace App\AdvancedEntryManager\Admin\Logs;
+namespace Amin\FormsEntriesManager\Admin\Logs;
 
-use App\AdvancedEntryManager\Logger\FileLogger;
-use App\AdvancedEntryManager\Utility\FileSystem;
+use Amin\FormsEntriesManager\Logger\FileLogger;
+use Amin\FormsEntriesManager\Utility\FileSystem;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -37,15 +37,15 @@ class HandleLogAction {
 			return;
 		}
 
-		if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'forms-entries-manager-logs' ) {
+		if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'entrydashboard-logs' ) {
 			return;
 		}
 
 		if ( isset( $_GET['action'] ) && $_GET['action'] === 'download_log' ) {
-			if ( check_admin_referer( 'forms-entries-manager-download' ) === false ) {
+			if ( check_admin_referer( 'entrydashboard-download' ) === false ) {
 				printf(
 					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-					esc_html__( 'Security check failed. Please try again.', 'forms-entries-manager' )
+					esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
 				);
 			}
 
@@ -53,10 +53,10 @@ class HandleLogAction {
 		}
 
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'clear_logs' ) {
-			if ( check_admin_referer( 'forms-entries-manager-clear' ) === false ) {
+			if ( check_admin_referer( 'entrydashboard-clear' ) === false ) {
 				printf(
 					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-					esc_html__( 'Security check failed. Please try again.', 'forms-entries-manager' )
+					esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
 				);
 			}
 
@@ -73,8 +73,8 @@ class HandleLogAction {
 			return;
 		}
 
-		if ( check_admin_referer( 'forms-entries-manager-download' ) === false ) {
-			wp_die( esc_html__( 'Invalid nonce!', 'forms-entries-manager' ) );
+		if ( check_admin_referer( 'entrydashboard-download' ) === false ) {
+			wp_die( esc_html__( 'Invalid nonce!', 'entrydashboard' ) );
 		}
 
 		$file_name = sanitize_file_name( wp_unslash( $_GET['file'] ) );
@@ -101,7 +101,7 @@ class HandleLogAction {
 				array(
 					'message' => urlencode( 'File not found or invalid.' ),
 				),
-				admin_url( 'admin.php?page=forms-entries-manager-logs' )
+				admin_url( 'admin.php?page=entrydashboard-logs' )
 			);
 				wp_safe_redirect( $redirect_url );
 			exit;
@@ -112,8 +112,8 @@ class HandleLogAction {
 	 * Handles the log clear request.
 	 */
 	protected function handle_clear() {
-		if ( check_admin_referer( 'forms-entries-manager-clear' ) === false ) {
-			wp_die( esc_html__( 'Invalid nonce!', 'forms-entries-manager' ) );
+		if ( check_admin_referer( 'entrydashboard-clear' ) === false ) {
+			wp_die( esc_html__( 'Invalid nonce!', 'entrydashboard' ) );
 		}
 
 		$this->logger->clear_old_logs( 0 ); // Pass 0 to clear all logs.
@@ -121,7 +121,7 @@ class HandleLogAction {
 			array(
 				'message' => urlencode( 'All logs have been cleared.' ),
 			),
-			admin_url( 'admin.php?page=forms-entries-manager-logs' )
+			admin_url( 'admin.php?page=entrydashboard-logs' )
 		);
 		wp_safe_redirect( $redirect_url );
 		exit;

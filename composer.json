@@ -1,12 +1,12 @@
 {
-    "name": "amin/forms-entries-manager",
+    "name": "amin/entrydashboard",
     "require": {
         "woocommerce/action-scheduler": "^3.9"
     },
     "license": "GPLv2",
     "autoload": {
         "psr-4": {
-            "App\\AdvancedEntryManager\\": "src/"
+            "Amin\\FormsEntriesManager\\": "src/"
         }
     },
     "authors": [

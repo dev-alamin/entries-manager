@@ -7,7 +7,7 @@
 		@click="prevPage"
 		:disabled="currentPage === 1"
 		class="w-9 h-9 flex items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-		aria-label="<?php esc_attr_e( 'Previous Page', 'forms-entries-manager' ); ?>">
+		aria-label="<?php esc_attr_e( 'Previous Page', 'entrydashboard' ); ?>">
 		&lt;
 	</button>
 
@@ -22,7 +22,7 @@
 					? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700'
 					: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
 				:aria-current="currentPage === page ? 'page' : null"
-				:aria-label="`<?php esc_attr_e( 'Go to page', 'forms-entries-manager' ); ?> ${page}`">
+				:aria-label="`<?php esc_attr_e( 'Go to page', 'entrydashboard' ); ?> ${page}`">
 			</button>
 		</template>
 		<template x-if="page === '...'">
@@ -35,13 +35,13 @@
 		@click="nextPage"
 		:disabled="currentPage === totalPages"
 		class="w-9 h-9 flex items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-		aria-label="<?php esc_attr_e( 'Next Page', 'forms-entries-manager' ); ?>">
+		aria-label="<?php esc_attr_e( 'Next Page', 'entrydashboard' ); ?>">
 		&gt;
 	</button>
 	
 	<!-- Go to Page Input -->
 	<div class="ml-4 flex items-center gap-1">
-		<span class="text-sm text-gray-600"><?php esc_html_e( 'Go to', 'forms-entries-manager' ); ?></span>
+		<span class="text-sm text-gray-600"><?php esc_html_e( 'Go to', 'entrydashboard' ); ?></span>
 
 		<input
 			type="number"
@@ -55,7 +55,7 @@
 			"
 			class="w-16 px-2 py-1 border border-gray-300 rounded-md text-center text-sm focus:outline-none focus:ring focus:border-indigo-500"
 			:placeholder="currentPage"
-			aria-label="<?php esc_attr_e( 'Jump to page number', 'forms-entries-manager' ); ?>"
+			aria-label="<?php esc_attr_e( 'Jump to page number', 'entrydashboard' ); ?>"
 		/>
 
 		<span class="text-sm text-gray-600">/ <span x-text="totalPages"></span></span>

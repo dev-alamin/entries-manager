@@ -9,9 +9,9 @@
  *
  * @package fem
  */
-namespace App\AdvancedEntryManager\Core;
+namespace Amin\FormsEntriesManager\Core;
 
-use App\AdvancedEntryManager\Utility\Helper;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 defined( 'ABSPATH' ) || exit;
 
