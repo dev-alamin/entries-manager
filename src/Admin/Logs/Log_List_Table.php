@@ -64,7 +64,7 @@ class Log_List_Table extends \WP_List_Table {
 				'page'     => 'entrydashboard-entries-manager-logs',
 				'action'   => 'view_log',
 				'file'     => urlencode( $item['file_name'] ),
-				'_wpnonce' => wp_create_nonce( 'entrydashboard-view' ),
+				'_wpnonce' => wp_create_nonce( 'entr_mgr_view_logs' ),
 			),
 			admin_url( 'admin.php' )
 		);

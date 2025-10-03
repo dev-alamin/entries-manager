@@ -331,7 +331,7 @@ class Helper {
 			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/refresh',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
-				'body'    => json_encode(
+				'body'    => wp_json_encode(
 					array(
 						'site' => self::get_settings_page_url(),
 					)
@@ -419,7 +419,7 @@ class Helper {
 			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/revoke',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
-				'body'    => json_encode(
+				'body'    => wp_json_encode(
 					array(
 						'site' => $site_url,
 					)

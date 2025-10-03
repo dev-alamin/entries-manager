@@ -15,7 +15,7 @@ class Send_Data {
 	public function __construct() {
 		$this->logger = new FileLogger();
 		// Capture token on init
-		add_action( 'admin_init', array( $this, 'capture_token' ) );
+		// add_action( 'admin_init', array( $this, 'capture_token' ) );
 
 		// Add a new hook to handle the revocation action
 		add_action( 'admin_init', array( $this, 'handle_google_revocation_action' ) );
@@ -59,11 +59,18 @@ class Send_Data {
 	}
 
 	public function capture_token() {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! isset( $_GET['oauth_proxy_code'] ) ) {
-			return;
-		}
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( __( 'You do not have sufficient permissions to access this page.', 'entries-manager' ) );
+        }
 
+        if ( ! check_admin_referer( 'entr_mgr_oauth_init' ) ) { // Assuming you created this nonce when starting the OAuth flow
+            wp_die( __( 'Security check failed.', 'entries-manager' ) );
+        }
+        
+        if ( ! isset( $_GET['oauth_proxy_code'] ) ) {
+            return;
+        }
+        
 		$auth_code = sanitize_text_field( wp_unslash( $_GET['oauth_proxy_code'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// Exchange the one-time auth code for real tokens
@@ -71,7 +78,7 @@ class Send_Data {
 			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/token',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
-				'body'    => json_encode(
+				'body'    => wp_json_encode(
 					array(
 						'auth_code' => $auth_code,
 					)
@@ -306,7 +313,7 @@ class Send_Data {
 		// Use `includeValuesInResponse=true` to get the updated range after append.
 		$url = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&includeValuesInResponse=true";
 
-		$response = $this->_make_google_api_request( $url, $body, 'POST' );
+		$response = $this->make_google_api_request( $url, $body, 'POST' );
 
 		if ( is_wp_error( $response ) ) {
 			$this->logger->log( 'GSheet append failed for entry ' . $entry_id . ': ' . $response->get_error_message(), 'ERROR' );
@@ -407,7 +414,7 @@ class Send_Data {
 
 	private function _get_sheet_r_count( $sheet_title, $spreadsheet_id ) {
 		$range    = rawurlencode( $sheet_title ) . '!A:A';
-		$response = $this->_make_google_api_request(
+		$response = $this->make_google_api_request(
 			"https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}?majorDimension=ROWS",
 			array(),
 			'GET'
@@ -714,7 +721,7 @@ class Send_Data {
 	public function gsheet_batch_update( $spreadsheet_id, $requests ) {
 		$body = array( 'requests' => $requests );
 		$url  = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}:batchUpdate";
-		return $this->_make_google_api_request( $url, $body, 'POST' );
+		return $this->make_google_api_request( $url, $body, 'POST' );
 	}
 
 	/**
@@ -738,7 +745,7 @@ class Send_Data {
 		$url = 'https://www.googleapis.com/drive/v3/files?fields=id';
 
 		try {
-			$response = $this->_make_google_api_request( $url, $body, 'POST' );
+			$response = $this->make_google_api_request( $url, $body, 'POST' );
 
 			if ( is_wp_error( $response ) ) {
 				$this->logger->log( sprintf( 'Spreadsheet creation API error: %s', $response->get_error_message() ) );
@@ -765,7 +772,7 @@ class Send_Data {
 	 */
 	protected function get_spreadsheet_metadata( string $spreadsheet_id ) {
 		$url      = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}";
-		$response = $this->_make_google_api_request( $url, array(), 'GET' );
+		$response = $this->make_google_api_request( $url, array(), 'GET' );
 		return $response;
 	}
 
@@ -778,7 +785,7 @@ class Send_Data {
 	 * @param string $query_params Optional query parameters to append to the URL.
 	 * @return array|WP_Error The decoded response body or a WP_Error object.
 	 */
-	protected function _make_google_api_request( string $url, array $body, string $method = 'GET', string $query_params = '' ) {
+	protected function make_google_api_request( string $url, array $body, string $method = 'GET', string $query_params = '' ) {
 		$token = Helper::get_option( 'google_access_token' );
 		if ( ! $token ) {
 			return new WP_Error( 'not_authenticated', 'Google Sheets is not connected.' );
@@ -794,7 +801,7 @@ class Send_Data {
 		);
 
 		if ( ! empty( $body ) ) {
-			$request_args['body'] = json_encode( $body );
+			$request_args['body'] = wp_json_encode( $body );
 		}
 
 		$response = wp_remote_request( $url . $query_params, $request_args );
@@ -899,7 +906,7 @@ class Send_Data {
 		$range = rawurlencode( $sheet_title ) . '!A:A';
 		$url   = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}";
 
-		$response = $this->_make_google_api_request( $url, array(), 'GET' );
+		$response = $this->make_google_api_request( $url, array(), 'GET' );
 
 		if ( is_wp_error( $response ) ) {
 			$this->logger->log( 'Unsync failed for entry ' . $entry_id . ': Could not read sheet to find row. ' . $response->get_error_message(), 'ERROR' );
@@ -982,7 +989,7 @@ class Send_Data {
 		// We'll read the entire sheet content.
 		$range    = rawurlencode( $sheet_title ) . '!A:Z';
 		$url      = "https://sheets.googleapis.com/v4/spreadsheets/{$spreadsheet_id}/values/{$range}";
-		$response = $this->_make_google_api_request( $url, array(), 'GET' );
+		$response = $this->make_google_api_request( $url, array(), 'GET' );
 
 		if ( is_wp_error( $response ) ) {
 			$this->logger->log( 'GSheet sync failed for form ' . $form_id . ': Could not read sheet. ' . $response->get_error_message(), 'ERROR' );
@@ -1051,7 +1058,6 @@ class Send_Data {
 					case 'Note':
 						$update_data['note'] = sanitize_textarea_field( $value );
 						break;
-					// ... add other fixed fields here if they can be edited.
 				}
 			}
 

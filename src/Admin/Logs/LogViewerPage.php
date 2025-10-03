@@ -33,40 +33,45 @@ class LogViewerPage {
 	/**
 	 * Renders the content of the admin page.
 	 */
-	public function render_page() {
-		// Verify nonce for GET requests (viewing logs)
-		$nonce_valid = false;
+    public function render_page() {
+        if ( ! current_user_can( 'manage_options' ) ) { // Use your required capability
+            return;
+        }
 
-		if ( isset( $_GET['_wpnonce'] ) ) {
-			$nonce_valid = wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'entrydashboard-view' );
-		}
+        if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+            if ( check_admin_referer( 'entr_mgr_log_clear' ) === false ) { // Changed key to new prefix
+                printf(
+                    '<div class="notice notice-error is-dismissible"><p>%s</p></div>',
+                    esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
+                );
+                return;
+            }
+        }
 
-		// Verify nonce for POST requests (actions like clear logs)
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-			if ( check_admin_referer( 'entrydashboard-clear' ) === false ) {
+        if ( isset( $_GET['action'], $_GET['file'] ) && $_GET['action'] === 'view_log' ) {
 
-				printf(
-					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-					esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
-				);
+            $nonce_result = wp_verify_nonce(
+                sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ?? '' ) ),
+                'entr_mgr_view_logs' // Use a specific action nonce key
+            );
 
-				return;
-			}
-		}
+            if ( ! $nonce_result ) {
+                printf(
+                    '<div class="notice notice-error is-dismissible"><p>%s</p></div>',
+                    esc_html__( 'Security check failed while viewing log.', 'entries-manager' )
+                );
+                $this->render_log_list(); // Default back to the list
+                return;
+            }
 
-		// Handle log viewing
-		if (
-			isset( $_GET['action'], $_GET['file'] ) &&
-			$_GET['action'] === 'view_log' &&
-			$nonce_valid
-		) {
-			$this->render_single_log_view();
-			return;
-		}
+            // If the nonce is valid, proceed to render the log view
+            $this->render_single_log_view();
+            return;
+        }
 
-		// Default: render log list
-		$this->render_log_list();
-	}
+        // Default: render log list (This is safe as it requires no user intent/action)
+        $this->render_log_list();
+    }
 
 	/**
 	 * Renders the log file list view.
@@ -111,7 +116,7 @@ class LogViewerPage {
 				<p><?php esc_html_e( 'You can manually trigger the log cleanup process.', 'entries-manager' ); ?></p>
 				<form method="post" action="">
 					<input type="hidden" name="action" value="clear_logs">
-					<?php wp_nonce_field( 'entrydashboard-clear' ); ?>
+					<?php wp_nonce_field( 'entr_mgr_log_clear' ); ?>
 					<input type="submit" name="submit" class="button button-danger" value="<?php esc_attr_e( 'Clear Logs Now', 'entries-manager' ); ?>">
 				</form>
 			</div>

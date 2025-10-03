@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 		x-data='{
 			showBulkMenu: false,
 			selectedBulkAction: "",
-			bulkActions: <?php echo json_encode( $entr_mgr_bulk_actions ); ?>,
+			bulkActions: <?php echo wp_json_encode( $entr_mgr_bulk_actions ); ?>,
 			bulkIcon() {
 				const action = this.bulkActions.find(a => a.key === this.selectedBulkAction);
 				return action ? action.icon : "";

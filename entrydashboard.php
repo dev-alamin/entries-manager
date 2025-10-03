@@ -20,7 +20,7 @@
  *
  * @wordpress-plugin
  *
- * Prefix:     edb
+ * Prefix:     entr_mgr
  */
 
 defined( 'ABSPATH' ) || exit;
