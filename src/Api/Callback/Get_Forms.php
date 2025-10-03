@@ -57,7 +57,7 @@ class Get_Forms {
 			);
 		}
 
-		$response = apply_filters( 'fem_get_forms', $forms );
+		$response = apply_filters( 'entr_mgr_get_forms', $forms );
 
 		// Cache the result for future use.
 		Helper::update_option( $cache_key, $response );
@@ -76,8 +76,8 @@ class Get_Forms {
 
 		if ( $form_id <= 0 ) {
 			return new WP_Error(
-				'fem_invalid_form_id',
-				__( 'Invalid or missing form ID.', 'entrydashboard' ),
+				'entr_mgr_invalid_form_id',
+				__( 'Invalid or missing form ID.', 'entries-manager' ),
 				array( 'status' => 400 )
 			);
 		}

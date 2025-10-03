@@ -34,7 +34,7 @@ class Send_Data {
 		if ( check_admin_referer( 'revoke_connection_nonce' ) === false ) {
 			printf(
 				'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-				esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
+				esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
 			);
 		}
 
@@ -46,7 +46,7 @@ class Send_Data {
 		$success = Helper::revokeConnection();
 
 		// Set a redirect URL with a status message
-		$redirect_url = admin_url( 'admin.php?page=form-entries-settings' );
+		$redirect_url = admin_url( 'admin.php?page=entrydashboard-entries-manager-settings' );
 		if ( $success ) {
 			$redirect_url = add_query_arg( 'revoked', 'success', $redirect_url );
 		} else {
@@ -68,7 +68,7 @@ class Send_Data {
 
 		// Exchange the one-time auth code for real tokens
 		$response = wp_remote_post(
-			FEM_PROXY_BASE_URL . 'wp-json/swpfe/v1/token',
+			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/token',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
 				'body'    => json_encode(
@@ -92,7 +92,7 @@ class Send_Data {
 
 			Helper::update_option( 'user_remvoked_google_connection', false );
 			// Optional: Store refresh token too if ever needed on client (rare)
-			wp_safe_redirect( admin_url( 'admin.php?page=form-entries-settings&connected=true' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=entrydashboard-entries-manager-settings&connected=true' ) );
 			exit;
 		}
 
@@ -109,7 +109,7 @@ class Send_Data {
 	protected function get_or_create_sheet_for_form( int $form_id ) {
 		// Enforce Free Version form limitation
 		if ( ! Helper::is_pro_version() ) {
-			$linked_forms = Helper::get_option( 'fem_linked_forms', array() );
+			$linked_forms = Helper::get_option( 'entr_mgr_linked_forms', array() );
 			if ( ! in_array( $form_id, $linked_forms ) && count( $linked_forms ) >= 1 ) {
 				return new WP_Error( 'limit_exceeded', 'The free version supports synchronizing data from only one form. Please upgrade to Pro to sync more forms.' );
 			}
@@ -129,7 +129,7 @@ class Send_Data {
 		}
 
 		// Prevent multiple simultaneous creation attempts for the same form.
-		$lock_key = 'fem_gsheet_creating_lock_' . $form_id;
+		$lock_key = 'entr_mgr_gsheet_creating_lock_' . $form_id;
 		if ( get_transient( $lock_key ) ) {
 			return new WP_Error( 'locked', 'Sheet creation for this form is already in progress.' );
 		}
@@ -150,10 +150,10 @@ class Send_Data {
 			Helper::update_option( "gsheet_spreadsheet_title_{$form_id}", $spreadsheet_title ); // Save for UI
 
 			// Track linked forms for the free version
-			$linked_forms = Helper::get_option( 'fem_linked_forms', array() );
+			$linked_forms = Helper::get_option( 'entr_mgr_linked_forms', array() );
 			if ( ! in_array( $form_id, $linked_forms ) ) {
 				$linked_forms[] = $form_id;
-				Helper::update_option( 'fem_linked_forms', $linked_forms );
+				Helper::update_option( 'entr_mgr_linked_forms', $linked_forms );
 			}
 		}
 
@@ -364,7 +364,7 @@ class Send_Data {
 			);
 
 			// Step 3: Track notifications
-			$notification_sent = get_transient( 'fem_limit_notification_sent' ) ?: array();
+			$notification_sent = get_transient( 'entr_mgr_limit_notification_sent' ) ?: array();
 
 			foreach ( $thresholds as $key => $val ) {
 				if ( $entry_count >= $val ) {
@@ -385,8 +385,8 @@ class Send_Data {
 				);
 
 				// Unschedule AS jobs for this form
-				as_unschedule_all_actions( 'fem_every_five_minute_sync' );
-				as_unschedule_action( 'fem_daily_sync' );
+				as_unschedule_all_actions( 'entr_mgr_every_five_minute_sync' );
+				as_unschedule_action( 'entr_mgr_daily_sync' );
 
 				$this->logger->log( 'Action Scheduler jobs for form ' . $form_id . ' unscheduled due to row limit.', 'INFO' );
 
@@ -395,11 +395,11 @@ class Send_Data {
 		}
 
 		// Ensure Action Scheduler jobs are scheduled
-		if ( ! as_has_scheduled_action( 'fem_daily_sync' ) ) {
-			as_schedule_recurring_action( strtotime( 'tomorrow 2am' ), DAY_IN_SECONDS, 'fem_daily_sync' );
+		if ( ! as_has_scheduled_action( 'entr_mgr_daily_sync' ) ) {
+			as_schedule_recurring_action( strtotime( 'tomorrow 2am' ), DAY_IN_SECONDS, 'entr_mgr_daily_sync' );
 		}
-		if ( ! as_next_scheduled_action( 'fem_every_five_minute_sync' ) ) {
-			as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 1, 'fem_every_five_minute_sync' );
+		if ( ! as_next_scheduled_action( 'entr_mgr_every_five_minute_sync' ) ) {
+			as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 1, 'entr_mgr_every_five_minute_sync' );
 		}
 
 		return true;
@@ -429,7 +429,7 @@ class Send_Data {
 		if ( ! in_array( $threshold, $notification_sent, true ) ) {
 			$this->_send_email( $threshold === '0' ? 0 : (int) $threshold, $form_id );
 			$notification_sent[] = $threshold;
-			set_transient( 'fem_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
+			set_transient( 'entr_mgr_limit_notification_sent', $notification_sent, DAY_IN_SECONDS );
 		}
 	}
 
@@ -485,12 +485,12 @@ class Send_Data {
 		if ( empty( $sample_submission ) ) {
 			// If no submission, return a default header set.
 			$headers = array(
-				__( 'Entry ID', 'entrydashboard' ),
-				__( 'Submission Date', 'entrydashboard' ),
-				__( 'Name', 'entrydashboard' ),
-				__( 'Email', 'entrydashboard' ),
-				__( 'Status', 'entrydashboard' ),
-				__( 'Note', 'entrydashboard' ),
+				__( 'Entry ID', 'entries-manager' ),
+				__( 'Submission Date', 'entries-manager' ),
+				__( 'Name', 'entries-manager' ),
+				__( 'Email', 'entries-manager' ),
+				__( 'Status', 'entries-manager' ),
+				__( 'Note', 'entries-manager' ),
 			);
 			Helper::update_option( "gsheet_headers_{$form_id}", $headers );
 			return $headers;
@@ -524,10 +524,10 @@ class Send_Data {
 		$headers = array();
 
 		// Standard fields (in order)
-		$headers[] = __( 'Entry ID', 'entrydashboard' );
-		$headers[] = __( 'Submission Date', 'entrydashboard' );
-		$headers[] = __( 'Name', 'entrydashboard' );
-		$headers[] = __( 'Email', 'entrydashboard' );
+		$headers[] = __( 'Entry ID', 'entries-manager' );
+		$headers[] = __( 'Submission Date', 'entries-manager' );
+		$headers[] = __( 'Name', 'entries-manager' );
+		$headers[] = __( 'Email', 'entries-manager' );
 
 		// Dynamic fields (from filtered_entry_data)
 		// We should get these in a consistent order, perhaps alphabetical.
@@ -538,8 +538,8 @@ class Send_Data {
 		}
 
 		// Final standard fields
-		$headers[] = __( 'Status', 'entrydashboard' );
-		$headers[] = __( 'Note', 'entrydashboard' );
+		$headers[] = __( 'Status', 'entries-manager' );
+		$headers[] = __( 'Note', 'entries-manager' );
 
 		// Ensure all headers are unique (though with the de-duplication, they should be)
 		$headers = array_values( array_unique( $headers ) );
@@ -592,22 +592,22 @@ class Send_Data {
 			$value = '';
 
 			switch ( $header_title ) {
-				case __( 'Entry ID', 'entrydashboard' ):
+				case __( 'Entry ID', 'entries-manager' ):
 					$value = $entry->id;
 					break;
-				case __( 'Submission Date', 'entrydashboard' ):
+				case __( 'Submission Date', 'entries-manager' ):
 					$value = get_date_from_gmt( $entry->created_at, 'Y-m-d H:i:s' );
 					break;
-				case __( 'Name', 'entrydashboard' ):
+				case __( 'Name', 'entries-manager' ):
 					$value = $entry->name;
 					break;
-				case __( 'Email', 'entrydashboard' ):
+				case __( 'Email', 'entries-manager' ):
 					$value = $entry->email;
 					break;
-				case __( 'Status', 'entrydashboard' ):
+				case __( 'Status', 'entries-manager' ):
 					$value = $entry->status ?? '';
 					break;
-				case __( 'Note', 'entrydashboard' ):
+				case __( 'Note', 'entries-manager' ):
 					$value = $entry->note ?? '';
 					break;
 				default:
@@ -700,7 +700,7 @@ class Send_Data {
 			$wpdb->update( $table, array( 'retry_count' => $current_retry_count + 1 ), array( 'id' => $entry_id ) );
 			// Schedule retry with exponential backoff
 			$delay = 60 * pow( 2, $current_retry_count ); // 1 min, 2 min, 4 min, etc.
-			as_schedule_single_action( time() + $delay, 'fem_process_gsheet_entry', array( 'entry_id' => $entry_id ) );
+			as_schedule_single_action( time() + $delay, 'entr_mgr_process_gsheet_entry', array( 'entry_id' => $entry_id ) );
 		} else {
 			$this->logger->log( 'Max retry limit reached for entry ID ' . $entry_id . '. Sync abandoned.', 'ERROR' );
 			// Optionally, mark as failed in the DB
@@ -727,7 +727,7 @@ class Send_Data {
 		// Validate input.
 		if ( empty( $title ) ) {
 			$this->logger->log( 'Spreadsheet creation failed: Empty title provided.' );
-			return new WP_Error( 'invalid_title', __( 'Spreadsheet title cannot be empty.', 'entrydashboard' ) );
+			return new WP_Error( 'invalid_title', __( 'Spreadsheet title cannot be empty.', 'entries-manager' ) );
 		}
 
 		$body = array(
@@ -747,7 +747,7 @@ class Send_Data {
 
 			if ( empty( $response['id'] ) ) {
 				$this->logger->log( 'Spreadsheet creation failed: No ID returned from Google API.', array( 'response' => $response ) );
-				return new WP_Error( 'create_failed', __( 'Google API did not return a spreadsheet ID.', 'entrydashboard' ) );
+				return new WP_Error( 'create_failed', __( 'Google API did not return a spreadsheet ID.', 'entries-manager' ) );
 			}
 
 			$this->logger->log( sprintf( 'Spreadsheet created successfully: %s', $response['id'] ), 'info' );
@@ -755,7 +755,7 @@ class Send_Data {
 
 		} catch ( \Exception $e ) {
 			$this->logger->log( sprintf( 'Spreadsheet creation exception: %s', $e->getMessage() ), 'info' );
-			return new WP_Error( 'exception', __( 'Spreadsheet creation encountered an error. Please try again.', 'entrydashboard' ) );
+			return new WP_Error( 'exception', __( 'Spreadsheet creation encountered an error. Please try again.', 'entries-manager' ) );
 		}
 	}
 
@@ -855,8 +855,8 @@ class Send_Data {
 			$scheduled_time = $now + ( $index * $delay_between );
 
 			// Check if already scheduled to avoid duplicates
-			if ( ! as_next_scheduled_action( 'fem_process_gsheet_entry', array( 'entry_id' => $entry->id ) ) ) {
-				as_schedule_single_action( $scheduled_time, 'fem_process_gsheet_entry', array( 'entry_id' => $entry->id ) );
+			if ( ! as_next_scheduled_action( 'entr_mgr_process_gsheet_entry', array( 'entry_id' => $entry->id ) ) ) {
+				as_schedule_single_action( $scheduled_time, 'entr_mgr_process_gsheet_entry', array( 'entry_id' => $entry->id ) );
 			}
 		}
 

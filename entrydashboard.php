@@ -1,12 +1,11 @@
 <?php
 /**
- * Plugin Name: EntryDashboard – Forms Entries Manager
+ * Plugin Name: EntryDashboard – Entry Manager for Forms
  * Plugin URI:  https://entriesmanager.com/
  * Description: A centralized dashboard to manage, search, and sync form submissions from WPForms, Contact Form 7, Elementor, and more. Transform your WordPress into a mini-CRM.
  * Version:     1.0.0
  * Author:      EntriesManager
- * Author URI:  https://entriesmanager.com/
- * Text Domain: entrydashboard
+ * Text Domain: entries-manager
  * Domain Path: /languages
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -35,8 +34,8 @@ require_once __DIR__ . '/vendor/autoload.php';
  * If WP_DEBUG_LOG is enabled, it uses the current timestamp; otherwise, it uses a fixed version number.
  */
 
-if( ! defined( 'FEM_VERSION' ) ) {
-    define( 'FEM_VERSION', WP_DEBUG_LOG ? time() : '1.0.0' );
+if( ! defined( 'ENTR_MGR_VERSION' ) ) {
+    define( 'ENTR_MGR_VERSION', WP_DEBUG_LOG ? time() : '1.0.0' );
 }
 
 /**
@@ -44,8 +43,8 @@ if( ! defined( 'FEM_VERSION' ) ) {
  * 
  * This is used to include files and for various plugin functionalities.
  */
-if( ! defined( 'FEM_PATH' ) ) {
-    define( 'FEM_PATH', plugin_dir_path( __FILE__ ) );
+if( ! defined( 'ENTR_MGR_PATH' ) ) {
+    define( 'ENTR_MGR_PATH', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -53,8 +52,8 @@ if( ! defined( 'FEM_PATH' ) ) {
  * 
  * This is used to load assets and for various plugin functionalities.
  */
-if( ! defined( 'FEM_URL' ) ) {
-    define( 'FEM_URL', plugin_dir_url( __FILE__ ) );
+if( ! defined( 'ENTR_MGR_URL' ) ) {
+    define( 'ENTR_MGR_URL', plugin_dir_url( __FILE__ ) );
 }
 
 /**
@@ -62,8 +61,8 @@ if( ! defined( 'FEM_URL' ) ) {
  * 
  * This is used to load CSS, JS, and other assets from the plugin directory.
  */
-if( ! defined( 'FEM_ASSETS_URL' ) ) {
-    define( 'FEM_ASSETS_URL', FEM_URL . 'assets/' );
+if( ! defined( 'ENTR_MGR_ASSETS_URL' ) ) {
+    define( 'ENTR_MGR_ASSETS_URL', ENTR_MGR_URL . 'assets/' );
 }
 
 /**
@@ -71,8 +70,8 @@ if( ! defined( 'FEM_ASSETS_URL' ) ) {
  * 
  * This is used to ensure that the plugin's prefix is consistent across the plugin.
  */
-if( ! defined( 'FEM_PREFIX' ) ) {
-    define( 'FEM_PREFIX', 'FEM_' );
+if( ! defined( 'ENTR_MGR_PREFIX' ) ) {
+    define( 'ENTR_MGR_PREFIX', 'ENTR_MGR_' );
 }
 
 /**
@@ -81,8 +80,8 @@ if( ! defined( 'FEM_PREFIX' ) ) {
  * This is used to ensure the table name is consistent across the plugin.
  * It is also used in the database handler to create and access the custom entries table.
  */
-if( ! defined( 'FEM_TABLE_NAME' ) ) {
-    define( 'FEM_TABLE_NAME', 'fem_entries_manager' );
+if( ! defined( 'ENTR_MGR_TABLE_NAME' ) ) {
+    define( 'ENTR_MGR_TABLE_NAME', 'entr_mgr_entries_manager' );
 }
 
 /**
@@ -91,8 +90,8 @@ if( ! defined( 'FEM_TABLE_NAME' ) ) {
  * This is used to manage database migrations and updates.
  * It should be incremented whenever there are changes to the database schema.
  */
-if( ! defined( 'FEM_DB_VERSION' ) ) {
-    define( 'FEM_DB_VERSION', '1.0.0' );
+if( ! defined( 'ENTR_MGR_DB_VERSION' ) ) {
+    define( 'ENTR_MGR_DB_VERSION', '1.0.0' );
 }
 
 /**
@@ -100,12 +99,12 @@ if( ! defined( 'FEM_DB_VERSION' ) ) {
  * 
  * This is where the proxy server of google authorization will be handled
  */
-if( ! defined( 'FEM_PROXY_BASE_URL' ) ) {
-    define( 'FEM_PROXY_BASE_URL', trailingslashit( 'https://backend.entriesmanager.com' ) );
+if( ! defined( 'ENTR_MGR_PROXY_BASE_URL' ) ) {
+    define( 'ENTR_MGR_PROXY_BASE_URL', trailingslashit( 'https://backend.entriesmanager.com' ) );
 }
 
-if( ! defined( 'FEM_GOOGLE_PROXY_URL' ) ) {
-    define( 'FEM_GOOGLE_PROXY_URL', 'https://backend.entriesmanager.com/oauth/init' );
+if( ! defined( 'ENTR_MGR_GOOGLE_PROXY_URL' ) ) {
+    define( 'ENTR_MGR_GOOGLE_PROXY_URL', 'https://backend.entriesmanager.com/oauth/init' );
 }
 
 /**
@@ -114,9 +113,9 @@ if( ! defined( 'FEM_GOOGLE_PROXY_URL' ) ) {
  * This is used to ensure that the plugin's base path is consistent across the plugin.
  * It is also used in the plugin's main file to ensure that the plugin is loaded correctly
  */
-define( 'FEM_PLUGIN_BASE', plugin_basename( __FILE__ ) );
+define( 'ENTR_MGR_PLUGIN_BASE', plugin_basename( __FILE__ ) );
 
-define( 'FEM_PLUGIN_BASE_FILE', __FILE__ );
+define( 'ENTR_MGR_PLUGIN_BASE_FILE', __FILE__ );
 
 use Amin\FormsEntriesManager\Plugin;
 
@@ -125,11 +124,11 @@ use Amin\FormsEntriesManager\Plugin;
  *
  * This function is called to start the plugin and set up necessary components.
  */
-function fem_init() {
+function entr_mgr_init() {
     return Plugin::init();
 }
 
 // Kick-off the plugin initialization
-fem_init();
+entr_mgr_init();
 
 add_filter( 'wpcf7_verify_nonce', '__return_true' );

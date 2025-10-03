@@ -24,7 +24,7 @@ class Bulk_Action {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Invalid or missing entry IDs.', 'entrydashboard' ),
+					'message' => __( 'Invalid or missing entry IDs.', 'entries-manager' ),
 				),
 				400
 			);
@@ -74,7 +74,7 @@ class Bulk_Action {
 				return new WP_REST_Response(
 					array(
 						'success' => false,
-						'message' => __( 'Invalid action provided.', 'entrydashboard' ),
+						'message' => __( 'Invalid action provided.', 'entries-manager' ),
 					),
 					400
 				);
@@ -90,7 +90,7 @@ class Bulk_Action {
 						'%d entry deleted.',
 						'%d entries deleted.',
 						$affected,
-						'entrydashboard'
+						'entries-manager'
 					),
 					$affected
 				)
@@ -100,7 +100,7 @@ class Bulk_Action {
 							'%d entry updated.',
 							'%d entries updated.',
 							$affected,
-							'entrydashboard'
+							'entries-manager'
 						),
 						$affected
 					),
@@ -169,7 +169,7 @@ class Bulk_Action {
 		$ids = array_unique( array_map( 'absint', $request->get_param( 'ids' ) ) );
 
 		if ( empty( $ids ) ) {
-			return new WP_Error( 'invalid_data', __( 'No entries selected.', 'entrydashboard' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_data', __( 'No entries selected.', 'entries-manager' ), array( 'status' => 400 ) );
 		}
 
 		$submissions_table = Helper::get_submission_table();
@@ -187,7 +187,7 @@ class Bulk_Action {
 		);
 
 		if ( empty( $submissions ) ) {
-			return new WP_Error( 'no_data', __( 'No data found.', 'entrydashboard' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no_data', __( 'No data found.', 'entries-manager' ), array( 'status' => 404 ) );
 		}
 
 		// Process and structure the data.
@@ -201,9 +201,9 @@ class Bulk_Action {
 		global $wp_filesystem;
 
 		// Create a temp file path using WordPress temp path.
-		$tmp_file = wp_tempnam( 'fem-entries.csv' );
+		$tmp_file = wp_tempnam( 'entr-mgr-entries.csv' );
 		if ( ! $tmp_file ) {
-			return new WP_Error( 'fs_error', __( 'Unable to create temp file.', 'entrydashboard' ), array( 'status' => 500 ) );
+			return new WP_Error( 'fs_error', __( 'Unable to create temp file.', 'entries-manager' ), array( 'status' => 500 ) );
 		}
 
 		// Build CSV content in memory.
@@ -215,12 +215,12 @@ class Bulk_Action {
 
 		// Write the full CSV content to the file using put_contents().
 		if ( ! $wp_filesystem->put_contents( $tmp_file, $csv_content, FS_CHMOD_FILE ) ) {
-			return new WP_Error( 'fs_write_error', __( 'Unable to write to temp file.', 'entrydashboard' ), array( 'status' => 500 ) );
+			return new WP_Error( 'fs_write_error', __( 'Unable to write to temp file.', 'entries-manager' ), array( 'status' => 500 ) );
 		}
 
 		// Set HTTP headers for file download
 		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename="fem-entries.csv"' );
+		header( 'Content-Disposition: attachment; filename="entr-mgr-entries.csv"' );
 
 		// Output the raw CSV content directly.
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -11,7 +11,7 @@ use Amin\FormsEntriesManager\Utility\DB;
 
 class Helper {
 
-	const OPTION_PREFIX = 'fem_';
+	const OPTION_PREFIX = 'entr_mgr_';
 	protected static $logger;
 
 	protected static function getLogger() {
@@ -38,7 +38,7 @@ class Helper {
 	 */
 	public static function get_table_name(): string {
 		global $wpdb;
-		// return $wpdb->prefix . FEM_TABLE_NAME;
+		// return $wpdb->prefix . ENTR_MGR_TABLE_NAME;
 		return $wpdb->prefix . 'forms_entries_manager';
 	}
 
@@ -49,7 +49,7 @@ class Helper {
 	 */
 	public static function get_submission_table(): string {
 		global $wpdb;
-		// return $wpdb->prefix . FEM_TABLE_NAME;
+		// return $wpdb->prefix . ENTR_MGR_TABLE_NAME;
 		return $wpdb->prefix . 'forms_em_submissions';
 	}
 
@@ -60,7 +60,7 @@ class Helper {
 	 */
 	public static function get_data_table(): string {
 		global $wpdb;
-		// return $wpdb->prefix . FEM_TABLE_NAME;
+		// return $wpdb->prefix . ENTR_MGR_TABLE_NAME;
 		return $wpdb->prefix . 'forms_em_data';
 	}
 
@@ -328,7 +328,7 @@ class Helper {
 
 		// Else: Refresh via POST request to proxy's REST endpoint
 		$response = wp_remote_post(
-			FEM_PROXY_BASE_URL . 'wp-json/swpfe/v1/refresh',
+			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/refresh',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
 				'body'    => json_encode(
@@ -416,7 +416,7 @@ class Helper {
 		// Make a POST request to your proxy's revoke endpoint.
 		// Assuming your proxy has a dedicated endpoint for this purpose.
 		$response = wp_remote_post(
-			FEM_PROXY_BASE_URL . 'wp-json/swpfe/v1/revoke',
+			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/revoke',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
 				'body'    => json_encode(
@@ -444,9 +444,9 @@ class Helper {
 
 		// Unschedule all synchronization actions.
 		if ( $deleted_access || $deleted_expires ) {
-			as_unschedule_all_actions( 'fem_every_five_minute_sync' );
+			as_unschedule_all_actions( 'entr_mgr_every_five_minute_sync' );
 			// The key addition: also unschedule the daily sync.
-			as_unschedule_all_actions( 'fem_daily_sync' );
+			as_unschedule_all_actions( 'entr_mgr_daily_sync' );
 		}
 
 		// Return true if the local deletion was successful, confirming the disconnected state.
@@ -475,7 +475,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_settings_page_url() {
-		return admin_url( 'admin.php?page=form-entries-settings' );
+		return admin_url( 'admin.php?page=entrydashboard-entries-manager-settings' );
 	}
 
 	/**
@@ -499,7 +499,7 @@ class Helper {
 	 */
 	public static function seconds_to_human_readable( int $seconds ): string {
 		if ( $seconds <= 0 ) {
-			return esc_html__( 'Expired', 'entrydashboard' );
+			return esc_html__( 'Expired', 'entries-manager' );
 		}
 
 		$h = floor( $seconds / 3600 );
@@ -509,7 +509,7 @@ class Helper {
 			return trim( ( $h ? $h . 'h ' : '' ) . ( $m ? $m . 'm' : '' ) );
 		}
 
-		return esc_html__( 'Less than a minute', 'entrydashboard' );
+		return esc_html__( 'Less than a minute', 'entries-manager' );
 	}
 
 	/**
@@ -533,8 +533,8 @@ class Helper {
 			return array();
 		}
 
-		$cache_key = 'fem_entries_' . md5( implode( ',', $ids ) );
-		$entries   = wp_cache_get( $cache_key, 'fem' );
+		$cache_key = 'entr_mgr_entries_' . md5( implode( ',', $ids ) );
+		$entries   = wp_cache_get( $cache_key, 'entr_mgr' );
 
         // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 		if ( false === $entries ) {
@@ -555,7 +555,7 @@ class Helper {
 				ARRAY_A
 			);
 
-			wp_cache_set( $cache_key, $entries, 'fem', 300 ); // cache 5 mins
+			wp_cache_set( $cache_key, $entries, 'entr_mgr', 300 ); // cache 5 mins
 		}
 
 		return $entries ?: array();
@@ -625,7 +625,7 @@ class Helper {
 			$wpdb->query( 'COMMIT' );
 
 			// Clear cache after successful update.
-			wp_cache_delete( 'fem_entries_' . $id, 'fem' );
+			wp_cache_delete( 'entr_mgr_entries_' . $id, 'entr_mgr' );
 
 			return true;
 
@@ -722,7 +722,7 @@ class Helper {
 			$wpdb->query( 'COMMIT' );
 
 			// Clear the cache after successful deletion.
-			wp_cache_delete( 'fem_entries_' . $id, 'fem' );
+			wp_cache_delete( 'entr_mgr_entries_' . $id, 'entr_mgr' );
 
 			return true;
 

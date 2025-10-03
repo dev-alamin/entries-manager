@@ -226,7 +226,7 @@ class Get_Entries {
 
 		// Get the base upload URL once for efficiency.
 		$upload_dir      = wp_upload_dir();
-		$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'fem-cf7-uploads';
+		$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'entr-mgr-cf7-uploads';
 
 		// Iterate through submissions and build the final data structure.
 		foreach ( $submissions as $submission ) {
@@ -322,6 +322,6 @@ class Get_Entries {
 			)
 		);
 
-		return apply_filters( 'fem_get_entries_response', $response, null );
+		return apply_filters( 'entr_mgr_get_entries_response', $response, null );
 	}
 }

@@ -15,7 +15,7 @@ class FileHandler {
 
 	public function __construct( $logger ) {
 		$upload_dir        = wp_upload_dir();
-		$this->private_dir = trailingslashit( $upload_dir['basedir'] ) . 'fem-cf7-uploads';
+		$this->private_dir = trailingslashit( $upload_dir['basedir'] ) . 'entr-mgr-cf7-uploads';
 		$this->logger      = $logger;
 		$this->file_system = new FileSystem(); // Initialize the FileSystem instance
 

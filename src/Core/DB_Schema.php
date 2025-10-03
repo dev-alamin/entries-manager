@@ -96,6 +96,6 @@ class DB_Schema {
 		dbDelta( $sql_entries );
 
 		// Save the database version for future reference.
-		Helper::update_option( 'db_version', FEM_DB_VERSION );
+		Helper::update_option( 'db_version', ENTR_MGR_DB_VERSION );
 	}
 }

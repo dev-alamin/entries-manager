@@ -1,10 +1,10 @@
-=== EntryDashboard – Forms Entries Manager for WPForms, Contact Form 7, and More ===
+=== EntryDashboard – Entry Manager for Forms ===
 Contributors: coderalamin
 Tags: form entries, submissions, crm, wpforms, contact form 7, elementor, google sheets
 Requires at least: 5.4
 Tested up to: 6.8
 Stable tag: 1.0.0
-Requires PHP: 7.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,29 +28,36 @@ Think of it as your **mini-CRM**—but directly inside WordPress.
 * **Mini-CRM Features** – Add private notes, star favorites, and keep track of follow-ups.  
 * **Google Sheets Integration** – Secure OAuth 2.0 connection, no API keys required.  
 * **Smarter Workflow** – Bulk actions, status management, quick-view modals, and more.  
-* **Export Data Easily** – Export filtered entries to CSV (Excel/PDF support in Pro).  
+* **Export Data Easily** – Export filtered entries to CSV.  
 
 ---
 
 ### 🚀 Free Features
 
 * Centralized entry listing with counts for all supported forms.  
+* Grouping per form in admin dashbaord
 * Clean modal view to display entry details.  
+* Copy entry easily
 * Read/Unread status management.  
 * Favorite (star) important entries.  
 * Bulk actions for deleting, marking status, and more.  
 * Global search and date range filtering.  
 * Print-friendly entry view.  
 * Notes & comments on entries (mini-CRM style).  
-* Google Sheets integration with OAuth 2.0 (manual and auto sync).  
+* Google Sheets integration with OAuth 2.0 (manual and auto sync).
+* Google Sheet Sync (upto 500 rows) still it will be saved in db and thus resync after upgrade
+* Manually Sync individual entry (Click every entry to send in sheet)
+* Manually Unsync individual entry (Remove from sheet)
+* Live view of connected email for entry sync
 * Export to CSV.  
 
 ---
 
 ### 🌟 Premium (Pro) Features  
 
-*(Planned for release – not included in free version)*  
-
+* Unlimited Google sheet rows
+* Failed entry re-sync to google sheet
+* Bulk, Asyn entry sync to google sheet with Action Scheduler
 * Export entries to **Excel (XLSX)** and **PDF**.  
 * Advanced reporting and analytics.  
 * Integrations with **Gravity Forms**, **Ninja Forms**, and more.  
@@ -66,6 +73,28 @@ Think of it as your **mini-CRM**—but directly inside WordPress.
 * Works with **Contact Form 7**.  
 * Works with **Elementor Forms**.  
 * More integrations (like Gravity Forms, Ninja Forms) coming soon.  
+
+---
+
+== External Services ==
+
+This plugin connects to Google Sheets API to sync WPForms, Contact Form 7, and other form entries to spreadsheets. 
+
+**What it does:**  
+- Sends form entry data (like name, email, and submission fields) to your designated Google Sheet when syncing.  
+- Receives data updates if using bidirectional sync (if applicable).  
+
+**When data is sent:**  
+- Each time an entry is synced manually or automatically via scheduled sync.  
+
+**Service provider:**  
+- Google Sheets API (Google LLC)  
+- Terms of Service: https://policies.google.com/terms  
+- Privacy Policy: https://policies.google.com/privacy
+
+**User control:**  
+- Users can choose which forms and which fields are synced.  
+- Sync can be disabled at any time in the plugin settings.
 
 ---
 

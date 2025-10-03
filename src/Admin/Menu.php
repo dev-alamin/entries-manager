@@ -45,32 +45,34 @@ class Menu {
 	public function add_menu() {
 		$legacy_table_exists = Helper::table_exists( 'wpforms_db' );
 
+        $parent_slug = 'entrydashboard-entries-manager';
+
 		add_menu_page(
-			__( 'Forms Entries', 'entrydashboard' ),
-			__( 'Forms Entries', 'entrydashboard' ),
+			__( 'Forms Entries', 'entries-manager' ),
+			__( 'Forms Entries', 'entries-manager' ),
 			'manage_options',
-			'entrydashboard',
+			$parent_slug,
 			array( $this, 'render_page' ),
 			'dashicons-feedback',
 			25
 		);
 
 		add_submenu_page(
-			'entrydashboard',
-			__( 'WPForms Entry Sync Settings', 'entrydashboard' ),
-			__( 'Settings', 'entrydashboard' ),
+			$parent_slug,
+			__( 'WPForms Entry Sync Settings', 'entries-manager' ),
+			__( 'Settings', 'entries-manager' ),
 			'manage_options',
-			'entrydashboard-settings',
+			$parent_slug . '-settings',
 			array( $this, 'render_settings_page' ),
 			65
 		);
 
 		add_submenu_page(
-			'entrydashboard',
-			__( 'Logs', 'entrydashboard' ),
-			__( 'Logs', 'entrydashboard' ),
+			$parent_slug,
+			__( 'Logs', 'entries-manager' ),
+			__( 'Logs', 'entries-manager' ),
 			'manage_options',
-			'entrydashboard-logs',
+			$parent_slug . '-logs',
 			array( $this->log_viewer_page, 'render_page' )
 		);
 
@@ -79,11 +81,11 @@ class Menu {
 		&& Helper::is_pro_version()
 		) :
 			add_submenu_page(
-				'entrydashboard',
-				__( 'Migration', 'entrydashboard' ),
-				__( 'Migration', 'entrydashboard' ),
+				$parent_slug,
+				__( 'Migration', 'entries-manager' ),
+				__( 'Migration', 'entries-manager' ),
 				'manage_options',
-				'entrydashboard-migration',
+				$parent_slug . '-migration',
 				array( $this, 'render_migration_page' )
 			);
 		endif;

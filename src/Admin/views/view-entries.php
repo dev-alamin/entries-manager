@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-do_action( 'fem_before_entries_ui' );
+do_action( 'entr_mgr_before_entries_ui' );
 ?>
 
 <div
@@ -21,22 +21,22 @@ do_action( 'fem_before_entries_ui' );
 <div
 	x-data="entriesApp()"
 	x-init="fetchForms()"
-	class="wrap fem-admin-page min-h-screen !m-auto px-8 py-10 text-[15px] font-inter"
+	class="wrap entr-mgr-admin-page min-h-screen !m-auto px-8 py-10 text-[15px] font-inter"
 	role="main"
-	aria-label="<?php echo esc_attr__( 'EntryDashboard Overview', 'entrydashboard' ); ?>">
+	aria-label="<?php echo esc_attr__( 'EntryDashboard Overview', 'entries-manager' ); ?>">
 
-	<?php do_action( 'fem_before_entries_ui_header' ); ?>
+	<?php do_action( 'entr_mgr_before_entries_ui_header' ); ?>
 	<!-- Header -->
 	<div class="mb-8 bg-slate-700 text-white px-4 py-2 rounded-lg">
 		<div class="flex items-center gap-4">
-				<img src="<?php echo esc_url( FEM_ASSETS_URL . 'images/logo.jpg' ); ?>" alt="<?php esc_attr_e( 'EntryDashboard', 'entrydashboard' ); ?>" class="w-16 h-16 object-cover rounded-sm" />
+				<img src="<?php echo esc_url( ENTR_MGR_ASSETS_URL . 'images/logo.jpg' ); ?>" alt="<?php esc_attr_e( 'EntryDashboard', 'entries-manager' ); ?>" class="w-16 h-16 object-cover rounded-sm" />
 				<div>
 					<h1 class="!text-3xl !font-extrabold !text-indigo-100 !tracking-tight mb-2 flex items-center gap-3">
-					<?php esc_html_e( 'EntryDashboard Overview', 'entrydashboard' ); ?>
+					<?php esc_html_e( 'EntryDashboard Overview', 'entries-manager' ); ?>
 				</h1>
 				<p class="text-gray-200 !text-[15px] leading-relaxed !m-0 !mt-2">
 					<?php
-					esc_html_e( 'Browse and manage form entries submitted by users. Click on a form to view its submissions, mark entries as read/unread, or delete them as needed.', 'entrydashboard' );
+					esc_html_e( 'Browse and manage form entries submitted by users. Click on a form to view its submissions, mark entries as read/unread, or delete them as needed.', 'entries-manager' );
 					?>
 				</p>
 				</div>
@@ -63,26 +63,26 @@ do_action( 'fem_before_entries_ui' );
 						<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-700" viewBox="0 0 24 24" fill="currentColor">
 							<path d="M20 2H4C2.9 2 2 2.9 2 4v4c0 1.1.9 2 2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 8H4V4h16v6z" />
 						</svg>
-						<span x-text="femMigrationNotice.title"></span>
+						<span x-text="entrMgrMigrationNotice.title"></span>
 					</h2>
-					<p class="text-sm" x-html="femMigrationNotice.message"></p>
+					<p class="text-sm" x-html="entrMgrMigrationNotice.message"></p>
 				</div>
 
 				<div class="flex gap-2">
 					<button
-						@click="window.location.href = '<?php echo esc_url( admin_url( 'admin.php?page=fem-migration' ) ); ?>'"
+						@click="window.location.href = '<?php echo esc_url( admin_url( 'admin.php?page=entr-mgr-migration' ) ); ?>'"
 						class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md transition">
 						<!-- Material Icon: rocket_launch -->
 						<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
 							<path d="M20 2c-2 0-3.94.79-5.38 2.21l-1.44 1.44 4.24 4.24 1.44-1.44C21.21 8.94 22 7 22 5c0-1.1-.9-2-2-2zm-8.49 4.91l-7.07 7.07c-.28.28-.49.63-.61 1.01l-1.82 5.55c-.18.56.37 1.1.93.93l5.55-1.82c.38-.12.73-.33 1.01-.61l7.07-7.07-4.06-4.06zM5 20h4v2H5v-2z" />
 						</svg>
-						<span x-text="femMigrationNotice.start"></span>
+						<span x-text="entrMgrMigrationNotice.start"></span>
 					</button>
 
 					<button
 						@click="showMigrationNotice = false"
 						class="text-sm text-gray-600 hover:text-gray-900 transition"
-						:aria-label="femMigrationNotice.dismissAlt">
+						:aria-label="entrMgrMigrationNotice.dismissAlt">
 						<!-- Material Icon: close -->
 						<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
@@ -120,16 +120,16 @@ do_action( 'fem_before_entries_ui' );
 						<h2 class="text-xl sm:text-2xl font-semibold text-gray-800 !m-2" x-text="form.form_title"></h2>
 						<p class="text-xs sm:text-sm text-gray-600 font-medium flex items-center gap-2 mt-1 !m-0">
 							<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-bold">
-								<?php esc_html_e( 'ID:', 'entrydashboard' ); ?> <span x-text="form.form_id"></span>
+								<?php esc_html_e( 'ID:', 'entries-manager' ); ?> <span x-text="form.form_id"></span>
 							</span>
 
 							<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">
-								<?php esc_html_e( 'Entries:', 'entrydashboard' ); ?>
+								<?php esc_html_e( 'Entries:', 'entries-manager' ); ?>
 								<span
 									x-text="formatNumber(form.entry_count)"
 									:title="formatFullNumber(form.entry_count)"
 									class="cursor-help"
-									aria-label="<?php esc_attr_e( 'Total number of entries', 'entrydashboard' ); ?>">
+									aria-label="<?php esc_attr_e( 'Total number of entries', 'entries-manager' ); ?>">
 								</span>
 							</span>
 
@@ -137,9 +137,9 @@ do_action( 'fem_before_entries_ui' );
 								class="px-2 py-0.5 rounded-full font-bold"
 								:class="{ 'bg-orange-100 text-orange-700': form.number_unread > 0, 'bg-gray-100 text-gray-500': form.number_unread === 0 }"
 								x-show="form.number_unread > 0"
-								title="<?php esc_attr_e( 'Number of unread entries', 'entrydashboard' ); ?>"
-								aria-label="<?php esc_attr_e( 'Total number of unread entries', 'entrydashboard' ); ?>">
-								<?php esc_html_e( 'Unread:', 'entrydashboard' ); ?> <span x-text="form.number_unread"></span>
+								title="<?php esc_attr_e( 'Number of unread entries', 'entries-manager' ); ?>"
+								aria-label="<?php esc_attr_e( 'Total number of unread entries', 'entries-manager' ); ?>">
+								<?php esc_html_e( 'Unread:', 'entries-manager' ); ?> <span x-text="form.number_unread"></span>
 							</span>
 						</p>
 					</div>
@@ -147,10 +147,10 @@ do_action( 'fem_before_entries_ui' );
 
 				<div class="text-sm font-medium flex items-center gap-1 px-2 py-1 rounded-md text-indigo-700 transition cursor-pointer select-none mb-4 sm:mb-0 sm:mt-0 w-full sm:w-auto justify-center sm:justify-start">
 					<span x-show="!open" class="group-hover:underline" aria-hidden="true">
-						<?php esc_html_e( 'Click to view entries', 'entrydashboard' ); ?>
+						<?php esc_html_e( 'Click to view entries', 'entries-manager' ); ?>
 					</span>
 					<span x-show="open" class="group-hover:underline" aria-hidden="true">
-						<?php esc_html_e( 'Hide entries', 'entrydashboard' ); ?>
+						<?php esc_html_e( 'Hide entries', 'entries-manager' ); ?>
 					</span>
 					<svg :class="open ? 'rotate-180' : ''"
 						class="w-4 h-4 transition-transform duration-300"
@@ -173,7 +173,7 @@ do_action( 'fem_before_entries_ui' );
 				:id="'entries-table-' + form.form_id"
 				role="region"
 				aria-live="polite"
-				aria-label="<?php esc_attr_e( 'Entries table for form', 'entrydashboard' ); ?>"
+				aria-label="<?php esc_attr_e( 'Entries table for form', 'entries-manager' ); ?>"
 				class="overflow-x-auto">
 				<div class="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 min-w-[600px]">
 					<?php
@@ -190,7 +190,7 @@ do_action( 'fem_before_entries_ui' );
 							<input type="checkbox" id="bulk_action_main" @change="toggleSelectAll($event)" class="cursor-pointer" />
 						</div>
 
-						<div role="columnheader"><?php esc_html_e( 'Email', 'entrydashboard' ); ?></div>
+						<div role="columnheader"><?php esc_html_e( 'Email', 'entries-manager' ); ?></div>
 
 						<!-- Custom Columns -->
 						<template x-for="field in chosenFields" :key="field.key">
@@ -200,14 +200,14 @@ do_action( 'fem_before_entries_ui' );
 						</template>
 
 						<div role="columnheader" class="text-center cursor-pointer select-none flex items-center justify-center gap-1" @click="sortByDate">
-							<span><?php esc_html_e( 'Date', 'entrydashboard' ); ?></span>
+							<span><?php esc_html_e( 'Date', 'entries-manager' ); ?></span>
 							<span x-text="sortAsc ? '⬆️' : '⬇️'"></span>
 						</div>
 						<div role="columnheader" class="text-center cursor-pointer select-none flex items-center justify-center gap-1" @click="sortByStatus">
-							<span><?php esc_html_e( 'Status', 'entrydashboard' ); ?></span>
+							<span><?php esc_html_e( 'Status', 'entries-manager' ); ?></span>
 							<span x-text="sortAscStatus ? '⬆️' : '⬇️'"></span>
 						</div>
-						<div role="columnheader" class="text-right"><?php esc_html_e( 'Actions', 'entrydashboard' ); ?></div>
+						<div role="columnheader" class="text-right"><?php esc_html_e( 'Actions', 'entries-manager' ); ?></div>
 					</div>
 
 					<div class="relative min-h-60">
@@ -225,7 +225,7 @@ do_action( 'fem_before_entries_ui' );
 
 								<div
 									class="cursor-pointer truncate flex items-center gap-2"
-									title="<?php echo esc_attr__( 'Click for details', 'entrydashboard' ); ?>"
+									title="<?php echo esc_attr__( 'Click for details', 'entries-manager' ); ?>"
 									@click="showEntry(i)">
 									<span x-text="entry.name + ' - ' || 'no name found'"></span>
 									<span x-text="entry.email || '-'"></span>
@@ -242,7 +242,7 @@ do_action( 'fem_before_entries_ui' );
 									<span
 										class="inline-block px-3 py-1 rounded-full text-xs font-semibold"
 										:class="entry.status === 'unread' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'"
-										x-text="entry.status === 'unread' ? '<?php echo esc_html__( 'Unread', 'entrydashboard' ); ?>' : '<?php echo esc_html__( 'Read', 'entrydashboard' ); ?>'"></span>
+										x-text="entry.status === 'unread' ? '<?php echo esc_html__( 'Unread', 'entries-manager' ); ?>' : '<?php echo esc_html__( 'Read', 'entries-manager' ); ?>'"></span>
 								</div>
 								<?php require __DIR__ . '/table/action-column.php'; ?>
 							</div>
@@ -254,7 +254,7 @@ do_action( 'fem_before_entries_ui' );
 							x-transition
 							class="absolute inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
 							<lottie-player
-								src="<?php echo esc_url( FEM_URL . 'assets/admin/lottie/loading.json' ); ?>"
+								src="<?php echo esc_url( ENTR_MGR_URL . 'assets/admin/lottie/loading.json' ); ?>"
 								background="transparent"
 								speed="1"
 								class="w-auto h-auto"
@@ -279,7 +279,7 @@ do_action( 'fem_before_entries_ui' );
 	<!-- Before loading the forms, show a loading state -->
 	<div x-show="loading" class="flex items-center justify-center min-h-60">
 		<lottie-player
-			src="<?php echo esc_url( FEM_URL . 'assets/admin/lottie/loading.json' ); ?>"
+			src="<?php echo esc_url( ENTR_MGR_URL . 'assets/admin/lottie/loading.json' ); ?>"
 			background="transparent"
 			speed="1"
 			class="w-auto h-auto"
@@ -291,8 +291,8 @@ do_action( 'fem_before_entries_ui' );
 	<!-- If no forms available -->
 	<?php require __DIR__ . '/empty-page.php'; ?>
 
-	<?php do_action( 'fem_before_end_entries_ui' ); ?>
+	<?php do_action( 'entr_mgr_before_end_entries_ui' ); ?>
 	<!-- Powered by message ends -->
 
 </div>
-<?php do_action( 'fem_after_entries_ui' ); ?>
+<?php do_action( 'entr_mgr_after_entries_ui' ); ?>

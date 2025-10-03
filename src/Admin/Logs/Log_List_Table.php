@@ -37,9 +37,9 @@ class Log_List_Table extends \WP_List_Table {
 
 	public function get_columns() {
 		return array(
-			'file_name'     => __( 'File Name', 'entrydashboard' ),
-			'file_size'     => __( 'Size', 'entrydashboard' ),
-			'date_modified' => __( 'Last Modified', 'entrydashboard' ),
+			'file_name'     => __( 'File Name', 'entries-manager' ),
+			'file_size'     => __( 'Size', 'entries-manager' ),
+			'date_modified' => __( 'Last Modified', 'entries-manager' ),
 		);
 	}
 
@@ -61,7 +61,7 @@ class Log_List_Table extends \WP_List_Table {
 		// Correctly link to the single log view page.
 		$view_url = add_query_arg(
 			array(
-				'page'     => 'entrydashboard-logs',
+				'page'     => 'entrydashboard-entries-manager-logs',
 				'action'   => 'view_log',
 				'file'     => urlencode( $item['file_name'] ),
 				'_wpnonce' => wp_create_nonce( 'entrydashboard-view' ),
@@ -126,6 +126,6 @@ class Log_List_Table extends \WP_List_Table {
 	}
 
 	public function no_items() {
-		esc_html_e( 'No log files found.', 'entrydashboard' );
+		esc_html_e( 'No log files found.', 'entries-manager' );
 	}
 }

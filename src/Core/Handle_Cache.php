@@ -11,7 +11,7 @@ class Handle_Cache {
 	 *
 	 * @var string
 	 */
-	private $cache_group = 'fem_cache_';
+	private $cache_group = 'entr_mgr_cache_';
 
 	/**
 	 * Sets a value in the object cache.

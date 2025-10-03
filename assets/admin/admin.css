@@ -1,21 +1,21 @@
 /* Make admin page body match our custom design */
-body.toplevel_page_entrydashboard #screen-meta,
-body.toplevel_page_entrydashboard #wpfooter,
-body.forms-entries_page_entrydashboard-settings .notice,
-body.forms-entries_page_form-entries-migration .notice,
-body.toplevel_page_entrydashboard .notice:not(.notice-error.fem-notice) {
+body.toplevel_page_entrydashboard-entries-manager #screen-meta,
+body.toplevel_page_entrydashboard-entries-manager #wpfooter,
+body.forms-entries_page_entrydashboard-entries-manager-settings .notice,
+body.forms-entries_page_entrydashboard-entries-manager-migration .notice,
+body.toplevel_page_entrydashboard-entries-manager .notice:not(.notice-error.entr-mgr-notice) {
 	display: none;
 }
 
-body.toplevel_page_entrydashboard,
-body.forms-entries_page_entrydashboard-settings,
-body.forms-entries_page_form-entries-migration  {
+body.toplevel_page_entrydashboard-entries-manager,
+body.forms-entries_page_entrydashboard-entries-manager-settings,
+body.forms-entries_page_entrydashboard-entries-manager-migration  {
 	background: #DDD !important;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
 
-.fem-admin-page {
+.entr-mgr-admin-page {
 	background: #DDD;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -26,7 +26,7 @@ body.forms-entries_page_form-entries-migration  {
 }
 
 /* Optional: Remove WP’s default max width */
-.fem-admin-page .wrap {
+.entr-mgr-admin-page .wrap {
 	max-width: 100% !important;
 	padding: 0;
 }

@@ -25,7 +25,7 @@ class Options {
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
-		add_action( 'wp_ajax_fem_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_entr_mgr_save_settings', array( $this, 'save_settings' ) );
 	}
 
 	/**
@@ -37,14 +37,14 @@ class Options {
 	public function save_settings() {
 		check_ajax_referer( 'wp_rest' );
 
-		Helper::update_option( 'export_limit', absint( $_POST['fem_export_limit'] ?? 100 ) );
-		Helper::update_option( 'entries_per_page', absint( $_POST['fem_entries_per_page'] ?? 20 ) );
+		Helper::update_option( 'export_limit', absint( $_POST['entr_mgr_export_limit'] ?? 100 ) );
+		Helper::update_option( 'entries_per_page', absint( $_POST['entr_mgr_entries_per_page'] ?? 20 ) );
 
-		if ( ! empty( $_POST['fem_custom_columns'] ) && is_array( $_POST['fem_custom_columns'] ) ) {
+		if ( ! empty( $_POST['entr_mgr_custom_columns'] ) && is_array( $_POST['entr_mgr_custom_columns'] ) ) {
 			$sanitized = array();
 
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			foreach ( $_POST['fem_custom_columns'] as $form_id => $fields ) {
+			foreach ( $_POST['entr_mgr_custom_columns'] as $form_id => $fields ) {
 				$sanitized[ absint( $form_id ) ] = array_map( 'sanitize_text_field', (array) $fields );
 			}
 
@@ -65,8 +65,8 @@ class Options {
 	public function register_settings() {
 		// OAuth credentials
 		register_setting(
-			'fem_google_settings',
-			'fem_google_sheet_tab',
+			'entr_mgr_google_settings',
+			'entr_mgr_google_sheet_tab',
 			array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
@@ -75,8 +75,8 @@ class Options {
 
 		// New custom options
 		register_setting(
-			'fem_google_settings',
-			'fem_entries_per_page',
+			'entr_mgr_google_settings',
+			'entr_mgr_entries_per_page',
 			array(
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
@@ -85,8 +85,8 @@ class Options {
 		);
 
 		register_setting(
-			'fem_google_settings',
-			'fem_google_sheet_id',
+			'entr_mgr_google_settings',
+			'entr_mgr_google_sheet_id',
 			array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
@@ -94,8 +94,8 @@ class Options {
 		);
 
 		register_setting(
-			'fem_google_settings',
-			'fem_google_sheet_auto_sync',
+			'entr_mgr_google_settings',
+			'entr_mgr_google_sheet_auto_sync',
 			array(
 				'type'              => 'boolean',
 				'sanitize_callback' => function ( $val ) {

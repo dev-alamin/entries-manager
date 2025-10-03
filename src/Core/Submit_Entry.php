@@ -266,7 +266,7 @@ class Submit_Entry {
 
 		// Get the base upload directory URL for creating the final link.
 		$upload_dir      = wp_upload_dir();
-		$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'fem-cf7-uploads';
+		$private_dir_url = trailingslashit( $upload_dir['baseurl'] ) . 'entr-mgr-cf7-uploads';
 
 		foreach ( $uploaded_files as $field_name => $file_paths ) {
 			// The FileHandler class should return just the filename(s).

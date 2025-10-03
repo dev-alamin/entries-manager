@@ -11,13 +11,12 @@ use Amin\FormsEntriesManager\Utility\Helper;
 
 class Migrate {
 
-	const FEM_PREFIX      = 'fem_';
 	const SOURCE_TABLE    = 'wpforms_db';
-	const OPTION_LAST_ID  = self::FEM_PREFIX . 'migration_last_id';
-	const OPTION_COMPLETE = self::FEM_PREFIX . 'migration_complete';
+	const OPTION_LAST_ID  = ENTR_MGR_PREFIX . 'migration_last_id';
+	const OPTION_COMPLETE = ENTR_MGR_PREFIX . 'migration_complete';
 	const BATCH_SIZE      = 500;
-	const ACTION_HOOK     = self::FEM_PREFIX . 'migrate_batch';
-	const SCHEDULE_GROUP  = self::FEM_PREFIX . 'migration';
+	const ACTION_HOOK     = ENTR_MGR_PREFIX . 'migrate_batch';
+	const SCHEDULE_GROUP  = ENTR_MGR_PREFIX . 'migration';
 
 	/**
 	 * Trigger the migration process.
@@ -26,12 +25,12 @@ class Migrate {
 	 */
 	public function trigger_migration() {
 		if ( ! class_exists( 'ActionScheduler' ) ) {
-			return new WP_Error( 'missing_scheduler', __( 'Action Scheduler not available', 'entrydashboard' ) );
+			return new WP_Error( 'missing_scheduler', __( 'Action Scheduler not available', 'entries-manager' ) );
 		}
 
 		// Prevent triggering if migration already running and not complete
 		if ( Helper::get_option( 'migration_started_at' ) && ! Helper::get_option( self::OPTION_COMPLETE ) ) {
-			return new WP_Error( 'migration_already_running', __( 'Migration is already in progress.', 'entrydashboard' ) );
+			return new WP_Error( 'migration_already_running', __( 'Migration is already in progress.', 'entries-manager' ) );
 		}
 
 		// Now safe to reset progress and start fresh
@@ -56,8 +55,8 @@ class Migrate {
 		return rest_ensure_response(
 			array(
 				'success' => true,
-				'message' => __( 'Migration started in background.', 'entrydashboard' ),
-				'code'    => 'fem_migration_started',
+				'message' => __( 'Migration started in background.', 'entries-manager' ),
+				'code'    => 'entr_mgr_migration_started',
 			)
 		);
 	}
@@ -244,7 +243,7 @@ class Migrate {
 
 		$complete = (bool) Helper::get_option( 'migration_complete', false );
 
-		$start = (int) Helper::get_option( 'fem_migration_started_at', 0 );
+		$start = (int) Helper::get_option( 'entr_mgr_migration_started_at', 0 );
 		$eta   = null;
 
 		if ( $start > 0 && $migrated > 0 && ! $complete ) {

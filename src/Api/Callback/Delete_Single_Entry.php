@@ -41,7 +41,7 @@ class Delete_Single_Entry {
 			return new WP_REST_Response(
 				array(
 					'deleted' => false,
-					'message' => __( 'Missing required parameters.', 'entrydashboard' ),
+					'message' => __( 'Missing required parameters.', 'entries-manager' ),
 				),
 				400
 			);
@@ -51,15 +51,15 @@ class Delete_Single_Entry {
 			return new WP_REST_Response(
 				array(
 					'deleted' => false,
-					'message' => __( 'You are not allowed to delete entries.', 'entrydashboard' ),
+					'message' => __( 'You are not allowed to delete entries.', 'entries-manager' ),
 				),
 				403
 			);
 		}
 
-		do_action( 'fem_before_entry_delete', $id, $form_id );
+		do_action( 'entr_mgr_before_entry_delete', $id, $form_id );
 
-		$table = Helper::get_submission_table(); // e.g., 'fem_entries_manager'
+		$table = Helper::get_submission_table(); // e.g., 'entr_mgr_entries_manager'
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$deleted = $wpdb->delete(
@@ -72,7 +72,7 @@ class Delete_Single_Entry {
 		);
 
 		if ( $deleted ) {
-			do_action( 'fem_after_entry_delete', $id, $form_id );
+			do_action( 'entr_mgr_after_entry_delete', $id, $form_id );
 
 			// Invalidate cached form fields and forms list
 			Helper::delete_option( 'forms_cache_' );
@@ -80,7 +80,7 @@ class Delete_Single_Entry {
 			return new WP_REST_Response(
 				array(
 					'deleted' => true,
-					'message' => __( 'Entry has been deleted successfully!', 'entrydashboard' ),
+					'message' => __( 'Entry has been deleted successfully!', 'entries-manager' ),
 				),
 				200
 			);
@@ -89,7 +89,7 @@ class Delete_Single_Entry {
 		return new WP_REST_Response(
 			array(
 				'deleted' => false,
-				'message' => __( 'Entry not found or already deleted.', 'entrydashboard' ),
+				'message' => __( 'Entry not found or already deleted.', 'entries-manager' ),
 			),
 			404
 		);

@@ -33,7 +33,7 @@ class Update_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Missing or invalid entry ID.', 'entrydashboard' ),
+					'message' => __( 'Missing or invalid entry ID.', 'entries-manager' ),
 				),
 				400
 			);
@@ -46,7 +46,7 @@ class Update_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'No valid fields provided for update.', 'entrydashboard' ),
+					'message' => __( 'No valid fields provided for update.', 'entries-manager' ),
 				),
 				400
 			);
@@ -68,7 +68,7 @@ class Update_Entries {
 		return new WP_REST_Response(
 			array(
 				'success'        => true,
-				'message'        => __( 'Entry updated successfully.', 'entrydashboard' ),
+				'message'        => __( 'Entry updated successfully.', 'entries-manager' ),
 				'updated_fields' => array_merge( array_keys( $submission_data ), array_keys( $entry_fields ) ),
 				'entry_id'       => $id,
 			),
@@ -245,7 +245,7 @@ class Update_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Invalid or missing entry ID.', 'entrydashboard' ),
+					'message' => __( 'Invalid or missing entry ID.', 'entries-manager' ),
 				),
 				400
 			);
@@ -266,7 +266,7 @@ class Update_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Failed to unsync entry from Google Sheet.', 'entrydashboard' ),
+					'message' => __( 'Failed to unsync entry from Google Sheet.', 'entries-manager' ),
 				),
 				500
 			); // Internal Server Error
@@ -275,7 +275,7 @@ class Update_Entries {
 		return new WP_REST_Response(
 			array(
 				'success' => true,
-				'message' => __( 'Entry successfully unsynced from Google Sheet.', 'entrydashboard' ),
+				'message' => __( 'Entry successfully unsynced from Google Sheet.', 'entries-manager' ),
 			),
 			200
 		); // OK
@@ -294,7 +294,7 @@ class Update_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'You have not authorize google, please do it from settings page.', 'entrydashboard' ),
+					'message' => __( 'You have not authorize google, please do it from settings page.', 'entries-manager' ),
 				),
 				400
 			);
@@ -306,7 +306,7 @@ class Update_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Invalid or missing entry ID.', 'entrydashboard' ),
+					'message' => __( 'Invalid or missing entry ID.', 'entries-manager' ),
 				),
 				400
 			);
@@ -320,7 +320,7 @@ class Update_Entries {
 			return rest_ensure_response(
 				array(
 					'success' => true,
-					'message' => __( 'Entry successfully sync to Google Sheet.', 'entrydashboard' ),
+					'message' => __( 'Entry successfully sync to Google Sheet.', 'entries-manager' ),
 				),
 				200
 			); // OK
@@ -328,7 +328,7 @@ class Update_Entries {
 			return rest_ensure_response(
 				array(
 					'success' => false,
-					'message' => __( 'Failed to sync entry to Google Sheet. Please check the logs.', 'entrydashboard' ),
+					'message' => __( 'Failed to sync entry to Google Sheet. Please check the logs.', 'entries-manager' ),
 				),
 				500
 			); // Internal Server Error

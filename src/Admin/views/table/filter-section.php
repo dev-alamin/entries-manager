@@ -5,21 +5,21 @@ defined( 'ABSPATH' ) || exit;
 <div class="flex flex-wrap gap-4 items-center py-4 px-4">
 	<?php
 	require_once __DIR__ . '/../template-functions.php';
-	$fem_bulk_actions = bulk_action_items();
+	$entr_mgr_bulk_actions = bulk_action_items();
 	?>
 	<div
 		class="flex items-center justify-between gap-4"
 		x-data='{
 			showBulkMenu: false,
 			selectedBulkAction: "",
-			bulkActions: <?php echo json_encode( $fem_bulk_actions ); ?>,
+			bulkActions: <?php echo json_encode( $entr_mgr_bulk_actions ); ?>,
 			bulkIcon() {
 				const action = this.bulkActions.find(a => a.key === this.selectedBulkAction);
 				return action ? action.icon : "";
 			},
 			bulkLabel() {
 				const action = this.bulkActions.find(a => a.key === this.selectedBulkAction);
-				return action ? action.label : "<?php echo esc_js( __( 'Select Action', 'entrydashboard' ) ); ?>";
+				return action ? action.label : "<?php echo esc_js( __( 'Select Action', 'entries-manager' ) ); ?>";
 			}
 		}'
 		x-cloak>
@@ -60,26 +60,26 @@ defined( 'ABSPATH' ) || exit;
 			@click="performBulkAction(selectedBulkAction)"
 			:disabled="bulkSelected.length === 0 || !selectedBulkAction"
 			class="px-5 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold">
-			<?php esc_html_e( 'Apply', 'entrydashboard' ); ?>
+			<?php esc_html_e( 'Apply', 'entries-manager' ); ?>
 		</button>
 	</div>
 
 	<div class="flex items-center gap-4">
 		<div class="relative md:w-[150px]">
-			<label for="status-filter" class="sr-only"><?php esc_html_e( 'Filter by Status', 'entrydashboard' ); ?></label>
+			<label for="status-filter" class="sr-only"><?php esc_html_e( 'Filter by Status', 'entries-manager' ); ?></label>
 			<select
 				id="status-filter"
 				x-model="filterStatus"
 				@change="handleStatusChange()"
 				class="md:w-[150px] !px-3 !py-[6px] !border !border-gray-300 !rounded-lg !text-gray-800 !font-medium !focus:outline-none !focus:ring-2 !focus:ring-indigo-500 !transition !hover:border-indigo-500">
-				<option value="all"><?php esc_html_e( 'All Statuses', 'entrydashboard' ); ?></option>
-				<option value="read"><?php esc_html_e( 'Read', 'entrydashboard' ); ?></option>
-				<option value="unread"><?php esc_html_e( 'Unread', 'entrydashboard' ); ?></option>
+				<option value="all"><?php esc_html_e( 'All Statuses', 'entries-manager' ); ?></option>
+				<option value="read"><?php esc_html_e( 'Read', 'entries-manager' ); ?></option>
+				<option value="unread"><?php esc_html_e( 'Unread', 'entries-manager' ); ?></option>
 			</select>
 		</div>
 
 		<div class="relative md:w-[150px]">
-			<label for="date-from-filter" class="sr-only"><?php esc_html_e( 'Date From', 'entrydashboard' ); ?></label>
+			<label for="date-from-filter" class="sr-only"><?php esc_html_e( 'Date From', 'entries-manager' ); ?></label>
 			<input
 				id="date-from-filter"
 				type="date"
@@ -89,7 +89,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 
 		<div class="relative md:w-[150px]">
-			<label for="date-to-filter" class="sr-only"><?php esc_html_e( 'Date To', 'entrydashboard' ); ?></label>
+			<label for="date-to-filter" class="sr-only"><?php esc_html_e( 'Date To', 'entries-manager' ); ?></label>
 			<input
 				id="date-to-filter"
 				type="date"
@@ -104,7 +104,7 @@ defined( 'ABSPATH' ) || exit;
 			<button @click="dropdownOpen = !dropdownOpen"
 				class="!px-3 !py-[10px] !text-gray-800 !font-medium !hover:border-indigo-500 !transition !text-sm flex items-center gap-1"
 				type="button"
-				aria-label="<?php esc_attr_e( 'Select search type', 'entrydashboard' ); ?>">
+				aria-label="<?php esc_attr_e( 'Select search type', 'entries-manager' ); ?>">
 				<span x-text="searchType"></span>
 				<svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
 					viewBox="0 0 24 24">
@@ -129,7 +129,7 @@ defined( 'ABSPATH' ) || exit;
 				type="search"
 				aria-label="Search entries"
 				class="!w-full !px-3 !py-[6px] !border !border-gray-300 !rounded-r-lg !rounded-tl-none !rounded-bl-none !text-gray-800 !font-medium !focus:outline-none !focus:ring-2 !focus:ring-indigo-500 !transition !hover:border-indigo-500"
-				:placeholder="femStrings.searchPlaceholder.replace('%s', searchType)"
+				:placeholder="entrMgrStrings.searchPlaceholder.replace('%s', searchType)"
 				x-model="searchQuery"
 				@input.debounce.400ms="handleSearchInput" />
 
@@ -137,7 +137,7 @@ defined( 'ABSPATH' ) || exit;
 				x-show="searchQuery && !entries.length && !loading"
 				x-transition
 				class="absolute z-50 top-[100%] left-0 mt-1 !w-full !bg-white !border !border-gray-200 !rounded-lg !shadow !px-4 !py-3 text-sm !text-gray-500">
-				<?php esc_html_e( 'No matching entries found.', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'No matching entries found.', 'entries-manager' ); ?>
 			</div>
 
 			<div
@@ -145,7 +145,7 @@ defined( 'ABSPATH' ) || exit;
 				class="absolute top-2 right-3 text-xs !text-indigo-500 animate-pulse"
 				aria-live="assertive"
 				aria-atomic="true">
-				<?php esc_html_e( 'Searching...', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'Searching...', 'entries-manager' ); ?>
 			</div>
 		</div>
 	</div>

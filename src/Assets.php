@@ -25,35 +25,35 @@ class Assets {
 	 * @return array
 	 */
 	public function get_scripts() {
-		$version = defined( 'FEM_VERSION' ) ? FEM_VERSION : time();
+		$version = defined( 'ENTR_MGR_VERSION' ) ? ENTR_MGR_VERSION : time();
 
 		return array(
-			'fem-tailwind-css' => array(
-				'src'       => FEM_ASSETS_URL . 'admin/tailwind.min.js',
+			'entr-mgr-tailwind-css' => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/tailwind.min.js',
 				'deps'      => array(),
 				'version'   => $version,
 				'in_footer' => false,
 			),
-			'fem-admin-js'     => array(
-				'src'       => FEM_ASSETS_URL . 'admin/admin.js',
+			'entr-mgr-admin-js'     => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
 				'deps'      => array(),
-				'version'   => filemtime( FEM_PATH . 'assets/admin/admin.js' ),
+				'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
 				'in_footer' => true,
 			),
-			'fem-collapse'     => array(
-				'src'       => FEM_ASSETS_URL . 'admin/collapse.js',
+			'entr-mgr-collapse'     => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/collapse.js',
 				'deps'      => array(),
 				'version'   => null,
 				'in_footer' => true,
 			),
-			'fem-alpine'       => array(
-				'src'       => FEM_ASSETS_URL . 'admin/alpine.min.js',
-				'deps'      => array( 'fem-collapse' ),
+			'entr-mgr-alpine'       => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
+				'deps'      => array( 'entr-mgr-collapse' ),
 				'version'   => null,
 				'in_footer' => true,
 			),
-			'fem-lottie'       => array(
-				'src'       => FEM_ASSETS_URL . 'admin/lottie-player.js',
+			'entr-mgr-lottie'       => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
 				'deps'      => array(),
 				'version'   => '5.12.0',
 				'in_footer' => true,
@@ -67,13 +67,13 @@ class Assets {
 	 * @return array
 	 */
 	public function get_styles() {
-		$version = defined( 'FEM_VERSION' ) ? FEM_VERSION : time();
+		$version = defined( 'ENTR_MGR_VERSION' ) ? ENTR_MGR_VERSION : time();
 
 		return array(
-			'fem-admin-css' => array(
-				'src'     => FEM_ASSETS_URL . 'admin/admin.css',
+			'entr-mgr-admin-css' => array(
+				'src'     => ENTR_MGR_ASSETS_URL . 'admin/admin.css',
 				'deps'    => array(),
-				'version' => filemtime( FEM_PATH . 'assets/admin/admin.css' ),
+				'version' => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.css' ),
 			),
 		);
 	}
@@ -88,9 +88,9 @@ class Assets {
 		if ( ! in_array(
 			$hook,
 			array(
-				'toplevel_page_entrydashboard',
-				'forms-entries_page_entrydashboard-settings',
-				'forms-entries_page_entrydashboard-migration',
+				'toplevel_page_entrydashboard-entries-manager',
+				'forms-entries_page_entrydashboard-entries-manager-settings',
+				'forms-entries_page_entrydashboard-entries-manager-migration',
 			),
 			true
 		) ) {
@@ -127,8 +127,8 @@ class Assets {
 		$initial_columns = Helper::get_option( 'cusom_form_columns_settings', array() );
 		// Localize main admin JS
 		wp_localize_script(
-			'fem-admin-js',
-			'femSettings',
+			'entr-mgr-admin-js',
+			'entrMgrSettings',
 			array(
 				'restUrl'        => esc_url_raw( rest_url() ),
 				'nonce'          => wp_create_nonce( 'wp_rest' ),
@@ -140,87 +140,87 @@ class Assets {
 
 		// Pass dynamic data from PHP to your script
 		wp_localize_script(
-			'fem-admin-js',
-			'femReviewData',
+			'entr-mgr-admin-js',
+			'entrMgrReviewData',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'fem-dismiss-review-notice-nonce' ),
+				'nonce'    => wp_create_nonce( 'entr-mgr-dismiss-review-notice-nonce' ),
 			)
 		);
 
 		wp_localize_script(
-			'fem-admin-js',
-			'femMigrationNotice',
+			'entr-mgr-admin-js',
+			'entrMgrMigrationNotice',
 			array(
-				'title'      => __( 'Migrate from WPFormsDB', 'entrydashboard' ),
-				'message'    => __( 'We found data in the legacy', 'entrydashboard' ) . ' <code>wpforms_db</code> ' . __( 'table. You can migrate all your entries into our advanced manager in just a few clicks.', 'entrydashboard' ),
-				'start'      => __( 'Start Migration', 'entrydashboard' ),
-				'dismissAlt' => __( 'Dismiss', 'entrydashboard' ),
+				'title'      => __( 'Migrate from WPFormsDB', 'entries-manager' ),
+				'message'    => __( 'We found data in the legacy', 'entries-manager' ) . ' <code>wpforms_db</code> ' . __( 'table. You can migrate all your entries into our advanced manager in just a few clicks.', 'entries-manager' ),
+				'start'      => __( 'Start Migration', 'entries-manager' ),
+				'dismissAlt' => __( 'Dismiss', 'entries-manager' ),
 			)
 		);
 
 		wp_localize_script(
-			'fem-admin-js',
+			'entr-mgr-admin-js',
 			'searchDropdownString',
 			array(
-				'emailLabel'   => esc_html__( 'Email', 'entrydashboard' ),
-				'nameLabel'    => esc_html__( 'Name', 'entrydashboard' ),
-				'entryIdLabel' => esc_html__( 'Entry ID', 'entrydashboard' ),
+				'emailLabel'   => esc_html__( 'Email', 'entries-manager' ),
+				'nameLabel'    => esc_html__( 'Name', 'entries-manager' ),
+				'entryIdLabel' => esc_html__( 'Entry ID', 'entries-manager' ),
 			),
 		);
 
 		wp_localize_script(
-			'fem-admin-js',
-			'femStrings',
+			'entr-mgr-admin-js',
+			'entrMgrStrings',
 			array(
-				'title'                => __( 'Migrate from WPFormsDB', 'entrydashboard' ),
-				'message'              => __( 'We found data in the legacy', 'entrydashboard' ) . ' <code>wpforms_db</code> ' . __( 'table. You can migrate all your entries into our advanced manager in just a few clicks.', 'entrydashboard' ),
-				'start'                => __( 'Start Migration', 'entrydashboard' ),
-				'dismissAlt'           => __( 'Dismiss', 'entrydashboard' ),
+				'title'                => __( 'Migrate from WPFormsDB', 'entries-manager' ),
+				'message'              => __( 'We found data in the legacy', 'entries-manager' ) . ' <code>wpforms_db</code> ' . __( 'table. You can migrate all your entries into our advanced manager in just a few clicks.', 'entries-manager' ),
+				'start'                => __( 'Start Migration', 'entries-manager' ),
+				'dismissAlt'           => __( 'Dismiss', 'entries-manager' ),
 				// General Messages
-				'csvExportedSuccess'   => __( '✅ CSV exported successfully!', 'entrydashboard' ),
-				'changesSavedSuccess'  => __( '✅ Saved changes successfully!', 'entrydashboard' ),
-				'settingsSavedSuccess' => __( '✅ Settings saved successfully!', 'entrydashboard' ),
+				'csvExportedSuccess'   => __( '✅ CSV exported successfully!', 'entries-manager' ),
+				'changesSavedSuccess'  => __( '✅ Saved changes successfully!', 'entries-manager' ),
+				'settingsSavedSuccess' => __( '✅ Settings saved successfully!', 'entries-manager' ),
 
 				// Time ago
-				'timeAgoJustNow'       => __( 'just now', 'entrydashboard' ),
+				'timeAgoJustNow'       => __( 'just now', 'entries-manager' ),
 				/* translators: %d is the number of minutes ago */
-				'timeAgoMinutes'       => _n( '%d minute ago', '%d minutes ago', 0, 'entrydashboard' ),
+				'timeAgoMinutes'       => _n( '%d minute ago', '%d minutes ago', 0, 'entries-manager' ),
 				/* translators: %d is the number of hours ago */
-				'timeAgoHours'         => _n( '%d hour ago', '%d hours ago', 0, 'entrydashboard' ),
-				'timeAgoYesterday'     => __( 'Yesterday', 'entrydashboard' ),
+				'timeAgoHours'         => _n( '%d hour ago', '%d hours ago', 0, 'entries-manager' ),
+				'timeAgoYesterday'     => __( 'Yesterday', 'entries-manager' ),
 
 				// Errors & Warnings
-				'noteTooLong'          => __( 'Note is too long. Please limit to 1000 characters.', 'entrydashboard' ),
-				'deleteFailedUnknown'  => __( 'Failed to delete entry: Unknown error', 'entrydashboard' ),
-				'deleteRequestFailed'  => __( 'Delete request failed. Check console for details.', 'entrydashboard' ),
-				'networkError'         => __( 'A network error occurred. Please try again.', 'entrydashboard' ),
-				'entryNotFound'        => __( '❌ Entry not found in the list.', 'entrydashboard' ),
-				'bulkActionFailed'     => __( 'Bulk action failed:', 'entrydashboard' ),
-				'exportFailed'         => __( 'Failed to start export.', 'entrydashboard' ),
-				'exportProgressFailed' => __( 'Failed to fetch export progress.', 'entrydashboard' ),
-				'exportSelectForm'     => __( 'Please select a form before exporting.', 'entrydashboard' ),
-				'exportInvalidCSV'     => __( 'Invalid CSV content.', 'entrydashboard' ),
-				'exportComplete'       => __( 'Export complete! Your download should start shortly.', 'entrydashboard' ),
-				'fetchFormsError'      => __( 'Failed to fetch forms:', 'entrydashboard' ),
-				'fetchEntriesError'    => __( 'Failed to fetch entries:', 'entrydashboard' ),
-				'fetchFieldsError'     => __( 'Failed to fetch form fields. Please try again.', 'entrydashboard' ),
-				'unexpectedError'      => __( '❌ Unexpected error occurred.', 'entrydashboard' ),
-				'syncDone'             => __( 'Entry synchronization Done!', 'entrydashboard' ),
-				'syncFailed'           => __( '❌ Synchronization failed.', 'entrydashboard' ),
-				'saveFailed'           => __( '❌ Save failed.', 'entrydashboard' ),
+				'noteTooLong'          => __( 'Note is too long. Please limit to 1000 characters.', 'entries-manager' ),
+				'deleteFailedUnknown'  => __( 'Failed to delete entry: Unknown error', 'entries-manager' ),
+				'deleteRequestFailed'  => __( 'Delete request failed. Check console for details.', 'entries-manager' ),
+				'networkError'         => __( 'A network error occurred. Please try again.', 'entries-manager' ),
+				'entryNotFound'        => __( '❌ Entry not found in the list.', 'entries-manager' ),
+				'bulkActionFailed'     => __( 'Bulk action failed:', 'entries-manager' ),
+				'exportFailed'         => __( 'Failed to start export.', 'entries-manager' ),
+				'exportProgressFailed' => __( 'Failed to fetch export progress.', 'entries-manager' ),
+				'exportSelectForm'     => __( 'Please select a form before exporting.', 'entries-manager' ),
+				'exportInvalidCSV'     => __( 'Invalid CSV content.', 'entries-manager' ),
+				'exportComplete'       => __( 'Export complete! Your download should start shortly.', 'entries-manager' ),
+				'fetchFormsError'      => __( 'Failed to fetch forms:', 'entries-manager' ),
+				'fetchEntriesError'    => __( 'Failed to fetch entries:', 'entries-manager' ),
+				'fetchFieldsError'     => __( 'Failed to fetch form fields. Please try again.', 'entries-manager' ),
+				'unexpectedError'      => __( '❌ Unexpected error occurred.', 'entries-manager' ),
+				'syncDone'             => __( 'Entry synchronization Done!', 'entries-manager' ),
+				'syncFailed'           => __( '❌ Synchronization failed.', 'entries-manager' ),
+				'saveFailed'           => __( '❌ Save failed.', 'entries-manager' ),
 				/* translators: %s is the text for id, name or email */
-				'searchPlaceholder'    => esc_html__( '🔍 Search by %s...', 'entrydashboard' ),
-				'emailLabel'           => esc_html__( 'Email', 'entrydashboard' ),
-				'nameLabel'            => esc_html__( 'Name', 'entrydashboard' ),
-				'entryIdLabel'         => esc_html__( 'Entry ID', 'entrydashboard' ),
-				'copyToClipboard'      => esc_html__( 'Copy Entry', 'entrydashboard' ),
-				'copiedMessage'        => esc_html__( 'Copied!', 'entrydashboard' ),
-				'copyTitle'            => esc_attr__( 'Copy all to clipboard', 'entrydashboard' ),
-				'copyFailed'           => __( 'Copy Failed', 'entrydashboard' ),
-				'selectFormExport'     => __( 'Please select a form before exporting.', 'entrydashboard' ),
-				'invalidCSVContent'    => __( 'Invalid CSV content.', 'entrydashboard' ),
-				'cannotDownloadCSV'    => __( 'Cannot download file: Export Job ID is missing.', 'entrydashboard' ),
+				'searchPlaceholder'    => esc_html__( '🔍 Search by %s...', 'entries-manager' ),
+				'emailLabel'           => esc_html__( 'Email', 'entries-manager' ),
+				'nameLabel'            => esc_html__( 'Name', 'entries-manager' ),
+				'entryIdLabel'         => esc_html__( 'Entry ID', 'entries-manager' ),
+				'copyToClipboard'      => esc_html__( 'Copy Entry', 'entries-manager' ),
+				'copiedMessage'        => esc_html__( 'Copied!', 'entries-manager' ),
+				'copyTitle'            => esc_attr__( 'Copy all to clipboard', 'entries-manager' ),
+				'copyFailed'           => __( 'Copy Failed', 'entries-manager' ),
+				'selectFormExport'     => __( 'Please select a form before exporting.', 'entries-manager' ),
+				'invalidCSVContent'    => __( 'Invalid CSV content.', 'entries-manager' ),
+				'cannotDownloadCSV'    => __( 'Cannot download file: Export Job ID is missing.', 'entries-manager' ),
 			)
 		);
 	}

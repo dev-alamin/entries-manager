@@ -30,15 +30,15 @@ defined( 'ABSPATH' ) || exit;
 			</button>
 
 			<div class="flex items-center justify-between mb-6">
-				<h2 class="text-2xl font-extrabold text-indigo-700"> <?php esc_html_e( 'Entry Details', 'entrydashboard' ); ?>
+				<h2 class="text-2xl font-extrabold text-indigo-700"> <?php esc_html_e( 'Entry Details', 'entries-manager' ); ?>
 					<br />
-					<span class="text-sm font-normal" x-text="selectedEntry.date || '<?php echo esc_js( __( '-', 'entrydashboard' ) ); ?>'"></span>
+					<span class="text-sm font-normal" x-text="selectedEntry.date || '<?php echo esc_js( __( '-', 'entries-manager' ) ); ?>'"></span>
 				</h2>
 
 				<button
 					@click="copyEntryToClipboard"
 					class="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 bg-slate-200 cursor-pointer rounded p-1 !text-lg font-semibold transition"
-					:title="femStrings.copyTitle">
+					:title="entrMgrStrings.copyTitle">
 					<template x-if="copied">
 						<span class="text-green-600">
 							<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
@@ -53,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 							</svg>
 						</span>
 					</template>
-					<span x-text="copied ? femStrings.copiedMessage : femStrings.copyToClipboard"></span>
+					<span x-text="copied ? entrMgrStrings.copiedMessage : entrMgrStrings.copyToClipboard"></span>
 				</button>
 			</div>
 
@@ -70,7 +70,7 @@ defined( 'ABSPATH' ) || exit;
 								? `<a href='${value.url}' target='_blank'>${value.filename}</a>`
 								: (Array.isArray(value) 
 									? value.map(f => `<a href='${f.url}' target='_blank'>${f.url.split('/').pop()}</a>`).join('<br>') 
-									: value || '<?php echo esc_js( __( '-', 'entrydashboard' ) ); ?>')
+									: value || '<?php echo esc_js( __( '-', 'entries-manager' ) ); ?>')
 							">
 							</span>
 						</div>
@@ -84,7 +84,7 @@ defined( 'ABSPATH' ) || exit;
 					@click="noteOpen = !noteOpen"
 					class="text-indigo-600 font-semibold flex items-center gap-2 hover:text-indigo-800 transition"
 					:aria-expanded="noteOpen.toString()"
-					:aria-controls="'fem-note-section'">
+					:aria-controls="'entr-mgr-note-section'">
 					<template x-if="noteOpen">
 						<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" class="text-indigo-500">
 							<path d="M480-432 336-288q-12 12-28.5 12T279-288q-12-12-12-28.5t12-28.5l144-144-144-144q-12-12-12-28.5t12-28.5q12-12 28.5-12t28.5 12l144 144 144-144q12-12 28.5-12t28.5 12q12 12 12 28.5T681-633L537-489l144 144q12 12 12 28.5T681-288q-12 12-28.5 12T624-288L480-432Z" />
@@ -104,10 +104,10 @@ defined( 'ABSPATH' ) || exit;
 					</template>
 
 					<span x-text="noteOpen
-						? '<?php echo esc_js( __( 'Close Note', 'entrydashboard' ) ); ?>'
+						? '<?php echo esc_js( __( 'Close Note', 'entries-manager' ) ); ?>'
 						: (selectedEntry.note && selectedEntry.note.trim() !== ''
-							? '<?php echo esc_js( __( 'Edit Note', 'entrydashboard' ) ); ?>'
-							: '<?php echo esc_js( __( 'Add Note', 'entrydashboard' ) ); ?>'
+							? '<?php echo esc_js( __( 'Edit Note', 'entries-manager' ) ); ?>'
+							: '<?php echo esc_js( __( 'Add Note', 'entries-manager' ) ); ?>'
 						)">
 					</span>
 				</button>
@@ -123,21 +123,21 @@ defined( 'ABSPATH' ) || exit;
 					x-show="noteOpen"
 					x-collapse
 					class="mt-4 overflow-hidden transition-all duration-300 ease-in-out">
-					<label for="fem_note_fields" class="block text-sm font-medium text-gray-700 mb-1">
-						<?php esc_html_e( 'Your Note', 'entrydashboard' ); ?>
+					<label for="entr_mgr_note_fields" class="block text-sm font-medium text-gray-700 mb-1">
+						<?php esc_html_e( 'Your Note', 'entries-manager' ); ?>
 					</label>
 					<textarea
-						id="fem_note_fields"
-						name="fem_note"
+						id="entr_mgr_note_fields"
+						name="entr_mgr_note"
 						x-model="selectedEntry.note"
 						rows="5"
 						maxlength="1000"
-						placeholder="<?php echo esc_attr( __( 'Write something helpful for this entry…', 'entrydashboard' ) ); ?>"
+						placeholder="<?php echo esc_attr( __( 'Write something helpful for this entry…', 'entries-manager' ) ); ?>"
 						class="w-full bg-white border border-indigo-200 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-400 transition"></textarea>
 
 					<div class="mt-2 flex justify-between items-center">
 						<p class="text-sm text-gray-500">
-							<?php esc_html_e( 'Max 1000 characters. Avoid sensitive data.', 'entrydashboard' ); ?>
+							<?php esc_html_e( 'Max 1000 characters. Avoid sensitive data.', 'entries-manager' ); ?>
 						</p>
 						<button
 							@click="validateAndSaveNote"
@@ -148,7 +148,7 @@ defined( 'ABSPATH' ) || exit;
 							<svg xmlns="http://www.w3.org/2000/svg" class="mr-2" height="20px" viewBox="0 -960 960 960" width="20px" fill="#fff">
 								<path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Z" />
 							</svg>
-							<span x-text="saved ? '<?php echo esc_js( __( 'Saved Note', 'entrydashboard' ) ); ?>' : '<?php echo esc_js( __( 'Save Note', 'entrydashboard' ) ); ?>'"></span>
+							<span x-text="saved ? '<?php echo esc_js( __( 'Saved Note', 'entries-manager' ) ); ?>' : '<?php echo esc_js( __( 'Save Note', 'entries-manager' ) ); ?>'"></span>
 						</button>
 
 					</div>
@@ -162,17 +162,17 @@ defined( 'ABSPATH' ) || exit;
 					@click="toggleModalReadStatus()"
 					class="px-5 py-2.5 cursor-pointer bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
 					<template x-if="selectedEntry.status === 'unread'">
-						✅ <span><?php esc_html_e( 'Mark as Read', 'entrydashboard' ); ?></span>
+						✅ <span><?php esc_html_e( 'Mark as Read', 'entries-manager' ); ?></span>
 					</template>
 					<template x-if="selectedEntry.status === 'read'">
-						🕓 <span><?php esc_html_e( 'Mark as unread', 'entrydashboard' ); ?></span>
+						🕓 <span><?php esc_html_e( 'Mark as unread', 'entries-manager' ); ?></span>
 					</template>
 				</button>
 
 				<button
 					@click="deleteEntry()"
 					class="px-5 py-2.5 cursor-pointer bg-red-600 text-white rounded-lg !font-bold hover:bg-red-700 transition">
-					🗑️ <?php esc_html_e( 'Delete', 'entrydashboard' ); ?>
+					🗑️ <?php esc_html_e( 'Delete', 'entries-manager' ); ?>
 				</button>
 
 			</div>

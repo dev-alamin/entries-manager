@@ -19,7 +19,7 @@ class Create_Entries {
 	 * Handle creation of a new WPForms entry saved into custom DB table using rest.
 	 *
 	 * This method accepts a REST POST request and stores form entry data into
-	 * the custom `fem_entries_manager` table. It supports metadata like read status,
+	 * the custom `entr_mgr_entries_manager` table. It supports metadata like read status,
 	 * favorite flag, export/sync tracking, and internal notes.
 	 *
 	 * @param WP_REST_Request $request The incoming REST request with form entry data.
@@ -28,10 +28,10 @@ class Create_Entries {
 	 */
 	public function create_entries( WP_REST_Request $request ) {
 		global $wpdb;
-		$table = Helper::get_submission_table(); // e.g., 'fem_entries_manager'
+		$table = Helper::get_submission_table(); // e.g., 'entr_mgr_entries_manager'
 
 		// Temp off
-		// return rest_ensure_response( ['success' => false, 'message' => __('This endpoint is temporarily disabled.', 'entrydashboard')] );
+		// return rest_ensure_response( ['success' => false, 'message' => __('This endpoint is temporarily disabled.', 'entries-manager')] );
 
 		// Get parameters from JSON body
 		$params = $request->get_json_params();
@@ -44,7 +44,7 @@ class Create_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Invalid or missing form_id or entry data.', 'entrydashboard' ),
+					'message' => __( 'Invalid or missing form_id or entry data.', 'entries-manager' ),
 				),
 				400
 			);
@@ -64,7 +64,7 @@ class Create_Entries {
 		// if ( ! current_user_can( 'manage_options' ) ) {
 		// return new WP_REST_Response([
 		// 'success' => false,
-		// 'message' => __( 'Insufficient permissions to create entry.', 'entrydashboard' ),
+		// 'message' => __( 'Insufficient permissions to create entry.', 'entries-manager' ),
 		// ], 403);
 		// }
 
@@ -76,7 +76,7 @@ class Create_Entries {
 		 * @param array           $params  Full request parameters.
 		 * @param WP_REST_Request $request REST request object.
 		 */
-		do_action( 'fem_before_entry_create', $form_id, $entry, $params, $request );
+		do_action( 'entr_mgr_before_entry_create', $form_id, $entry, $params, $request );
 
 		// Prepare data for DB insert
 		$data = array(
@@ -113,7 +113,7 @@ class Create_Entries {
 			return new WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( 'Database insert failed.', 'entrydashboard' ),
+					'message' => __( 'Database insert failed.', 'entries-manager' ),
 				),
 				500
 			);
@@ -128,12 +128,12 @@ class Create_Entries {
 		 * @param array           $params   Full request parameters.
 		 * @param WP_REST_Request $request  REST request object.
 		 */
-		do_action( 'fem_after_entry_create', $wpdb->insert_id, $form_id, $entry, $params, $request );
+		do_action( 'entr_mgr_after_entry_create', $wpdb->insert_id, $form_id, $entry, $params, $request );
 
 		return new WP_REST_Response(
 			array(
 				'success'  => true,
-				'message'  => __( 'Entry created successfully.', 'entrydashboard' ),
+				'message'  => __( 'Entry created successfully.', 'entries-manager' ),
 				'entry_id' => $wpdb->insert_id,
 			),
 			201

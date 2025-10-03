@@ -1,22 +1,22 @@
 <?php defined( 'ABSPATH' ) || exit; ?>
 
 <div x-data="migrationHandler()" x-init="init()"
-	class="wrap fem-admin-page min-h-screen !max-w-7xl !m-auto bg-white px-8 py-10 text-[15px] font-inter text-gray-800 space-y-10">
+	class="wrap entr-mgr-admin-page min-h-screen !max-w-7xl !m-auto bg-white px-8 py-10 text-[15px] font-inter text-gray-800 space-y-10">
 
 	<!-- Header -->
 	<div class="mb-8 bg-slate-700 !text-white px-4 py-2 rounded-lg">
 		<h1 class="!text-3xl !font-extrabold !tracking-tight !flex !items-center !text-white !gap-3">
-			🚀 <span><?php esc_html_e( 'Migrate from WPFormsDB', 'entrydashboard' ); ?></span>
+			🚀 <span><?php esc_html_e( 'Migrate from WPFormsDB', 'entries-manager' ); ?></span>
 		</h1>
 		<p class="!text-gray-200 !mt-1">
-			<?php esc_html_e( 'Easily migrate your old WPFormsDB entries to take full advantage of our advanced features.', 'entrydashboard' ); ?>
+			<?php esc_html_e( 'Easily migrate your old WPFormsDB entries to take full advantage of our advanced features.', 'entries-manager' ); ?>
 		</p>
 	</div>
 
 	<!-- Input + Start -->
 	<div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg space-y-4">
 		<h2 class="text-lg font-semibold text-indigo-700">
-			<strong><?php esc_html_e( 'Total Entries:', 'entrydashboard' ); ?></strong>
+			<strong><?php esc_html_e( 'Total Entries:', 'entries-manager' ); ?></strong>
 			<span x-text="totalEntries"></span>
 		</h2>
 
@@ -29,7 +29,7 @@
 					<path stroke-linecap="round" stroke-linejoin="round"
 						d="M4 6h16M4 10h16M4 14h10m-5 4h5" />
 				</svg>
-				<?php esc_html_e( 'Migration Overview', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'Migration Overview', 'entries-manager' ); ?>
 			</h2>
 
 			<ul class="divide-y divide-gray-100 text-sm">
@@ -57,18 +57,18 @@
 
 		<template x-if="totalEntries > 10000">
 			<p class="text-sm text-red-600">
-				<?php esc_html_e( '⚠️ You have a large dataset. We recommend using a batch size of 100 or less to avoid timeouts.', 'entrydashboard' ); ?>
+				<?php esc_html_e( '⚠️ You have a large dataset. We recommend using a batch size of 100 or less to avoid timeouts.', 'entries-manager' ); ?>
 			</p>
 		</template>
 
 		<div class="flex items-center gap-4">
-			<span class="text-gray-700 text-sm"><?php esc_html_e( 'Batch Size:', 'entrydashboard' ); ?></span>
+			<span class="text-gray-700 text-sm"><?php esc_html_e( 'Batch Size:', 'entries-manager' ); ?></span>
 			<template x-if="totalEntries > 10000">
 				<label class="block">
 					<div class="relative mt-1 w-32">
 						<input type="number" min="10" max="100" x-model.number="batchSize"
 							class="!block !w-full !rounded-md !border !border-gray-300 !bg-white !pl-10 !pr-3 !py-2 !text-sm !text-gray-800 !shadow !focus:border-indigo-500 !focus:ring-indigo-200 !focus:outline-none !focus:ring-1 !placeholder:text-gray-400"
-							placeholder="<?php echo esc_attr__( '50', 'entrydashboard' ); ?>"
+							placeholder="<?php echo esc_attr__( '50', 'entries-manager' ); ?>"
 							oninput="this.value = Math.max(10, Math.min(100, parseInt(this.value) || 10));" />
 					</div>
 				</label>
@@ -83,12 +83,12 @@
 					viewBox="0 0 20 20">
 					<path d="M6 4l10 6-10 6V4z" />
 				</svg>
-				<?php esc_html_e( 'Start Migration', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'Start Migration', 'entries-manager' ); ?>
 			</button>
 
 			<!-- See Progress Button -->
 			<button @click="seeProgress"
-				title="<?php esc_attr_e( 'View Migration Progress', 'entrydashboard' ); ?>"
+				title="<?php esc_attr_e( 'View Migration Progress', 'entries-manager' ); ?>"
 				x-show="!migrating && !complete && migrationInProgress"
 				class="flex items-center gap-2 px-6 py-2 text-sm cursor-pointer font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded shadow transition">
 				
@@ -100,7 +100,7 @@
 						d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
 				</svg>
 
-				<?php esc_html_e( 'Migration is running. See Progress', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'Migration is running. See Progress', 'entries-manager' ); ?>
 			</button>
 
 
@@ -113,7 +113,7 @@
 					viewBox="0 0 24 24">
 					<path d="M6 6h12v12H6z" />
 				</svg>
-				<?php esc_html_e( 'Stop Migration', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'Stop Migration', 'entries-manager' ); ?>
 			</button>
 
 			<!-- Completion Message -->
@@ -125,28 +125,28 @@
 						d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
 						clip-rule="evenodd" />
 				</svg>
-				<?php esc_html_e( 'Migration Completed!', 'entrydashboard' ); ?>
+				<?php esc_html_e( 'Migration Completed!', 'entries-manager' ); ?>
 			</span>
 		</div>
 	</div>
 
 	<!-- Progress Wrapper -->
 	<div x-show="migrating" class="mt-4 space-y-2 bg-indigo-50 p-6 pb-8 rounded-lg">
-		<h2 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Migration Progress', 'entrydashboard' ); ?></h2>
+		<h2 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Migration Progress', 'entries-manager' ); ?></h2>
 		<!-- Label -->
 		<p class="text-sm text-gray-700 font-medium">
-			<?php esc_html_e( 'Migrating Entries:', 'entrydashboard' ); ?> <span class="font-bold" x-text="migrated"></span> /
+			<?php esc_html_e( 'Migrating Entries:', 'entries-manager' ); ?> <span class="font-bold" x-text="migrated"></span> /
 			<span x-text="total"></span>
 		</p>
 
 		<!-- Estimated Time -->
 		<p class="text-sm text-gray-500 italic" x-show="estimatedTime">
-			<?php esc_html_e( 'Estimated time left:', 'entrydashboard' ); ?> <span x-text="estimatedTime"></span>
+			<?php esc_html_e( 'Estimated time left:', 'entries-manager' ); ?> <span x-text="estimatedTime"></span>
 		</p>
 
 		<!-- Progress Label -->
 		<div class="mb-1 text-sm text-gray-700 font-medium flex justify-between">
-			<span><?php esc_html_e( 'Progress:', 'entrydashboard' ); ?></span>
+			<span><?php esc_html_e( 'Progress:', 'entries-manager' ); ?></span>
 			<span x-text="`${progress}%`"></span>
 		</div>
 
@@ -162,7 +162,7 @@
 	<!-- Logs -->
 	<template x-if="log.length">
 		<div class="mt-4 space-y-2 bg-indigo-50 p-6 rounded-lg pb-8">
-			<h2 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Migration Log', 'entrydashboard' ); ?></h2>
+			<h2 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Migration Log', 'entries-manager' ); ?></h2>
 			<ul class="text-sm space-y-1 max-h-60 overflow-y-auto bg-gray-50 border border-gray-200 px-4 py-4 rounded p-4">
 				<template x-for="(entry, index) in log" :key="index">
 					<li x-text="entry"></li>

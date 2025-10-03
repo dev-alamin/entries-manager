@@ -33,7 +33,7 @@ class HandleLogAction {
 	 */
 	public function handle_log_actions() {
 
-		if ( ! current_user_can( 'can_manage_fem_entries' ) ) {
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) {
 			return;
 		}
 
@@ -45,7 +45,7 @@ class HandleLogAction {
 			if ( check_admin_referer( 'entrydashboard-download' ) === false ) {
 				printf(
 					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-					esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
+					esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
 				);
 			}
 
@@ -56,7 +56,7 @@ class HandleLogAction {
 			if ( check_admin_referer( 'entrydashboard-clear' ) === false ) {
 				printf(
 					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-					esc_html__( 'Security check failed. Please try again.', 'entrydashboard' )
+					esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
 				);
 			}
 
@@ -74,7 +74,7 @@ class HandleLogAction {
 		}
 
 		if ( check_admin_referer( 'entrydashboard-download' ) === false ) {
-			wp_die( esc_html__( 'Invalid nonce!', 'entrydashboard' ) );
+			wp_die( esc_html__( 'Invalid nonce!', 'entries-manager' ) );
 		}
 
 		$file_name = sanitize_file_name( wp_unslash( $_GET['file'] ) );
@@ -113,7 +113,7 @@ class HandleLogAction {
 	 */
 	protected function handle_clear() {
 		if ( check_admin_referer( 'entrydashboard-clear' ) === false ) {
-			wp_die( esc_html__( 'Invalid nonce!', 'entrydashboard' ) );
+			wp_die( esc_html__( 'Invalid nonce!', 'entries-manager' ) );
 		}
 
 		$this->logger->clear_old_logs( 0 ); // Pass 0 to clear all logs.

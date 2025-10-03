@@ -5,7 +5,7 @@
  * Handles the addition of custom capabilities to the 'administrator' role
  * for managing WPForms entries within the plugin.
  *
- * @package advanced-entries-manager
+ * @package advanced-'entries-manager'
  * @since 1.0.0
  */
 namespace Amin\FormsEntriesManager\Core;
@@ -33,11 +33,11 @@ class Capabilities {
 		}
 
 		$capabilities = array(
-			'can_create_fem_entries',
-			'can_edit_fem_entries',
-			'can_delete_fem_entries',
-			'can_view_fem_entries',
-			'can_manage_fem_entries',
+			'can_create_entr_mgr_entries',
+			'can_edit_entr_mgr_entries',
+			'can_delete_entr_mgr_entries',
+			'can_view_entr_mgr_entries',
+			'can_manage_entr_mgr_entries',
 		);
 
 		foreach ( $capabilities as $cap ) {
@@ -62,11 +62,11 @@ class Capabilities {
 		}
 
 		$capabilities = array(
-			'can_create_fem_entries',
-			'can_edit_fem_entries',
-			'can_delete_fem_entries',
-			'can_view_fem_entries',
-			'can_manage_fem_entries',
+			'can_create_entr_mgr_entries',
+			'can_edit_entr_mgr_entries',
+			'can_delete_entr_mgr_entries',
+			'can_view_entr_mgr_entries',
+			'can_manage_entr_mgr_entries',
 		);
 
 		foreach ( $capabilities as $cap ) {
