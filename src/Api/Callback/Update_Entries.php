@@ -65,6 +65,8 @@ class Update_Entries {
 			);
 		}
 
+		Helper::delete_option( 'forms_cache_' );
+
 		return new WP_REST_Response(
 			array(
 				'success'        => true,

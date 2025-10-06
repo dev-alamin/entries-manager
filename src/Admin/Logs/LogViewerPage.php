@@ -33,45 +33,45 @@ class LogViewerPage {
 	/**
 	 * Renders the content of the admin page.
 	 */
-    public function render_page() {
-        if ( ! current_user_can( 'manage_options' ) ) { // Use your required capability
-            return;
-        }
+	public function render_page() {
+		if ( ! current_user_can( 'manage_options' ) ) { // Use your required capability
+			return;
+		}
 
-        if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-            if ( check_admin_referer( 'entr_mgr_log_clear' ) === false ) { // Changed key to new prefix
-                printf(
-                    '<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-                    esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
-                );
-                return;
-            }
-        }
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+			if ( check_admin_referer( 'entr_mgr_log_clear' ) === false ) { // Changed key to new prefix
+				printf(
+					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
+					esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
+				);
+				return;
+			}
+		}
 
-        if ( isset( $_GET['action'], $_GET['file'] ) && $_GET['action'] === 'view_log' ) {
+		if ( isset( $_GET['action'], $_GET['file'] ) && $_GET['action'] === 'view_log' ) {
 
-            $nonce_result = wp_verify_nonce(
-                sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ?? '' ) ),
-                'entr_mgr_view_logs' // Use a specific action nonce key
-            );
+			$nonce_result = wp_verify_nonce(
+				sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ?? '' ) ),
+				'entr_mgr_view_logs' // Use a specific action nonce key
+			);
 
-            if ( ! $nonce_result ) {
-                printf(
-                    '<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-                    esc_html__( 'Security check failed while viewing log.', 'entries-manager' )
-                );
-                $this->render_log_list(); // Default back to the list
-                return;
-            }
+			if ( ! $nonce_result ) {
+				printf(
+					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
+					esc_html__( 'Security check failed while viewing log.', 'entries-manager' )
+				);
+				$this->render_log_list(); // Default back to the list
+				return;
+			}
 
-            // If the nonce is valid, proceed to render the log view
-            $this->render_single_log_view();
-            return;
-        }
+			// If the nonce is valid, proceed to render the log view
+			$this->render_single_log_view();
+			return;
+		}
 
-        // Default: render log list (This is safe as it requires no user intent/action)
-        $this->render_log_list();
-    }
+		// Default: render log list (This is safe as it requires no user intent/action)
+		$this->render_log_list();
+	}
 
 	/**
 	 * Renders the log file list view.

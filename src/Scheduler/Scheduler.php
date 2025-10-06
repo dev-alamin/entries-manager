@@ -35,13 +35,14 @@ class Scheduler {
 			$args[]          = $date_to;
 		}
 
+		// $where_sql now contains valid placeholders (e.g., 'WHERE form_id = %d AND created_at >= %s')
 		$where_sql = 'WHERE ' . implode( ' AND ', $where_clauses );
 
 		$table_name = Helper::get_submission_table();
 
 		$count_sql = $wpdb->prepare(
-			"SELECT COUNT(*) FROM {$table_name} {$where_sql}", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-			...$args
+			"SELECT COUNT(*) FROM {$table_name} {$where_sql}",
+			$args // Pass the array directly as the second argument.
 		);
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared

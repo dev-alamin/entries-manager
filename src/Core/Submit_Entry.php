@@ -178,7 +178,8 @@ class Submit_Entry {
 		$posted_data = $submission->get_posted_data();
 
 		// Security check.
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_rest' ) ) {
+		if ( ! isset( $_POST['_wpnonce'] ) ||
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wp_rest' ) ) {
 			$this->logger->log( 'Invalid nonce in CF7 submission.', 'error' );
 			return;
 		}

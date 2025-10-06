@@ -171,8 +171,11 @@ class Migrate {
 					}
 
 					if ( ! empty( $data_to_insert ) ) {
+						// The result is a fully safe string like: "('1', 'key1', 'val1', 'time', 'time'), ('1', 'key2', 'val2', 'time', 'time')"
 						$values = implode( ', ', $data_to_insert );
-                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+
+						// Since $values is composed of pre-prepared, quoted strings, this is safe.
+						// The table name ($data_table) should be whitelisted/validated elsewhere.
 						$wpdb->query( "INSERT INTO `{$data_table}` (`submission_id`, `field_key`, `field_value`, `created_at`, `updated_at`) VALUES {$values}" );
 					}
 				}

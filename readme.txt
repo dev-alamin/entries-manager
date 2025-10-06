@@ -1,6 +1,6 @@
 === EntryDashboard – Entry Manager for Forms ===
 Contributors: coderalamin
-Tags: form entries, submissions, crm, wpforms, contact form 7, elementor, google sheets
+Tags: form entries, submissions, wpforms submission, contact form 7 submission, google sheets sync
 Requires at least: 5.4
 Tested up to: 6.8
 Stable tag: 1.0.0
@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A centralized dashboard to manage, search, and sync form submissions from plugins like WPForms, Contact Form 7, Elementor, and more. Transform your WordPress into a mini-CRM.
+Centralized dashboard to save, manage, search, and sync form submissions from WPForms, CF7, Elementor & more — turn WordPress into a mini-CRM.
 
 == Description ==
 
@@ -98,6 +98,29 @@ This plugin connects to Google Sheets API to sync WPForms, Contact Form 7, and o
 
 ---
 
+== Third-Party Libraries and Source Code ==
+
+This plugin includes several third-party libraries that are distributed in minified or compiled format.  
+In compliance with the WordPress.org Plugin Guidelines, links to their original public source code are provided below:
+
+* **Alpine.js (`alpine.min.js`)**  
+  * **Purpose:** Provides a lightweight, declarative JavaScript framework for building reactive UI components.  
+  * **Source Code:** https://github.com/alpinejs/alpine  
+
+* **Lottie Player (`lottie-player.js`)**  
+  * **Purpose:** Renders Lottie animations (JSON-based vector animations) for UI feedback and interactions.  
+  * **Source Code:** https://github.com/LottieFiles/lottie-player  
+
+* **Tailwind CSS (`tailwind.min.js` or `tailwind.min.css`)**  
+  * **Purpose:** Utility-first CSS framework used to style the admin UI.  
+  * **Source Code:** https://github.com/tailwindlabs/tailwindcss  
+
+* **Collapse Utility (`collapse.js`)**  
+  * **Purpose:** Handles simple toggle/accordion interactions in the admin UI.  
+  * **Source Code:** https://alpinejs.dev/plugins/collapse  
+
+The rest of the plugin's code, including `admin.css` and `admin.js`, is maintained in human-readable format and is not obfuscated or minified.
+
 == Installation ==
 
 1. From your WordPress dashboard:  
@@ -154,7 +177,20 @@ No. EntryDashboard only runs in your admin dashboard and won’t impact the fron
 
 ---
 
-== Upgrade Notice ==
+== Changelog ==
+
+
+### 1.0.1
+- Fixed missing and incorrect **nonces** in admin AJAX/REST requests.
+- Improved **data sanitization and escaping** throughout the plugin.
+- Updated **translation text domain** from `entrydashboard` to `entries-manager`.
+- Prefixed all functions, classes, and global variables with `entr_mgr_` to avoid conflicts.
+- Added documentation for **third-party libraries** (Alpine.js, Tailwind, Lottie Player, Collapse Utility).
+- Fixed **SQL queries** to use `$wpdb->prepare()` for safety.
+- Updated **external service documentation** (Google Sheets integration usage and API references).
+- Ensured all distributed JS/CSS files are in **readable format** or linked with their public sources.
+- Added this **changelog and readme updates** to comply with WordPress.org Plugin Guidelines.
+
 
 = 1.0.0 =  
 Welcome to EntryDashboard! A new way to manage your form submissions from WPForms, Contact Form 7, Elementor, and more—all in one place.  

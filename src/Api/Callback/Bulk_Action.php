@@ -57,6 +57,7 @@ class Bulk_Action {
 			case 'mark_spam':
 			case 'unmark_spam':
 				$update_data = $this->get_update_data_for_action( $action );
+				Helper::delete_option( 'forms_cache_' );
 				if ( ! empty( $update_data ) ) {
 					list($set_clause, $params) = $this->build_update_query_from_data( $update_data );
 

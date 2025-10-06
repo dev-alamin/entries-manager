@@ -232,13 +232,21 @@ class Export_Entries {
 		$where_clauses[] = 'id > %d';
 		$query_args[]    = $job_state['last_id'];
 
+		// $where_sql now contains placeholders, e.g., 'WHERE form_id = %d AND id > %d'
 		$where_sql = 'WHERE ' . implode( ' AND ', $where_clauses );
 
-		$submissions_query = $wpdb->prepare(
-			"SELECT id, name, email, status, note, is_favorite, created_at FROM {$submissions_table} {$where_sql} ORDER BY id ASC LIMIT %d",
-			array_merge( $query_args, array( $job_state['batch_size'] ) )
+		// We merge it with the final LIMIT value (batch_size).
+		$prepared_values = array_merge(
+			$query_args, // Contains values for all placeholders in $where_sql
+			array( $job_state['batch_size'] ) // Value for the final LIMIT %d
 		);
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+		$submissions_query = $wpdb->prepare(
+			// The query string includes the placeholders from $where_sql and the final LIMIT %d placeholder
+			"SELECT id, name, email, status, note, is_favorite, created_at FROM {$submissions_table} {$where_sql} ORDER BY id ASC LIMIT %d",
+			$prepared_values // Pass the single, combined array of ALL values
+		);
+
 		$submissions = $wpdb->get_results( $submissions_query, ARRAY_A );
 
 		if ( empty( $submissions ) ) {

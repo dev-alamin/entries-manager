@@ -48,7 +48,7 @@ do_action( 'entr_mgr_before_entries_ui' );
 
 	use Amin\FormsEntriesManager\Utility\Helper;
 
-	if ( Helper::table_exists( 'wpforms_db' ) && ! Helper::get_option( 'migration_complete' ) ) :
+	if ( Helper::table_exists( 'wpforms_db' ) && Helper::get_option( 'migration_complete' ) ) : // Need to implement later on with mrtin not done
 		?>
 		<div
 			x-data="{ showMigrationNotice: true }"

@@ -45,7 +45,7 @@ class Menu {
 	public function add_menu() {
 		$legacy_table_exists = Helper::table_exists( 'wpforms_db' );
 
-        $parent_slug = 'entrydashboard-entries-manager';
+		$parent_slug = 'entrydashboard-entries-manager';
 
 		add_menu_page(
 			__( 'Forms Entries', 'entries-manager' ),

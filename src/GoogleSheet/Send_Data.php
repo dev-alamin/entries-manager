@@ -14,75 +14,62 @@ class Send_Data {
 
 	public function __construct() {
 		$this->logger = new FileLogger();
-		// Capture token on init
-		// add_action( 'admin_init', array( $this, 'capture_token' ) );
 
-		// Add a new hook to handle the revocation action
-		add_action( 'admin_init', array( $this, 'handle_google_revocation_action' ) );
+		// OAuth token capture endpoint
+		add_action( 'admin_init', array( $this, 'capture_token' ) );
+
+		// Google revocation endpoint
+		add_action( 'admin_post_entriesmanager_revoke_connection', array( $this, 'handle_google_revocation_action' ) );
 	}
 
 	/**
 	 * Handles the revocation action when the user clicks the "Revoke Connection" button.
 	 */
 	public function handle_google_revocation_action() {
-		// Check if the action parameter is set
-		if ( ! isset( $_GET['action'] ) || $_GET['action'] !== 'revoke_google_connection' ) {
-			return;
+		// Verify nonce
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'revoke_connection_nonce' ) ) {
+			wp_die( esc_html__( 'Security check failed. Please try again.', 'entries-manager' ) );
 		}
 
-		// Verify the nonce for security
-		if ( check_admin_referer( 'revoke_connection_nonce' ) === false ) {
-			printf(
-				'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
-				esc_html__( 'Security check failed. Please try again.', 'entries-manager' )
-			);
-		}
-
-		// Ensure the current user has the right permissions
+		// Permission check
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( 'You do not have sufficient permissions to perform this action.' );
+			wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'entries-manager' ) );
 		}
 
 		$success = Helper::revokeConnection();
 
-		// Set a redirect URL with a status message
 		$redirect_url = admin_url( 'admin.php?page=entrydashboard-entries-manager-settings' );
-		if ( $success ) {
-			$redirect_url = add_query_arg( 'revoked', 'success', $redirect_url );
-		} else {
-			$redirect_url = add_query_arg( 'revoked', 'failed', $redirect_url );
-		}
+		$redirect_url = add_query_arg( 'revoked', $success ? 'success' : 'failed', $redirect_url );
 
-		// Redirect the user
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
 
+	/**
+	 * Handles OAuth token capture, triggered only via admin_post endpoint
+	 */
 	public function capture_token() {
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.', 'entries-manager' ) );
-        }
+		if ( ! isset( $_GET['oauth_proxy_code'] ) ) {
+			return;
+		}
 
-        if ( ! check_admin_referer( 'entr_mgr_oauth_init' ) ) { // Assuming you created this nonce when starting the OAuth flow
-            wp_die( __( 'Security check failed.', 'entries-manager' ) );
-        }
-        
-        if ( ! isset( $_GET['oauth_proxy_code'] ) ) {
-            return;
-        }
-        
-		$auth_code = sanitize_text_field( wp_unslash( $_GET['oauth_proxy_code'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		// Permissions
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'entries-manager' ) );
+		}
+
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'entr_mgr_oauth_init' ) ) {
+			wp_die( esc_html__( 'Security check failed. Please try connecting again.', 'entries-manager' ) );
+		}
+
+		$auth_code = sanitize_text_field( wp_unslash( $_GET['oauth_proxy_code'] ) );
 
 		// Exchange the one-time auth code for real tokens
 		$response = wp_remote_post(
 			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/token',
 			array(
 				'headers' => array( 'Content-Type' => 'application/json' ),
-				'body'    => wp_json_encode(
-					array(
-						'auth_code' => $auth_code,
-					)
-				),
+				'body'    => wp_json_encode( array( 'auth_code' => $auth_code ) ),
 			)
 		);
 
@@ -96,9 +83,8 @@ class Send_Data {
 		if ( ! empty( $body['access_token'] ) ) {
 			Helper::update_option( 'google_access_token', sanitize_text_field( $body['access_token'] ) );
 			Helper::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
-
 			Helper::update_option( 'user_remvoked_google_connection', false );
-			// Optional: Store refresh token too if ever needed on client (rare)
+
 			wp_safe_redirect( admin_url( 'admin.php?page=entrydashboard-entries-manager-settings&connected=true' ) );
 			exit;
 		}
