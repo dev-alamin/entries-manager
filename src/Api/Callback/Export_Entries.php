@@ -241,13 +241,15 @@ class Export_Entries {
 			array( $job_state['batch_size'] ) // Value for the final LIMIT %d
 		);
 
-		$submissions_query = $wpdb->prepare(
-			// The query string includes the placeholders from $where_sql and the final LIMIT %d placeholder
-			"SELECT id, name, email, status, note, is_favorite, created_at FROM {$submissions_table} {$where_sql} ORDER BY id ASC LIMIT %d",
-			$prepared_values // Pass the single, combined array of ALL values
-		);
-
-		$submissions = $wpdb->get_results( $submissions_query, ARRAY_A );
+        $submissions = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT id, name, email, status, note, is_favorite, created_at 
+                FROM {$submissions_table} {$where_sql} 
+                ORDER BY id ASC LIMIT %d",
+                ...$prepared_values
+            ),
+            ARRAY_A
+        );
 
 		if ( empty( $submissions ) ) {
 			as_schedule_single_action(
