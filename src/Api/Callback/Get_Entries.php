@@ -143,13 +143,18 @@ class Get_Entries {
 	 * @param array  $query_params      Parameters for the query.
 	 * @return int The total count.
 	 */
-	private function get_total_count( $submissions_table, $where_clause, $query_params ) {
-		global $wpdb;
+    private function get_total_count( $submissions_table, $where_clause, $query_params ) {
+        global $wpdb;
+        
+        // $where_clause is used as a structural element that should only contain placeholders.
+        $sql_template = "SELECT COUNT(*) FROM {$submissions_table} {$where_clause}";
+        
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The template is built above, and parameters are prepared here.
+        $sql = $wpdb->prepare( $sql_template, ...$query_params );
+        
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM $submissions_table $where_clause", ...$query_params );
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		return (int) $wpdb->get_var( $sql );
-	}
+        return (int) $wpdb->get_var( $sql );
+    }
 
 	/**
 	 * Fetches paginated submissions.
@@ -167,20 +172,18 @@ class Get_Entries {
 		$per_page = $request->get_param( 'per_page' ) ?? 10;
 		$offset   = ( $page - 1 ) * $per_page;
 
-		// Note: The hybrid pagination logic is no longer needed with the two-table structure.
-		// We can use a simple OFFSET/LIMIT query as it is now performing on a smaller,
-		// more optimized table (submissions_table).
+        $sql_template = "SELECT * FROM {$submissions_table} {$where_clause} ORDER BY created_at DESC LIMIT %d OFFSET %d";
 
-		$sql = "SELECT * FROM $submissions_table $where_clause ORDER BY created_at DESC LIMIT %d OFFSET %d";
-
-		$params   = $this->build_where_clause( $request->get_params() )[1]; // Get params again.
-		$params[] = (int) $per_page;
-		$params[] = (int) $offset;
-
+        $final_params = array_merge(
+            $query_params, // The safe, prepared values for the WHERE clause
+            array( (int) $per_page, (int) $offset ) // The values for LIMIT %d OFFSET %d
+        );
+        
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The template is built above, and parameters are prepared here.
+        $sql = $wpdb->prepare( $sql_template, ...$final_params );
+        
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$sql = $wpdb->prepare( $sql, ...$params );
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		return $wpdb->get_results( $sql );
+        return $wpdb->get_results( $sql );
 	}
 
 	/**
@@ -190,21 +193,24 @@ class Get_Entries {
 	 * @param array  $submissions    An array of submission objects.
 	 * @return array An array of entry field objects.
 	 */
-	private function get_entries_for_submissions( $entries_table, $submissions ) {
-		if ( empty( $submissions ) ) {
-			return array();
-		}
+    private function get_entries_for_submissions( $entries_table, $submissions ) {
+        if ( empty( $submissions ) ) {
+            return array();
+        }
 
-		global $wpdb;
-		$submission_ids  = wp_list_pluck( $submissions, 'id' );
-		$ids_placeholder = implode( ',', array_fill( 0, count( $submission_ids ), '%d' ) );
+        global $wpdb;
+        $submission_ids  = wp_list_pluck( $submissions, 'id' );
+        $ids_placeholder = implode( ',', array_fill( 0, count( $submission_ids ), '%d' ) );
+
+        // Build the template first. $entries_table is assumed safe/whitelisted.
+        $sql_template = "SELECT * FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)";
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table names are internal and non-user-controlled variables.
+        $sql = $wpdb->prepare( $sql_template, ...$submission_ids );
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$sql = $wpdb->prepare( "SELECT * FROM $entries_table WHERE submission_id IN ($ids_placeholder)", ...$submission_ids );
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		return $wpdb->get_results( $sql );
-	}
+        return $wpdb->get_results( $sql );
+    }
 
 	/**
 	 * Processes raw data and formats it for the UI.

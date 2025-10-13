@@ -61,13 +61,17 @@ class Bulk_Action {
 				if ( ! empty( $update_data ) ) {
 					list($set_clause, $params) = $this->build_update_query_from_data( $update_data );
 
-					$sql = $wpdb->prepare(
-						"UPDATE `$submissions_table` SET $set_clause WHERE id IN ($ids_placeholder)",
-						...array_merge( $params, $ids )
-					);
+                // Concatenate $set_clause to build the template string, 
+                // then use prepare() only for the parameters.
+                $sql_template = "UPDATE `$submissions_table` SET $set_clause WHERE id IN ($ids_placeholder)";
 
-                    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-					$affected    = $wpdb->query( $sql );
+                $sql = $wpdb->prepare( 
+                    $sql_template,
+                    ...array_merge( $params, $ids )
+                );
+
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+                $affected    = $wpdb->query( $sql );
 					$updated_ids = $ids; // Assume all requested IDs were updated.
 				}
 				break;

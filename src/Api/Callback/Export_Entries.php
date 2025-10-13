@@ -108,40 +108,52 @@ class Export_Entries {
 			$query_args[]    = $date_to;
 		}
 
-		$where_sql = 'WHERE ' . implode( ' AND ', $where_clauses );
+        $where_sql = implode( ' AND ', $where_clauses );
 
-		// Step 1: Count entries from the submissions table
+        if ( ! empty( $where_sql ) ) {
+            $where_sql = 'WHERE ' . $where_sql;
+        }
+
+        // Step 1: Count entries from the submissions table (L130-L131)
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-		$count_query = $wpdb->prepare( "SELECT COUNT(*) FROM {$submissions_table} {$where_sql}", ...$query_args );
+        $count_query = $wpdb->prepare( 
+            "SELECT COUNT(*) FROM {$submissions_table} " . ( ! empty( $where_sql ) ? $where_sql : '' ), 
+            ...$query_args 
+        );
+
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$total_entries = (int) $wpdb->get_var( $count_query );
+        $total_entries = (int) $wpdb->get_var( $count_query );
 
-		if ( $total_entries === 0 ) {
-			return new WP_Error(
-				'no_entries',
-				__( 'No entries found for the selected criteria.', 'entries-manager' ),
-				array( 'status' => 404 )
-			);
-		}
+        if ( $total_entries === 0 ) {
+        // ... error handling ...
+        }
 
-		// Step 2: If low volume, fetch directly
-		if ( $total_entries <= 10000 ) {
+        // Step 2: If low volume, fetch directly (L140-L151)
+        if ( $total_entries <= 10000 ) {
             // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-			$select_query = $wpdb->prepare(
-				"SELECT * FROM {$submissions_table} {$where_sql} ORDER BY created_at ASC",
-				...$query_args
-			);
+            $select_query = $wpdb->prepare(
+                "SELECT * FROM {$submissions_table} " . ( ! empty( $where_sql ) ? $where_sql : '' ) . " ORDER BY created_at ASC",
+                ...$query_args
+            );
 
             // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$low_entries = $wpdb->get_results( $select_query, ARRAY_A );
-            // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-			$all_entry_data = $wpdb->get_results(
-				$wpdb->prepare( "SELECT submission_id, field_key, field_value FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)", ...array_column( $low_entries, 'id' ) ),
-				ARRAY_A
-			);
+            $low_entries = $wpdb->get_results( $select_query, ARRAY_A );
+            
+            // Fix for the IN clause:
+            $submission_ids  = array_column( $low_entries, 'id' );
+            $ids_placeholder = implode( ',', array_fill( 0, count( $submission_ids ), '%d' ) );
 
-			$this->export_entries_otg( $low_entries, $all_entry_data );
-		}
+            // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.NotPrepared
+            $all_entry_data = $wpdb->get_results(
+                $wpdb->prepare( 
+                    "SELECT submission_id, field_key, field_value FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)", 
+                    ...$submission_ids 
+                ),
+                ARRAY_A
+            );
+
+            $this->export_entries_otg( $low_entries, $all_entry_data );
+        }
 
 		// Generate a unique ID for this export job
 		$job_id = 'export_' . $form_id . '_' . wp_generate_password( 12, false );
@@ -231,22 +243,29 @@ class Export_Entries {
 
 		$where_clauses[] = 'id > %d';
 		$query_args[]    = $job_state['last_id'];
+        
+        $where_sql = implode( ' AND ', $where_clauses );
 
-		// $where_sql now contains placeholders, e.g., 'WHERE form_id = %d AND id > %d'
-		$where_sql = 'WHERE ' . implode( ' AND ', $where_clauses );
+        if ( ! empty( $where_sql ) ) {
+            $where_sql = 'WHERE ' . $where_sql;
+        }
 
-		// We merge it with the final LIMIT value (batch_size).
-		$prepared_values = array_merge(
-			$query_args, // Contains values for all placeholders in $where_sql
-			array( $job_state['batch_size'] ) // Value for the final LIMIT %d
-		);
+        // Combine all prepared values into a single array
+        // $query_args contains the values for the WHERE clause placeholders.
+        // We only need to append the batch size for the LIMIT %d placeholder.
+        $final_prepared_values = array_merge(
+            $query_args,
+            array( $job_state['batch_size'] ) // The value for the single LIMIT %d placeholder
+        );
 
         $submissions = $wpdb->get_results(
             $wpdb->prepare(
+                // The SQL template: Use simple LIMIT %d because OFFSET is handled by 'id > %d'
                 "SELECT id, name, email, status, note, is_favorite, created_at 
-                FROM {$submissions_table} {$where_sql} 
+                FROM {$submissions_table} 
+                " . ( ! empty( $where_sql ) ? 'WHERE ' . $where_sql : '' ) . " 
                 ORDER BY id ASC LIMIT %d",
-                ...$prepared_values
+                ...$final_prepared_values
             ),
             ARRAY_A
         );

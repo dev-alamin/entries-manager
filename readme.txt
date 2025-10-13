@@ -1,9 +1,9 @@
 === EntryDashboard – Entry Manager for Forms ===
-Contributors: coderalamin
+Contributors: coderalamin, entriesmanager
 Tags: form entries, submissions, wpforms submission, contact form 7 submission, google sheets sync
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -76,25 +76,48 @@ Think of it as your **mini-CRM**—but directly inside WordPress.
 
 ---
 
-== External Services ==
+== External services ==
 
-This plugin connects to Google Sheets API to sync WPForms, Contact Form 7, and other form entries to spreadsheets. 
+This plugin utilizes two external services to provide its core features: its own **EntryDashboard Backend Service** and the **Google Sheets API**.
 
-**What it does:**  
-- Sends form entry data (like name, email, and submission fields) to your designated Google Sheet when syncing.  
-- Receives data updates if using bidirectional sync (if applicable).  
+### 1. EntryDashboard Backend Service (backend.entriesmanager.com)
 
-**When data is sent:**  
-- Each time an entry is synced manually or automatically via scheduled sync.  
+This service acts as a secure intermediary for handling authentication and site features.
 
-**Service provider:**  
-- Google Sheets API (Google LLC)  
-- Terms of Service: https://policies.google.com/terms  
-- Privacy Policy: https://policies.google.com/privacy
+**What it is used for:**
+* **Secure Authentication Proxy:** It helps manage the secure OAuth 2.0 connection and refresh tokens for Google Sheets integration. This prevents highly sensitive tokens from being fully exposed on the WordPress site.
+* **License/Feature Verification:** It is used to verify the status of the EntryDashboard Pro license and enable premium features.
 
-**User control:**  
-- Users can choose which forms and which fields are synced.  
-- Sync can be disabled at any time in the plugin settings.
+**What data is sent and when:**
+* **During initial connection/refresh:** Your website's URL (e.g., `https://your-site.com`) is sent to the backend service to identify the site requesting tokens or feature verification.
+* **During Google Sheets setup:** An authorization code is temporarily sent to exchange for the secure access tokens.
+* **No form entry data is sent to this backend service.**
+
+**Service Provider:**
+* EntryDashboard (The plugin author)
+* **Terms of Service:** https://entriesmanager.com/terms-of-service/
+* **Privacy Policy:** https://entriesmanager.com/privacy-policy/
+
+### 2. Google Sheets API (Google LLC)
+
+This service is used to sync your form submission data directly to your designated Google Sheet.
+
+**What it does:**
+* Sends form entry data (like name, email, and submission fields) to your designated Google Sheet when syncing.
+* Receives data updates if using bidirectional sync (if applicable).
+
+**When data is sent:**
+* Each time an entry is synced manually or automatically via scheduled sync.
+
+**Service Provider:**
+* Google Sheets API (Google LLC)
+* Terms of Service: https://policies.google.com/terms
+* Privacy Policy: https://policies.google.com/privacy
+
+**User Control:**
+* Users can choose which forms and which fields are synced.
+* User can sync, unsync manually from dashboard.
+* Sync can be disabled at any time in the plugin settings.
 
 ---
 
