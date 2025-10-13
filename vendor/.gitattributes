@@ -1,0 +1,11 @@
+# Always keep prod/main version of .gitignore
+.gitignore merge=ours
+
+# Keep vendor dev packages (phpcs, wpcs, etc.) from prod/main version
+vendor/phpcsstandards/* merge=ours
+vendor/wp-coding-standards/* merge=ours
+vendor/squizlabs/* merge=ours
+vendor/dealerdirect/* merge=ours
+
+# Optional: Keep any composer dev files (if you have composer-dev.json)
+composer-dev.json merge=ours
