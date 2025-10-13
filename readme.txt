@@ -3,7 +3,7 @@ Contributors: coderalamin, entriesmanager
 Tags: form entries, submissions, wpforms submission, contact form 7 submission, google sheets sync
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -63,7 +63,9 @@ Think of it as your **mini-CRM**—but directly inside WordPress.
 * Integrations with **Gravity Forms**, **Ninja Forms**, and more.  
 * Team collaboration tools (assign entries, activity log).  
 * Extended Google Sheets sync options (conditional sync, multiple sheets).  
-* Priority support and updates.  
+* Priority support and updates.
+
+Manage all your form entries effortlessly with **[EntryDashboard Pro - Entries Manager](https://entriesmanager.com/)**!
 
 ---
 
@@ -202,6 +204,10 @@ No. EntryDashboard only runs in your admin dashboard and won’t impact the fron
 
 == Changelog ==
 
+### 1.0.2
+- Resolved all remaining **SQL Injection** vulnerabilities by enforcing safe $wpdb->prepare() usage across all files (8 incidences total).
+- Corrected logic for safely handling **dynamic WHERE and SET clauses** in bulk actions and data fetching.
+- Added required documentation for the use of the **external proxy service** (backend.entriesmanager.com) in readme.txt.
 
 ### 1.0.1
 - Fixed missing and incorrect **nonces** in admin AJAX/REST requests.
