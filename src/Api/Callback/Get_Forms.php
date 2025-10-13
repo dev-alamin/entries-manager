@@ -113,39 +113,39 @@ class Get_Forms {
 	 * @return array An array containing the full list of fields and a schema.
 	 */
 	private function fetch_fields_from_db( $form_id ) {
-        global $wpdb;
-        $entries_table     = Helper::get_data_table();
-        $submissions_table = Helper::get_submission_table();
+		global $wpdb;
+		$entries_table     = Helper::get_data_table();
+		$submissions_table = Helper::get_submission_table();
 
-        // Fetch all unique field keys for the given form ID.
-        // We join to submissions table to ensure we only get fields for a specific form.
-        // Note: Table names are safely retrieved from Helper methods and are not user input.
-        $sql = "SELECT DISTINCT t1.field_key 
+		// Fetch all unique field keys for the given form ID.
+		// We join to submissions table to ensure we only get fields for a specific form.
+		// Note: Table names are safely retrieved from Helper methods and are not user input.
+		$sql = "SELECT DISTINCT t1.field_key 
                 FROM {$entries_table} AS t1
                 JOIN {$submissions_table} AS t2 ON t1.submission_id = t2.id
                 WHERE t2.form_id = %d";
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table names are internal and non-user-controlled variables.
-        $fields_raw = $wpdb->get_col(
-            $wpdb->prepare( $sql, $form_id )
-        );
+		$fields_raw = $wpdb->get_col(
+			$wpdb->prepare( $sql, $form_id )
+		);
 
-        $fields       = array();
-        $entry_schema = array();
+		$fields       = array();
+		$entry_schema = array();
 
-        // Build the fields list and schema.
-        foreach ( $fields_raw as $field_key ) {
-            $fields[] = $field_key;
-            if ( ! $this->is_system_key( $field_key ) ) {
-                $entry_schema[] = array(
-                    'key'   => $field_key,
-                    'label' => ucwords( str_replace( array( '-', '_' ), ' ', $field_key ) ),
-                );
-            }
-        }
+		// Build the fields list and schema.
+		foreach ( $fields_raw as $field_key ) {
+			$fields[] = $field_key;
+			if ( ! $this->is_system_key( $field_key ) ) {
+				$entry_schema[] = array(
+					'key'   => $field_key,
+					'label' => ucwords( str_replace( array( '-', '_' ), ' ', $field_key ) ),
+				);
+			}
+		}
 
-        return array( $fields, $entry_schema );
-    }
+		return array( $fields, $entry_schema );
+	}
 
 	/**
 	 * Checks if a field key is a system key that should be ignored.
