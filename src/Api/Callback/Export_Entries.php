@@ -4,6 +4,7 @@ namespace Amin\FormsEntriesManager\Api\Callback;
 
 defined( 'ABSPATH' ) || exit;
 
+use Amin\FormsEntriesManager\Logger\FileLogger;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -63,8 +64,11 @@ class Export_Entries {
 		'retry_count',       // Internal retry mechanism
 	);
 
+    protected $logger;
+
 	public function __construct() {
 		$this->fs = new FileSystem();
+        $this->logger = new FileLogger();
 	}
 
 	/**
@@ -123,10 +127,6 @@ class Export_Entries {
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$total_entries = (int) $wpdb->get_var( $count_query );
-
-		if ( $total_entries === 0 ) {
-			// ... error handling ...
-		}
 
 		// Step 2: If low volume, fetch directly (L140-L151)
 		if ( $total_entries <= 10000 ) {
@@ -627,6 +627,8 @@ class Export_Entries {
 				array( 'status' => 404 )
 			);
 		}
+
+        $this->logger->log( 'Exporting entries on the go, count: ' . count( $submissions ), 'info' );
 
 		// Merge the data from both tables
 		$merged_entries = $this->merge_entries_data( $submissions, $entries_raw );
