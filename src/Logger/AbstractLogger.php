@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class AbstractLogger {
 
+
 	/**
 	 * @var FileSystem The filesystem utility class instance.
 	 */
@@ -35,8 +36,8 @@ abstract class AbstractLogger {
 	/**
 	 * Abstract method to be implemented by child classes for logging a message.
 	 *
-	 * @param string $message The message to log.
-	 * @param string $level The log level (e.g., 'info', 'error', 'debug').
+	 * @param  string $message The message to log.
+	 * @param  string $level   The log level (e.g., 'info', 'error', 'debug').
 	 * @return bool True if the message was logged successfully, false otherwise.
 	 */
 	abstract public function log( $message, $level = 'info' );
@@ -73,7 +74,7 @@ abstract class AbstractLogger {
 	/**
 	 * Secures a directory by adding .htaccess (for Apache) and index.php (for all servers).
 	 *
-	 * @param string $dir The directory to secure.
+	 * @param  string $dir The directory to secure.
 	 * @return bool True on success, false on failure.
 	 */
 	protected function protect_log_directory() {

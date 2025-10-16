@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Options {
 
+
 	/**
 	 * Constructor.
 	 *

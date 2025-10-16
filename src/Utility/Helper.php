@@ -10,7 +10,6 @@ use WP_REST_Response;
 use Amin\FormsEntriesManager\Utility\DB;
 
 class Helper {
-
 	const OPTION_PREFIX = 'entr_mgr_';
 	protected static $logger;
 
@@ -77,7 +76,7 @@ class Helper {
 	/**
 	 * Get FEM Transient
 	 *
-	 * @param string $key
+	 * @param  string $key
 	 * @return mixed
 	 */
 	public static function get_transient( string $key ) {
@@ -153,8 +152,8 @@ class Helper {
 	/**
 	 * Return a formatted REST response.
 	 *
-	 * @param mixed $data
-	 * @param int   $status
+	 * @param  mixed $data
+	 * @param  int   $status
 	 * @return WP_REST_Response
 	 */
 	public static function wp_rest_response( $data, int $status = 200 ): WP_REST_Response {
@@ -173,8 +172,8 @@ class Helper {
 	/**
 	 * Get a namespaced plugin option.
 	 *
-	 * @param string $key
-	 * @param mixed  $default
+	 * @param  string $key
+	 * @param  mixed  $default
 	 * @return mixed
 	 */
 	public static function get_option( string $key, $default = false ) {
@@ -184,8 +183,8 @@ class Helper {
 	/**
 	 * Update a namespaced plugin option.
 	 *
-	 * @param string $key
-	 * @param mixed  $value
+	 * @param  string $key
+	 * @param  mixed  $value
 	 * @return bool
 	 */
 	public static function update_option( string $key, $value ): bool {
@@ -195,7 +194,7 @@ class Helper {
 	/**
 	 * Delete a namespaced plugin option.
 	 *
-	 * @param string $key
+	 * @param  string $key
 	 * @return bool
 	 */
 	public static function delete_option( string $key ): bool {
@@ -205,7 +204,7 @@ class Helper {
 	/**
 	 * Sanitize a string or array of strings recursively.
 	 *
-	 * @param mixed $data
+	 * @param  mixed $data
 	 * @return mixed
 	 */
 	public static function sanitize_deep( $data ) {
@@ -218,8 +217,8 @@ class Helper {
 	/**
 	 * Format migration progress percentage.
 	 *
-	 * @param int $done
-	 * @param int $total
+	 * @param  int $done
+	 * @param  int $total
 	 * @return string
 	 */
 	public static function format_percent( int $done, int $total ): string {
@@ -232,9 +231,9 @@ class Helper {
 	/**
 	 * Generate a unique hash for entry de-duplication.
 	 *
-	 * @param int    $form_post_id
-	 * @param string $form_value
-	 * @param string $form_date
+	 * @param  int    $form_post_id
+	 * @param  string $form_value
+	 * @param  string $form_date
 	 * @return string
 	 */
 	public static function generate_entry_hash( int $form_post_id, string $form_value, string $form_date ): string {
@@ -440,8 +439,8 @@ class Helper {
 		$deleted_access  = self::delete_option( 'google_access_token' );
 		$deleted_expires = self::delete_option( 'google_token_expires' );
 
-        // Step 3: Use the dedicated hook to manage unscheduling.
-        self::fire_connection_hook( false );
+		// Step 3: Use the dedicated hook to manage unscheduling.
+		self::fire_connection_hook( false );
 
 		self::update_option( 'user_remvoked_google_connection', true );
 
@@ -481,36 +480,36 @@ class Helper {
 		return admin_url( 'admin.php?page=entrydashboard-entries-manager-settings' );
 	}
 
-    /**
-     * Helper to fire the connection status action hook.
-     *
-     * @param bool $is_connected True if the connection was established, false if revoked.
-     * @param array $profile The connected user's profile data.
-     * @return void
-     */
-    public static function fire_connection_hook( bool $is_connected, array $profile = [] ) {
-        if ( $is_connected ) {
-            /**
-             * Fires immediately after a successful connection to Google Sheets is established.
-             * Use this hook to trigger setup tasks, such as scheduling background syncs.
-             *
-             * @since 1.0.0
-             * @param string $user_email The email of the connected Google user.
-             */
-            $user_email = $profile['email'] ?? '';
-            do_action( 'entr_mgr_google_connection_established', $user_email );
-            self::getLogger()->log( "Fired 'entr_mgr_google_connection_established' hook.", 'INFO' );
-        } else {
-            /**
-             * Fires immediately after the Google Sheets connection is revoked/removed.
-             * Use this hook to clean up and unschedule recurring background syncs.
-             *
-             * @since 1.0.0
-             */
-            do_action( 'entr_mgr_google_connection_revoked' );
-            self::getLogger()->log( "Fired 'entr_mgr_google_connection_revoked' hook.", 'INFO' );
-        }
-    }
+	/**
+	 * Helper to fire the connection status action hook.
+	 *
+	 * @param  bool  $is_connected True if the connection was established, false if revoked.
+	 * @param  array $profile      The connected user's profile data.
+	 * @return void
+	 */
+	public static function fire_connection_hook( bool $is_connected, array $profile = array() ) {
+		if ( $is_connected ) {
+			/**
+			 * Fires immediately after a successful connection to Google Sheets is established.
+			 * Use this hook to trigger setup tasks, such as scheduling background syncs.
+			 *
+			 * @since 1.0.0
+			 * @param string $user_email The email of the connected Google user.
+			 */
+			$user_email = $profile['email'] ?? '';
+			do_action( 'entr_mgr_google_connection_established', $user_email );
+			self::getLogger()->log( "Fired 'entr_mgr_google_connection_established' hook.", 'INFO' );
+		} else {
+			/**
+			 * Fires immediately after the Google Sheets connection is revoked/removed.
+			 * Use this hook to clean up and unschedule recurring background syncs.
+			 *
+			 * @since 1.0.0
+			 */
+			do_action( 'entr_mgr_google_connection_revoked' );
+			self::getLogger()->log( "Fired 'entr_mgr_google_connection_revoked' hook.", 'INFO' );
+		}
+	}
 
 	/**
 	 * Retrieves the number of seconds remaining until the Google token expires.
@@ -528,7 +527,7 @@ class Helper {
 	/**
 	 * Converts a number of seconds into a human-readable string format.
 	 *
-	 * @param int $seconds The number of seconds to convert.
+	 * @param  int $seconds The number of seconds to convert.
 	 * @return string Human-readable representation (e.g., "2h 15m", "Expired", "Less than a minute").
 	 */
 	public static function seconds_to_human_readable( int $seconds ): string {
@@ -555,13 +554,13 @@ class Helper {
 	public static function is_pro_version() {
 		// Make sure plugin.php functions are available outside wp-admin.
 		if ( ! function_exists( 'is_plugin_active' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		return is_plugin_active( 'entrydashboard-pro/entrydashboard-pro.php' );
 	}
 
-		// Get entries by IDs with caching
+	// Get entries by IDs with caching
 	public static function get_entries_by_ids( array $ids ): array {
 		if ( empty( $ids ) ) {
 			return array();
@@ -598,8 +597,8 @@ class Helper {
 	/**
 	 * Updates an existing entry.
 	 *
-	 * @param int   $id   The ID of the entry to update.
-	 * @param array $data The data to update.
+	 * @param  int   $id   The ID of the entry to update.
+	 * @param  array $data The data to update.
 	 * @return bool True on success, false on failure.
 	 */
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- safe: custom plugin table, admin-only context
@@ -641,7 +640,7 @@ class Helper {
 					);
 
 					if ( $exists ) {
-						$wpdb->update( $entries_table, array( 'field_value' => $formatted_value ), array( 'id' => $exists ) );
+								$wpdb->update( $entries_table, array( 'field_value' => $formatted_value ), array( 'id' => $exists ) );
 					} else {
 						$wpdb->insert(
 							$entries_table,
@@ -672,7 +671,7 @@ class Helper {
 	/**
 	 * Separates the update data into submissions and entries fields.
 	 *
-	 * @param array $data The data to be updated.
+	 * @param  array $data The data to be updated.
 	 * @return array An array containing submission data and entry fields.
 	 */
 	private static function separate_update_data( array $data ) {
@@ -707,7 +706,7 @@ class Helper {
 	/**
 	 * Formats a line as a CSV string.
 	 *
-	 * @param array $fields The array of fields to format.
+	 * @param  array $fields The array of fields to format.
 	 * @return string The CSV formatted string.
 	 */
 	public static function get_csv_line( array $fields ): string {
@@ -728,7 +727,7 @@ class Helper {
 	/**
 	 * Deletes a single entry and its associated data.
 	 *
-	 * @param int $id The ID of the entry to delete.
+	 * @param  int $id The ID of the entry to delete.
 	 * @return bool True on success, false on failure.
 	 */
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- safe: custom plugin table, admin-only context
@@ -801,15 +800,15 @@ class Helper {
 		return $forms;
 	}
 
-		/**
-		 * Filters out entry fields that are duplicates of core submission fields (name, email)
-		 * based on their value, to prevent redundant columns in exports.
-		 *
-		 * @param array       $entry_data       The array of entry field_key => field_value for a single submission.
-		 * @param string|null $submission_name  The name from the main submission record.
-		 * @param string|null $submission_email The email from the main submission record.
-		 * @return array The filtered entry data.
-		 */
+	/**
+	 * Filters out entry fields that are duplicates of core submission fields (name, email)
+	 * based on their value, to prevent redundant columns in exports.
+	 *
+	 * @param  array       $entry_data       The array of entry field_key => field_value for a single submission.
+	 * @param  string|null $submission_name  The name from the main submission record.
+	 * @param  string|null $submission_email The email from the main submission record.
+	 * @return array The filtered entry data.
+	 */
 	public static function filter_duplicate_entry_fields(
 		array $entry_data,
 		?string $submission_name,
@@ -823,13 +822,10 @@ class Helper {
 			// Check if the entry value matches the submission name or email
 			// AND ensure the key itself isn't 'name' or 'email' (to avoid removing if main fields are empty).
 			// Since we assume name/email are present in submission, this check focuses on generic custom fields.
-			if (
-				! in_array( $key, array( 'name', 'email' ) ) && // Don't remove 'name' or 'email' if they happen to be in $entry_data
-														// AND they might be the ONLY source if $submission_name/email were null
-				(
-					( null !== $submission_name && $value === $submission_name ) ||
-					( null !== $submission_email && $value === $submission_email )
-				)
+			if ( ! in_array( $key, array( 'name', 'email' ) )  // Don't remove 'name' or 'email' if they happen to be in $entry_data
+				// AND they might be the ONLY source if $submission_name/email were null
+				&& ( ( null !== $submission_name && $value === $submission_name )
+				|| ( null !== $submission_email && $value === $submission_email ) )
 			) {
 				$is_duplicate = true;
 			}

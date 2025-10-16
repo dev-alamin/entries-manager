@@ -15,6 +15,7 @@ use Amin\FormsEntriesManager\Admin\Logs\LogViewerPage;
  */
 class Menu {
 
+
 	/**
 	 * LogViewer instance.
 	 *
@@ -77,8 +78,8 @@ class Menu {
 		);
 
 		if ( $legacy_table_exists
-		&& ! Helper::get_option( 'migration_complete' )
-		&& Helper::is_pro_version()
+			&& ! Helper::get_option( 'migration_complete' )
+			&& Helper::is_pro_version()
 		) :
 			add_submenu_page(
 				$parent_slug,

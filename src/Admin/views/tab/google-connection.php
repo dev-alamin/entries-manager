@@ -32,25 +32,25 @@ $forms = Helper::get_all_forms();
 					</div>
 
 					<!-- User Info -->
-					<?php if ( ! empty( $user_email ) ) : ?>
+			<?php if ( ! empty( $user_email ) ) : ?>
 						<div class="flex items-center gap-4 p-2 rounded-lg bg-green-100 border border-green-200 shadow w-full">
-							<?php if ( ! empty( $user_picture ) ) : ?>
+				<?php if ( ! empty( $user_picture ) ) : ?>
 								<img class="w-12 h-12 rounded-full border border-green-200" src="<?php echo esc_url( $user_picture ); ?>" alt="<?php echo esc_attr( $user_name ); ?>" />
-							<?php endif; ?>
+				<?php endif; ?>
 							<div class="text-left">
-								<?php if ( ! empty( $user_name ) ) : ?>
+				<?php if ( ! empty( $user_name ) ) : ?>
 									<p class="text-lg font-semibold text-green-900 !mb-0"><?php echo esc_html( $user_name ); ?></p>
-								<?php endif; ?>
+				<?php endif; ?>
 								<p class="text-sm text-green-700 !mt-0"><?php echo esc_html( $user_email ); ?></p>
 							</div>
 						</div>
-					<?php endif; ?>
+			<?php endif; ?>
 
 					<!-- Actions -->
 					<div class="flex flex-col items-center gap-2 mt-2">
 						<a href="<?php echo esc_url( ENTR_MGR_GOOGLE_PROXY_URL . '?site=' . rawurlencode( Helper::get_settings_page_url() ) ); ?>"
 							class="text-green-700 hover:text-green-900 underline font-semibold text-sm">
-							<?php esc_html_e( 'Switch Account', 'entries-manager' ); ?>
+			<?php esc_html_e( 'Switch Account', 'entries-manager' ); ?>
 						</a>
 						<span class="text-sm text-green-700 mt-2"><?php esc_html_e( 'Live data sync is active. Streaming enabled ✅', 'entries-manager' ); ?></span>
 					</div>
@@ -59,7 +59,7 @@ $forms = Helper::get_all_forms();
 
 			<!-- Info -->
 			<p class="!mb-6 text-gray-600 max-w-2xl mx-auto text-center">
-				<?php esc_html_e( 'Your WPForms submissions are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis.', 'entries-manager' ); ?>
+			<?php esc_html_e( 'Your WPForms submissions are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis.', 'entries-manager' ); ?>
 			</p>
 
 			<!-- Connected Sheets -->
@@ -72,15 +72,15 @@ $forms = Helper::get_all_forms();
 				</div>
 
 				<div class="mt-4 space-y-2 text-left">
-					<?php
-					if ( ! empty( $forms ) ) {
-						foreach ( $forms as $form_id ) {
-							$form_title     = get_the_title( $form_id );
-							$spreadsheet_id = Helper::get_option( 'gsheet_spreadsheet_id_' . $form_id );
+			<?php
+			if ( ! empty( $forms ) ) {
+				foreach ( $forms as $form_id ) {
+					$form_title     = get_the_title( $form_id );
+					$spreadsheet_id = Helper::get_option( 'gsheet_spreadsheet_id_' . $form_id );
 
-							if ( $form_title && $spreadsheet_id ) :
-								$sheet_link = 'https://docs.google.com/spreadsheets/d/' . esc_attr( $spreadsheet_id );
-								?>
+					if ( $form_title && $spreadsheet_id ) :
+						$sheet_link = 'https://docs.google.com/spreadsheets/d/' . esc_attr( $spreadsheet_id );
+						?>
 								<div class="flex items-center space-x-2">
 									<span class="text-sm font-medium text-green-700"><?php echo esc_html( $form_title ); ?>:</span>
 									<a href="<?php echo esc_url( $sheet_link ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-1 text-sm font-medium text-green-600 hover:text-green-800 underline transition-colors">
@@ -90,32 +90,32 @@ $forms = Helper::get_all_forms();
 										<span><?php echo esc_html__( 'View Sheet', 'entries-manager' ); ?></span>
 									</a>
 								</div>
-								<?php
-							endif;
-						}
-					} else {
-						echo '<p class="text-sm text-green-600">' . esc_html__( 'No forms are currently connected to Google Sheets.', 'entries-manager' ) . '</p>';
-					}
-					?>
+							<?php
+					endif;
+				}
+			} else {
+				echo '<p class="text-sm text-green-600">' . esc_html__( 'No forms are currently connected to Google Sheets.', 'entries-manager' ) . '</p>';
+			}
+			?>
 				</div>
 			</div>
 
 			<!-- Revoke Connection (POST) -->
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="mt-6">
-				<?php wp_nonce_field( 'revoke_connection_nonce' ); ?>
+			<?php wp_nonce_field( 'revoke_connection_nonce' ); ?>
 				<input type="hidden" name="action" value="entriesmanager_revoke_connection">
 				<button type="submit" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-lg bg-red-600 hover:bg-red-700 !text-white font-medium shadow transition max-w-xs mx-auto">
 					<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff">
 						<path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
 					</svg>
-					<?php esc_html_e( 'Revoke Connection', 'entries-manager' ); ?>
+			<?php esc_html_e( 'Revoke Connection', 'entries-manager' ); ?>
 				</button>
 			</form>
 
 		<?php else : ?>
 			<!-- No Access Token / Connect Button -->
 			<p class="!mb-6 text-gray-600">
-				<?php esc_html_e( 'To start syncing WPForms entries with Google Sheets, please connect your Google account. This will enable live synchronization and easy data management.', 'entries-manager' ); ?>
+			<?php esc_html_e( 'To start syncing WPForms entries with Google Sheets, please connect your Google account. This will enable live synchronization and easy data management.', 'entries-manager' ); ?>
 			</p>
 
 			<a href="

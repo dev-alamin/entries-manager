@@ -32,6 +32,7 @@ use Amin\FormsEntriesManager\Utility\FileHandler;
  * Handles saving form entries to custom database tables.
  */
 class Submit_Entry {
+
 	protected $logger;
 
 	public function __construct() {
@@ -50,8 +51,8 @@ class Submit_Entry {
 	/**
 	 * Handles WPForms entries.
 	 *
-	 * @param array $fields The fields submitted in the form.
-	 * @param array $entry The entry data from WPForms.
+	 * @param array $fields  The fields submitted in the form.
+	 * @param array $entry   The entry data from WPForms.
 	 * @param int   $form_id The ID of the form being submitted.
 	 */
 	public function save_entry_from_wpforms( $fields, $entry, $form_id ) {
@@ -178,8 +179,9 @@ class Submit_Entry {
 		$posted_data = $submission->get_posted_data();
 
 		// Security check.
-		if ( ! isset( $_POST['_wpnonce'] ) ||
-			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wp_rest' ) ) {
+		if ( ! isset( $_POST['_wpnonce'] )
+			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wp_rest' )
+		) {
 			$this->logger->log( 'Invalid nonce in CF7 submission.', 'error' );
 			return;
 		}
@@ -244,7 +246,7 @@ class Submit_Entry {
 		// Handle file uploads by calling the dedicated method.
 		$this->handle_uploaded_files( $submission_id, $uploaded_files, $entries_table, $wpdb );
 
-				// Send data to Google Sheets if enabled.
+		// Send data to Google Sheets if enabled.
 		$send_data = new Send_Data();
 		$send_data->process_single_entry( array( 'entry_id' => $submission_id ) );
 
@@ -255,10 +257,10 @@ class Submit_Entry {
 	/**
 	 * Handles the saving and processing of uploaded files.
 	 *
-	 * @param int    $submission_id The ID of the submission.
+	 * @param int    $submission_id  The ID of the submission.
 	 * @param array  $uploaded_files The array of uploaded files from WPCF7_Submission.
-	 * @param string $entries_table The name of the entries table.
-	 * @param object $wpdb The WordPress database object.
+	 * @param string $entries_table  The name of the entries table.
+	 * @param object $wpdb           The WordPress database object.
 	 */
 	private function handle_uploaded_files( $submission_id, $uploaded_files, $entries_table, $wpdb ) {
 		if ( empty( $uploaded_files ) ) {
@@ -310,7 +312,7 @@ class Submit_Entry {
 	/**
 	 * Handles Elementor Forms entries.
 	 *
-	 * @param \ElementorPro\Modules\Forms\Classes\Form_Record  $record The form record instance.
+	 * @param \ElementorPro\Modules\Forms\Classes\Form_Record  $record  The form record instance.
 	 * @param \ElementorPro\Modules\Forms\Classes\Ajax_Handler $handler The Ajax handler instance.
 	 */
 	public function save_entry_from_elementor( $record, $handler ) {
@@ -378,7 +380,7 @@ class Submit_Entry {
 						array( '%d', '%s', '%s', '%s' )
 					);
 
-					// Save URL entry.
+						// Save URL entry.
 					$wpdb->insert(
 						$entries_table,
 						array(

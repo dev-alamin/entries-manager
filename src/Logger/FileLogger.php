@@ -11,11 +11,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class FileLogger extends AbstractLogger {
 
+
 	/**
 	 * Logs a message to a daily log file.
 	 *
-	 * @param string $message The message to log.
-	 * @param string $level The log level (e.g., 'info', 'error', 'debug').
+	 * @param  string $message The message to log.
+	 * @param  string $level   The log level (e.g., 'info', 'error', 'debug').
 	 * @return bool True if the message was logged successfully, false otherwise.
 	 */
 	public function log( $message, $level = 'info' ) {

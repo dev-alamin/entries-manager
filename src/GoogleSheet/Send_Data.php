@@ -10,6 +10,7 @@ use WP_Error;
 
 class Send_Data {
 
+
 	protected $logger;
 
 	public function __construct() {
@@ -85,8 +86,8 @@ class Send_Data {
 			Helper::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
 			Helper::update_option( 'user_remvoked_google_connection', false );
 
-                    // 2. Fire the connection hook to schedule tasks!
-            Helper::fire_connection_hook( true );
+					// 2. Fire the connection hook to schedule tasks!
+			Helper::fire_connection_hook( true );
 
 			wp_safe_redirect( admin_url( 'admin.php?page=entrydashboard-entries-manager-settings&connected=true' ) );
 			exit;
@@ -99,7 +100,7 @@ class Send_Data {
 	 * Get or create the necessary spreadsheet and sheet for a given form.
 	 * This is the master function for ensuring a sync target exists and is ready.
 	 *
-	 * @param int $form_id The ID of the WPForm.
+	 * @param  int $form_id The ID of the WPForm.
 	 * @return array|WP_Error An array containing ['spreadsheet_id', 'sheet_title'] or a WP_Error on failure.
 	 */
 	protected function get_or_create_sheet_for_form( int $form_id ) {
@@ -457,7 +458,7 @@ class Send_Data {
 	 *
 	 * This method ensures the header order is consistent with the data structure.
 	 *
-	 * @param int $form_id The ID of the form.
+	 * @param  int $form_id The ID of the form.
 	 * @return array An array of headers.
 	 */
 	protected function get_form_headers( int $form_id ): array {
@@ -549,7 +550,7 @@ class Send_Data {
 	 * Prepares a single row of data, ensuring the order and values
 	 * match the canonical headers for a form.
 	 *
-	 * @param object $entry The entry object from the database.
+	 * @param  object $entry The entry object from the database.
 	 * @return array The formatted row data.
 	 */
 	protected function prepare_row_data( $entry ) {
@@ -595,7 +596,7 @@ class Send_Data {
 					$value = get_date_from_gmt( $entry->created_at, 'Y-m-d H:i:s' );
 					break;
 				case __( 'Name', 'entries-manager' ):
-					$value = $entry->name;
+						$value = $entry->name;
 					break;
 				case __( 'Email', 'entries-manager' ):
 					$value = $entry->email;
@@ -628,9 +629,9 @@ class Send_Data {
 	/**
 	 * Applies alternating row formatting to a specific row using a batchUpdate request.
 	 *
-	 * @param string $spreadsheet_id The ID of the Google Spreadsheet.
-	 * @param int    $sheet_id The numeric ID of the specific sheet.
-	 * @param int    $row_index The 0-based index of the row to format. (e.g., for row 1, pass 0)
+	 * @param  string $spreadsheet_id The ID of the Google Spreadsheet.
+	 * @param  int    $sheet_id       The numeric ID of the specific sheet.
+	 * @param  int    $row_index      The 0-based index of the row to format. (e.g., for row 1, pass 0)
 	 * @return bool|WP_Error True on success, WP_Error on failure.
 	 */
 	protected function apply_alternating_color( string $spreadsheet_id, $sheet_id, int $row_index ) {
@@ -716,7 +717,7 @@ class Send_Data {
 	/**
 	 * Create a new Google Spreadsheet via Drive API.
 	 *
-	 * @param string $title Spreadsheet title. Default 'WPForms Entries'.
+	 * @param  string $title Spreadsheet title. Default 'WPForms Entries'.
 	 * @return string|WP_Error Spreadsheet ID on success, WP_Error on failure.
 	 */
 	public function gsheet_create_spreadsheet( $title = 'WPForms Entries' ) {
@@ -768,10 +769,10 @@ class Send_Data {
 	/**
 	 * Makes a secure request to a Google API endpoint.
 	 *
-	 * @param string $url The base URL for the API endpoint.
-	 * @param array  $body The request body data.
-	 * @param string $method The HTTP method (GET, POST).
-	 * @param string $query_params Optional query parameters to append to the URL.
+	 * @param  string $url          The base URL for the API endpoint.
+	 * @param  array  $body         The request body data.
+	 * @param  string $method       The HTTP method (GET, POST).
+	 * @param  string $query_params Optional query parameters to append to the URL.
 	 * @return array|WP_Error The decoded response body or a WP_Error object.
 	 */
 	protected function make_google_api_request( string $url, array $body, string $method = 'GET', string $query_params = '' ) {
@@ -816,8 +817,8 @@ class Send_Data {
 	/**
 	 * Enqueue unsynced entries for Google Sheets sync in batches.
 	 *
-	 * @param int|null $form_id Optional. Limit enqueueing to this form ID.
-	 * @param int      $batch_size Number of entries to enqueue per batch. Default 50.
+	 * @param int|null $form_id       Optional. Limit enqueueing to this form ID.
+	 * @param int      $batch_size    Number of entries to enqueue per batch. Default 50.
 	 * @param int      $delay_between Delay in seconds between scheduled jobs. Default 5.
 	 *
 	 * @return int Number of entries enqueued in this batch.
@@ -863,7 +864,7 @@ class Send_Data {
 	 * Finds and removes a specific entry's row from the Google Sheet.
 	 * This effectively "unsyncs" the entry.
 	 *
-	 * @param int $entry_id The ID of the entry to remove from the sheet.
+	 * @param  int $entry_id The ID of the entry to remove from the sheet.
 	 * @return bool|WP_Error True on successful deletion, WP_Error on failure.
 	 */
 	public function unsync_entry_from_sheet( int $entry_id ) {
@@ -959,7 +960,7 @@ class Send_Data {
 	 * Synchronizes data from Google Sheets to the local database.
 	 * This is designed to be called by a scheduled action.
 	 *
-	 * @param int $form_id The ID of the form to sync.
+	 * @param  int $form_id The ID of the form to sync.
 	 * @return void
 	 */
 	public function sync_from_sheet_to_db( int $form_id ) {

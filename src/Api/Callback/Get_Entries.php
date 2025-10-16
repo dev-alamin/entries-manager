@@ -15,10 +15,11 @@ use WP_Error;
  */
 class Get_Entries {
 
+
 	/**
 	 * Retrieves a list of entries for a given form.
 	 *
-	 * @param WP_REST_Request $request The REST API request.
+	 * @param  WP_REST_Request $request The REST API request.
 	 * @return \WP_REST_Response A REST response with the list of entries and a data schema.
 	 */
 	public function get_entries( WP_REST_Request $request ) {
@@ -53,7 +54,7 @@ class Get_Entries {
 	/**
 	 * Prepare query parameters from the REST request.
 	 *
-	 * @param WP_REST_Request $request The REST API request.
+	 * @param  WP_REST_Request $request The REST API request.
 	 * @return array
 	 */
 	private function prepare_query_params( WP_REST_Request $request ) {
@@ -72,7 +73,7 @@ class Get_Entries {
 	/**
 	 * Builds the WHERE clause for the main query.
 	 *
-	 * @param array $params Query parameters.
+	 * @param  array $params Query parameters.
 	 * @return array An array containing the WHERE clause and its parameters.
 	 */
 	private function build_where_clause( array $params ) {
@@ -138,9 +139,9 @@ class Get_Entries {
 	/**
 	 * Gets the total count of submissions matching the WHERE clause.
 	 *
-	 * @param string $submissions_table The submissions table name.
-	 * @param string $where_clause      The WHERE clause.
-	 * @param array  $query_params      Parameters for the query.
+	 * @param  string $submissions_table The submissions table name.
+	 * @param  string $where_clause      The WHERE clause.
+	 * @param  array  $query_params      Parameters for the query.
 	 * @return int The total count.
 	 */
 	private function get_total_count( $submissions_table, $where_clause, $query_params ) {
@@ -159,10 +160,10 @@ class Get_Entries {
 	/**
 	 * Fetches paginated submissions.
 	 *
-	 * @param string          $submissions_table The submissions table name.
-	 * @param string          $where_clause      The WHERE clause.
-	 * @param array           $query_params      Parameters for the query.
-	 * @param WP_REST_Request $request  The REST API request.
+	 * @param  string          $submissions_table The submissions table name.
+	 * @param  string          $where_clause      The WHERE clause.
+	 * @param  array           $query_params      Parameters for the query.
+	 * @param  WP_REST_Request $request           The REST API request.
 	 * @return array An array of submission objects.
 	 */
 	private function get_paginated_submissions( $submissions_table, $where_clause, $query_params, WP_REST_Request $request ) {
@@ -189,8 +190,8 @@ class Get_Entries {
 	/**
 	 * Fetches all related entry key/value pairs for the fetched submissions.
 	 *
-	 * @param string $entries_table The entries table name.
-	 * @param array  $submissions    An array of submission objects.
+	 * @param  string $entries_table The entries table name.
+	 * @param  array  $submissions   An array of submission objects.
 	 * @return array An array of entry field objects.
 	 */
 	private function get_entries_for_submissions( $entries_table, $submissions ) {
@@ -215,8 +216,8 @@ class Get_Entries {
 	/**
 	 * Processes raw data and formats it for the UI.
 	 *
-	 * @param array $submissions An array of submission objects.
-	 * @param array $entries     An array of entry field objects.
+	 * @param  array $submissions An array of submission objects.
+	 * @param  array $entries     An array of entry field objects.
 	 * @return array An array containing the formatted entries and a schema.
 	 */
 	private function process_entries( $submissions, $entries ) {
@@ -258,7 +259,7 @@ class Get_Entries {
 					}
 
 					if ( ! in_array( $key, $all_entry_keys ) ) {
-						$all_entry_keys[] = $key;
+							$all_entry_keys[] = $key;
 					}
 				}
 			}
@@ -300,7 +301,7 @@ class Get_Entries {
 	/**
 	 * Checks if a key is a system key that should be skipped in the schema.
 	 *
-	 * @param string $key The field key to check.
+	 * @param  string $key The field key to check.
 	 * @return bool
 	 */
 	private function is_system_key( $key ) {
@@ -311,10 +312,10 @@ class Get_Entries {
 	/**
 	 * Builds the final REST response.
 	 *
-	 * @param array $formatted_entries The processed entry data.
-	 * @param array $entry_schema      The data schema.
-	 * @param int   $total_count       The total number of entries.
-	 * @param array $params            The request parameters.
+	 * @param  array $formatted_entries The processed entry data.
+	 * @param  array $entry_schema      The data schema.
+	 * @param  int   $total_count       The total number of entries.
+	 * @param  array $params            The request parameters.
 	 * @return \WP_REST_Response
 	 */
 	private function build_response( $formatted_entries, $entry_schema, $total_count, $params ) {

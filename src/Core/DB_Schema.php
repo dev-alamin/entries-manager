@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 class DB_Schema {
 
+
 	/**
 	 * Get the name of the main submissions table.
 	 *
@@ -45,7 +46,7 @@ class DB_Schema {
 	public static function create_tables() {
 		global $wpdb;
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		$submissions_table = self::submissions_table();
 		$entries_table     = self::entries_table();

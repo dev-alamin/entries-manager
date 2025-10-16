@@ -11,7 +11,6 @@ defined( 'ABSPATH' ) || exit;
  * Handles the registration and enqueueing of admin assets.
  */
 class Assets {
-
 	/**
 	 * Constructor: Hook into admin asset loading.
 	 */
@@ -35,30 +34,30 @@ class Assets {
 				'in_footer' => false,
 			),
 			'entr-mgr-collapse'     => array(
-                'src'       => ENTR_MGR_ASSETS_URL . 'admin/collapse.js',
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/collapse.js',
 				'deps'      => array(),
 				'version'   => null,
 				'in_footer' => false,
 			),
 			'entr-mgr-alpine'       => array(
-                'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
 				'deps'      => array( 'entr-mgr-collapse' ),
 				'version'   => null,
 				'in_footer' => false,
-                'strategy'  => 'defer',
+				'strategy'  => 'defer',
 			),
 			'entr-mgr-lottie'       => array(
-                'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
 				'deps'      => array(),
 				'version'   => '5.12.0',
 				'in_footer' => true,
 			),
-            'entr-mgr-admin-js'     => array(
-                'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
-                'deps'      => array(),
-                'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
-                'in_footer' => true,
-            ),
+			'entr-mgr-admin-js'     => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
+				'deps'      => array(),
+				'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
+				'in_footer' => true,
+			),
 		);
 	}
 
@@ -82,7 +81,7 @@ class Assets {
 	/**
 	 * Register and enqueue assets on specific admin pages.
 	 *
-	 * @param string $hook
+	 * @param  string $hook
 	 * @return void
 	 */
 	public function register_assets( $hook ) {
@@ -94,7 +93,8 @@ class Assets {
 				'forms-entries_page_entrydashboard-entries-manager-migration',
 			),
 			true
-		) ) {
+		)
+		) {
 			return;
 		}
 
@@ -117,8 +117,10 @@ class Assets {
 				$script['src'],
 				$script['deps'] ?? array(),
 				$script['version'] ?? false,
-				[$script['in_footer'] ?? true,
-                $script['strategy'] ?? 'defer']
+				array(
+					$script['in_footer'] ?? true,
+					$script['strategy'] ?? 'defer',
+				)
 			);
 
 			wp_enqueue_script( $handle );

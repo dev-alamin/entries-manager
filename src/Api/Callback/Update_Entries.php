@@ -19,7 +19,7 @@ class Update_Entries {
 	/**
 	 * Updates an existing entry in the database.
 	 *
-	 * @param WP_REST_Request $request The REST API request.
+	 * @param  WP_REST_Request $request The REST API request.
 	 * @return WP_REST_Response
 	 */
 	public function update_entry( WP_REST_Request $request ) {
@@ -81,7 +81,7 @@ class Update_Entries {
 	/**
 	 * Parses the request parameters and separates them into submission data and entry fields.
 	 *
-	 * @param array $params The raw request parameters.
+	 * @param  array $params The raw request parameters.
 	 * @return array An array containing submission data and entry fields.
 	 */
 	private function parse_update_data( array $params ) {
@@ -115,8 +115,8 @@ class Update_Entries {
 	/**
 	 * Sanitizes a submission field based on its key.
 	 *
-	 * @param string $key The field key.
-	 * @param mixed  $value The value to sanitize.
+	 * @param  string $key   The field key.
+	 * @param  mixed  $value The value to sanitize.
 	 * @return mixed The sanitized value.
 	 */
 	private function sanitize_submission_field( $key, $value ) {
@@ -146,9 +146,9 @@ class Update_Entries {
 	/**
 	 * Performs the database updates on the two tables.
 	 *
-	 * @param int   $id             The submission ID.
-	 * @param array $submission_data Data for the submissions table.
-	 * @param array $entry_fields   Data for the entries table.
+	 * @param  int   $id              The submission ID.
+	 * @param  array $submission_data Data for the submissions table.
+	 * @param  array $entry_fields    Data for the entries table.
 	 * @return true|\WP_Error True on success, WP_Error on failure.
 	 */
 	private function perform_updates( $id, $submission_data, $entry_fields ) {
@@ -177,7 +177,7 @@ class Update_Entries {
 				);
 
 				if ( false === $updated_rows ) {
-					throw new \Exception( 'Database update to submissions table failed.' );
+						throw new \Exception( 'Database update to submissions table failed.' );
 				}
 			}
 
@@ -205,12 +205,12 @@ class Update_Entries {
 					);
 
 					if ( $exists ) {
-						// If it exists, update the existing row.
-						$wpdb->update(
-							$entries_table,
-							array( 'field_value' => $formatted_value ),
-							array( 'id' => $exists )
-						);
+								// If it exists, update the existing row.
+							$wpdb->update(
+								$entries_table,
+								array( 'field_value' => $formatted_value ),
+								array( 'id' => $exists )
+							);
 					} else {
 						// If it does not exist, insert a new row.
 						$wpdb->insert(
@@ -238,7 +238,7 @@ class Update_Entries {
 	/**
 	 * The callback function to handle the unsync request.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param  WP_REST_Request $request
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function handle_unsync_request( WP_REST_Request $request ) {
@@ -286,7 +286,7 @@ class Update_Entries {
 	/**
 	 * The callback function to handle the unsync request.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param  WP_REST_Request $request
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function handle_sync_request( WP_REST_Request $request ) {

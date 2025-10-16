@@ -8,14 +8,15 @@ use Amin\FormsEntriesManager\Utility\Helper;
 
 class Scheduler {
 
+
 	/**
 	 * Schedule batch export jobs via Action Scheduler.
 	 *
-	 * @param string $hook Hook name to trigger.
-	 * @param array  $args Arguments for the job callback.
-	 * @param int    $total Total items to process.
-	 * @param int    $batch_size Size of each batch.
-	 * @param int    $delay Delay seconds between batches.
+	 * @param  string $hook       Hook name to trigger.
+	 * @param  array  $args       Arguments for the job callback.
+	 * @param  int    $total      Total items to process.
+	 * @param  int    $batch_size Size of each batch.
+	 * @param  int    $delay      Delay seconds between batches.
 	 * @return void
 	 */
 	public static function queue_export_batches( $form_id, $date_from, $date_to, $exclude_fields, $batch_size ) {

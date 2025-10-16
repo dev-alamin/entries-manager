@@ -128,9 +128,8 @@ $custom_columns = Helper::get_option( 'cusom_form_columns_settings', array() );
 
 	</div>
 
-    <div class="absolute bottom-4 right-4 text-xs text-gray-400 left-0 right-0 mx-auto w-fit">
-        <?php do_action( 'entr_mgr_before_end_entries_ui' ); ?>
-        <!-- Powered by message ends -->
-    </div> 
-    
+	<div class="mt-10 border-t border-gray-200 pt-4 text-xs text-gray-500 text-center">
+		<?php do_action( 'entr_mgr_before_end_entries_ui' ); ?>
+	</div>
+	
 </div>

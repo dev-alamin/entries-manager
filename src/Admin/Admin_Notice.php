@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Admin_Notice {
 
+
 	/**
 	 * Constructor.
 	 */
@@ -74,15 +75,15 @@ class Admin_Notice {
 					<path d="M11 17h2v-6h-2v6zm0-8h2V7h-2v2zm1-7C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
 				</svg>
 				<div class="text-sm leading-5">
-					<?php
-					echo wp_kses_post(
-						sprintf(
-							/* translators: %s: URL to the review page */
-							__( 'Enjoying Advanced Entries Manager? We would appreciate it if you could <a href="%s" class="text-yellow-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">leave us a 5-star review</a> on WordPress.org! Your support helps us continue improving the plugin.', 'entries-manager' ),
-							esc_url( 'https://wordpress.org/support/plugin/entrydashboard/reviews/#new-post' )
-						)
-					);
-					?>
+		<?php
+		echo wp_kses_post(
+			sprintf(
+			/* translators: %s: URL to the review page */
+				__( 'Enjoying Advanced Entries Manager? We would appreciate it if you could <a href="%s" class="text-yellow-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">leave us a 5-star review</a> on WordPress.org! Your support helps us continue improving the plugin.', 'entries-manager' ),
+				esc_url( 'https://wordpress.org/support/plugin/entrydashboard/reviews/#new-post' )
+			)
+		);
+		?>
 				</div>
 				
 				<div class="flex flex-col md:flex-row items-center gap-3">
@@ -90,14 +91,14 @@ class Admin_Notice {
 						@click="dismissNotice('later')"
 						class="text-yellow-600 hover:underline font-medium"
 						aria-label="<?php esc_attr_e( 'Maybe later', 'entries-manager' ); ?>">
-						<?php esc_html_e( 'Maybe later', 'entries-manager' ); ?>
+		<?php esc_html_e( 'Maybe later', 'entries-manager' ); ?>
 					</button>
 					
 					<button
 						@click="dismissNotice('forever')"
 						class="text-yellow-600 hover:underline font-medium"
 						aria-label="<?php esc_attr_e( 'Never Ask', 'entries-manager' ); ?>">
-						<?php esc_html_e( 'Never Ask', 'entries-manager' ); ?>
+		<?php esc_html_e( 'Never Ask', 'entries-manager' ); ?>
 					</button>
 				</div>
 			</div>
@@ -164,7 +165,7 @@ class Admin_Notice {
 				<path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
 			</svg>
 			<span>
-				<?php esc_html_e( 'Powered by', 'entries-manager' ); ?> <a href="https://entriesmanager.com?utm_source=wpdashboard" target="_blank" rel="noopener noreferrer" class="font-semibold text-indigo-600 hover:text-indigo-700 transition"><?php echo esc_html( 'Entries Manager' ); ?></a>
+		<?php esc_html_e( 'Powered by', 'entries-manager' ); ?> <a href="https://entriesmanager.com?utm_source=wpdashboard" target="_blank" rel="noopener noreferrer" class="font-semibold text-indigo-600 hover:text-indigo-700 transition"><?php echo esc_html( 'Entries Manager' ); ?></a>
 			</span>
 		</div>
 		<?php
@@ -173,7 +174,7 @@ class Admin_Notice {
 	/**
 	 * Add custom action links to the plugin row in the Plugins screen.
 	 *
-	 * @param array $links Existing action links.
+	 * @param  array $links Existing action links.
 	 * @return array Modified action links.
 	 */
 	public function plugin_action_links( $links ) {
@@ -242,14 +243,14 @@ class Admin_Notice {
 				</svg>
 
 				<div class="flex-1 text-sm leading-5">
-					<?php
-					echo wp_kses_post(
-						__(
-							'Your site is blocking the REST API endpoints required by Advanced Entries Manager. Please whitelist <code>/wp-json/wpforms/entries/v1/*</code> in your firewall or security plugin (e.g., Wordfence, Sucuri) to ensure full functionality.',
-							'entries-manager'
-						)
-					);
-					?>
+		<?php
+		echo wp_kses_post(
+			__(
+				'Your site is blocking the REST API endpoints required by Advanced Entries Manager. Please whitelist <code>/wp-json/wpforms/entries/v1/*</code> in your firewall or security plugin (e.g., Wordfence, Sucuri) to ensure full functionality.',
+				'entries-manager'
+			)
+		);
+		?>
 				</div>
 
 				<button
@@ -292,18 +293,18 @@ class Admin_Notice {
 			class="mb-4 rounded-lg border border-red-400 bg-red-50 text-red-800 px-4 relative shadow-sm flex items-center gap-3"
 			role="alert">
 			<p>
-				<?php
-				echo wp_kses_post(
-					sprintf(
-						/* translators: %s: a URL to the WordPress documentation */
-						__(
-							'Your site has the <code>DISABLE_WP_CRON</code> constant enabled, which can prevent scheduled tasks (like Google Sheets syncing) from running reliably. For consistent background processing, we recommend setting up a server-side cron job. %s',
-							'entries-manager'
-						),
-						'<a href="' . esc_url( 'https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more about this here.', 'entries-manager' ) . '</a>'
-					)
-				);
-				?>
+		<?php
+		echo wp_kses_post(
+			sprintf(
+			/* translators: %s: a URL to the WordPress documentation */
+				__(
+					'Your site has the <code>DISABLE_WP_CRON</code> constant enabled, which can prevent scheduled tasks (like Google Sheets syncing) from running reliably. For consistent background processing, we recommend setting up a server-side cron job. %s',
+					'entries-manager'
+				),
+				'<a href="' . esc_url( 'https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more about this here.', 'entries-manager' ) . '</a>'
+			)
+		);
+		?>
 			</p>
 
 			<button
@@ -341,16 +342,16 @@ class Admin_Notice {
 
 				<!-- Notice Text -->
 				<div class="flex-1 text-sm leading-5">
-					<?php
-					echo wp_kses_post(
-						sprintf(
-							/* translators: 1: documentation URL, 2: pro pricing URL */
-							__( 'Need help managing entries or exporting them to Google Sheets? <a href="%1$s" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">Visit the documentation</a>. Syncing more than 500 rows? <a href="%2$s" class="text-green-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">Get our full-featured Pro for unlimited rows sync</a>.', 'entries-manager' ),
-							esc_url( 'https://entriesmanager.com/doc/?utm_source=plugin_backend' ),
-							esc_url( 'https://entriesmanager.com/pricing/?utm_source=plugin_backend' )
-						)
-					);
-					?>
+		<?php
+		echo wp_kses_post(
+			sprintf(
+			/* translators: 1: documentation URL, 2: pro pricing URL */
+				__( 'Need help managing entries or exporting them to Google Sheets? <a href="%1$s" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">Visit the documentation</a>. Syncing more than 500 rows? <a href="%2$s" class="text-green-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">Get our full-featured Pro for unlimited rows sync</a>.', 'entries-manager' ),
+				esc_url( 'https://entriesmanager.com/doc/?utm_source=plugin_backend' ),
+				esc_url( 'https://entriesmanager.com/pricing/?utm_source=plugin_backend' )
+			)
+		);
+		?>
 				</div>
 
 				<!-- Expand Button -->
