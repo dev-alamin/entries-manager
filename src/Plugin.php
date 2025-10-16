@@ -69,14 +69,6 @@ class Plugin {
 
 				( new Capabilities() )->add_cap();
 
-				if ( ! as_has_scheduled_action( 'entr_mgr_daily_sync' ) ) {
-					as_schedule_recurring_action( strtotime( 'tomorrow 2am' ), DAY_IN_SECONDS, 'entr_mgr_daily_sync' );
-				}
-
-				if ( ! as_next_scheduled_action( 'entr_mgr_every_five_minute_sync' ) ) {
-					as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 1, 'entr_mgr_every_five_minute_sync' );
-				}
-
 				// Check if the option is already set to prevent re-recording the date
 				if ( ! Helper::get_option( 'plugin_installation_date' ) ) {
 					// Record the current time in Unix timestamp format
@@ -92,11 +84,16 @@ class Plugin {
 			ENTR_MGR_PLUGIN_BASE_FILE,
 			function () {
 				( new Capabilities() )->remove_cap();
-
-				as_unschedule_all_actions( 'entr_mgr_every_five_minute_sync' );
-				as_unschedule_action( 'entr_mgr_daily_sync' );
+                
+                // Unschedule all synchronization actions.
+                // User might not have revoked the connection before deactivating.
+                // So, we need to ensure that we clean up scheduled tasks here as well.
+                $this->unschedule_tasks();
 			}
 		);
+
+        // Setup hooks for managing scheduled tasks based on Google Sheets connection status.
+        $this->setup_hooks();
 	}
 
 	/**
@@ -169,4 +166,50 @@ class Plugin {
 			);
 		}
 	}
+
+    /**
+     * Set up hooks for managing scheduled tasks based on Google Sheets connection status.
+     *
+     * When the connection to Google Sheets is established, schedule necessary tasks.
+     * When the connection is revoked, unschedule those tasks to prevent unnecessary operations.
+     * @return void
+     */
+    public function setup_hooks() {
+        // Schedule tasks when connection is established
+        add_action( 'entr_mgr_google_connection_established', [ $this, 'schedule_initial_tasks' ] );
+
+        // Unschedule tasks when connection is revoked
+        add_action( 'entr_mgr_google_connection_revoked', [ $this, 'unschedule_tasks' ] );
+    }
+
+    /**
+     * Schedule initial synchronization tasks.
+     * 
+     * This is run *only* when the token is saved/verified for the first time.
+     * 
+     * @return void
+     */
+    public function schedule_initial_tasks() {
+        // This is run *only* when the token is saved/verified for the first time.
+        if ( ! as_has_scheduled_action( 'entr_mgr_daily_sync' ) ) {
+            as_schedule_recurring_action( strtotime( 'tomorrow 2am' ), DAY_IN_SECONDS, 'entr_mgr_daily_sync' );
+        }
+
+        if ( ! as_next_scheduled_action( 'entr_mgr_every_five_minute_sync' ) ) {
+            as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 5, 'entr_mgr_every_five_minute_sync' );
+        }
+    }
+
+    /**
+     * Unschedule all synchronization tasks.
+     * 
+     * This is run *only* when the Google Sheets connection is revoked
+     * by the user from the settings page.
+     *
+     * @return void
+     */
+    public function unschedule_tasks() {
+        as_unschedule_all_actions( 'entr_mgr_every_five_minute_sync' );
+        as_unschedule_all_actions( 'entr_mgr_daily_sync' );
+    }
 }

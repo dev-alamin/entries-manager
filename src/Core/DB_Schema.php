@@ -88,8 +88,7 @@ class DB_Schema {
             PRIMARY KEY  (id),
             KEY idx_submission_id (submission_id),
             KEY idx_field_key (field_key),
-            UNIQUE KEY submission_field_key (submission_id, field_key),
-            FOREIGN KEY (submission_id) REFERENCES $submissions_table(id) ON DELETE CASCADE
+            UNIQUE KEY submission_field_key (submission_id, field_key)
         ) $charset_collate;";
 
 		dbDelta( $sql_submissions );

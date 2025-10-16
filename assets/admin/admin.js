@@ -269,10 +269,10 @@ function formTable(form) {
     },
 
     // Filter and pagination handlers, now correctly calling the new fetchEntries
-    handleSearchInput: _.debounce(function () {
+    handleSearchInput() {
       this.currentPage = 1;
       this.fetchEntries();
-    }, 500),
+    },
 
     handleStatusChange() {
       this.currentPage = 1;
@@ -916,10 +916,10 @@ function entriesApp() {
       }
     },
 
-    handleSearchInput: _.debounce(function () {
+    handleSearchInput() {
       this.currentPage = 1;
       this.fetchEntries();
-    }, 500),
+    },
 
     handleFilterChange() {
       this.currentPage = 1;

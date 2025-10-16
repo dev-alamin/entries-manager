@@ -440,6 +440,9 @@ class Helper {
 		$deleted_access  = self::delete_option( 'google_access_token' );
 		$deleted_expires = self::delete_option( 'google_token_expires' );
 
+        // Step 3: Use the dedicated hook to manage unscheduling.
+        self::fire_connection_hook( false );
+
 		self::update_option( 'user_remvoked_google_connection', true );
 
 		// Unschedule all synchronization actions.
@@ -477,6 +480,37 @@ class Helper {
 	public static function get_settings_page_url() {
 		return admin_url( 'admin.php?page=entrydashboard-entries-manager-settings' );
 	}
+
+    /**
+     * Helper to fire the connection status action hook.
+     *
+     * @param bool $is_connected True if the connection was established, false if revoked.
+     * @param array $profile The connected user's profile data.
+     * @return void
+     */
+    public static function fire_connection_hook( bool $is_connected, array $profile = [] ) {
+        if ( $is_connected ) {
+            /**
+             * Fires immediately after a successful connection to Google Sheets is established.
+             * Use this hook to trigger setup tasks, such as scheduling background syncs.
+             *
+             * @since 1.0.0
+             * @param string $user_email The email of the connected Google user.
+             */
+            $user_email = $profile['email'] ?? '';
+            do_action( 'entr_mgr_google_connection_established', $user_email );
+            self::getLogger()->log( "Fired 'entr_mgr_google_connection_established' hook.", 'INFO' );
+        } else {
+            /**
+             * Fires immediately after the Google Sheets connection is revoked/removed.
+             * Use this hook to clean up and unschedule recurring background syncs.
+             *
+             * @since 1.0.0
+             */
+            do_action( 'entr_mgr_google_connection_revoked' );
+            self::getLogger()->log( "Fired 'entr_mgr_google_connection_revoked' hook.", 'INFO' );
+        }
+    }
 
 	/**
 	 * Retrieves the number of seconds remaining until the Google token expires.

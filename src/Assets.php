@@ -34,30 +34,31 @@ class Assets {
 				'version'   => $version,
 				'in_footer' => false,
 			),
-			'entr-mgr-admin-js'     => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
-				'deps'      => array(),
-				'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
-				'in_footer' => true,
-			),
 			'entr-mgr-collapse'     => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/collapse.js',
+                'src'       => ENTR_MGR_ASSETS_URL . 'admin/collapse.js',
 				'deps'      => array(),
 				'version'   => null,
-				'in_footer' => true,
+				'in_footer' => false,
 			),
 			'entr-mgr-alpine'       => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
+                'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
 				'deps'      => array( 'entr-mgr-collapse' ),
 				'version'   => null,
-				'in_footer' => true,
+				'in_footer' => false,
+                'strategy'  => 'defer',
 			),
 			'entr-mgr-lottie'       => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
+                'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
 				'deps'      => array(),
 				'version'   => '5.12.0',
 				'in_footer' => true,
 			),
+            'entr-mgr-admin-js'     => array(
+                'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
+                'deps'      => array(),
+                'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
+                'in_footer' => true,
+            ),
 		);
 	}
 
@@ -116,13 +117,15 @@ class Assets {
 				$script['src'],
 				$script['deps'] ?? array(),
 				$script['version'] ?? false,
-				$script['in_footer'] ?? true
+				[$script['in_footer'] ?? true,
+                $script['strategy'] ?? 'defer']
 			);
 
 			wp_enqueue_script( $handle );
 		}
 
 		wp_enqueue_script( 'lodash.min.js' );
+
 		// Get the existing custom columns from the database.
 		$initial_columns = Helper::get_option( 'cusom_form_columns_settings', array() );
 		// Localize main admin JS

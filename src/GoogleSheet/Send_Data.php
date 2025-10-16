@@ -85,6 +85,9 @@ class Send_Data {
 			Helper::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
 			Helper::update_option( 'user_remvoked_google_connection', false );
 
+                    // 2. Fire the connection hook to schedule tasks!
+            Helper::fire_connection_hook( true );
+
 			wp_safe_redirect( admin_url( 'admin.php?page=entrydashboard-entries-manager-settings&connected=true' ) );
 			exit;
 		}
