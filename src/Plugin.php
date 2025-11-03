@@ -153,6 +153,13 @@ class Plugin {
 		 */
 		new Export_Entries_Action( new Export_Entries() );
 
+        add_action( 'init', function() {
+            if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+                Helper::update_option( 'last_cron_context', php_sapi_name() );
+                Helper::update_option( 'last_cron_time', time() );
+            }
+        });
+
 		// If in admin area, load the Admin class for managing entries and settings
 		if ( is_admin() ) {
 			new Admin(

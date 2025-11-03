@@ -39,13 +39,13 @@ class Assets {
 				'version'   => null,
 				'in_footer' => false,
 			),
-			'entr-mgr-alpine'       => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
-				'deps'      => array( 'entr-mgr-collapse' ),
-				'version'   => null,
-				'in_footer' => false,
-				'strategy'  => 'defer',
-			),
+			// 'entr-mgr-alpine'       => array(
+			// 	'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
+			// 	'deps'      => array( 'entr-mgr-collapse' ),
+			// 	'version'   => null,
+			// 	'in_footer' => false,
+			// 	'strategy'  => 'defer',
+			// ),
 			'entr-mgr-lottie'       => array(
 				'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
 				'deps'      => array(),
@@ -117,15 +117,14 @@ class Assets {
 				$script['src'],
 				$script['deps'] ?? array(),
 				$script['version'] ?? false,
-				array(
-					$script['in_footer'] ?? true,
-					$script['strategy'] ?? 'defer',
-				)
+				$script['in_footer'] ?? true
 			);
 
 			wp_enqueue_script( $handle );
 		}
-
+        
+        // Pull out these scripts separately to control load order
+        wp_enqueue_script( 'entr-mgr-alpine-js', ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js', array( 'entr-mgr-collapse' ), '3.10.5', true );
 		wp_enqueue_script( 'lodash.min.js' );
 
 		// Get the existing custom columns from the database.

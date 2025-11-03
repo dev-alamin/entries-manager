@@ -33,7 +33,7 @@ class Send_Data {
 		}
 
 		// Permission check
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'entries-manager' ) );
 		}
 
@@ -55,7 +55,7 @@ class Send_Data {
 		}
 
 		// Permissions
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'entries-manager' ) );
 		}
 

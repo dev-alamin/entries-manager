@@ -47,7 +47,7 @@ class Delete_Single_Entry {
 			);
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) {
 			return new WP_REST_Response(
 				array(
 					'deleted' => false,

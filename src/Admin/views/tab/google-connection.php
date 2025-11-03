@@ -58,8 +58,8 @@ $forms = Helper::get_all_forms();
 			</div>
 
 			<!-- Info -->
-			<p class="!mb-6 text-gray-600 max-w-2xl mx-auto text-center">
-			<?php esc_html_e( 'Your WPForms submissions are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis.', 'entries-manager' ); ?>
+			<p class="!mb-6 text-gray-600 max-w-2xl !mx-auto text-center">
+			    <?php esc_html_e( 'Your entries are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis.', 'entries-manager' ); ?>
 			</p>
 
 			<!-- Connected Sheets -->

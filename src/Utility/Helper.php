@@ -287,25 +287,41 @@ class Helper {
 	 *
 	 * @return bool True if REST API is accessible, false otherwise.
 	 */
-	public static function is_rest_enabled() {
-		$response = wp_remote_get(
-			site_url( '/wp-json/' ),
-			array(
-				'timeout' => 5,
-				'headers' => array(
-					'Accept' => 'application/json',
-				),
-			)
-		);
+    public static function is_rest_enabled() {
+        // Cache result for 1 hour to prevent false positives on first check.
+        $cached = self::get_transient( 'rest_check' );
+        if ( false !== $cached ) {
+            return (bool) $cached;
+        }
 
-		if ( is_wp_error( $response ) ) {
-			return false;
-		}
+        $url = site_url( '/wp-json/' );
+        $args = [
+            'timeout' => 5,
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ];
 
-		$code = wp_remote_retrieve_response_code( $response );
+        $response = wp_remote_get( $url, $args );
 
-		return ( $code >= 200 && $code < 300 );
-	}
+        // If REST call fails, retry once after short delay.
+        if ( is_wp_error( $response ) ) {
+            usleep( 500000 ); // 0.5 sec
+            $response = wp_remote_get( $url, $args );
+        }
+
+        $enabled = false;
+
+        if ( ! is_wp_error( $response ) ) {
+            $code = wp_remote_retrieve_response_code( $response );
+            $enabled = ( $code >= 200 && $code < 300 );
+        }
+
+        // Store result for one hour to prevent repeated false alarms.
+        self::set_transient( 'rest_check', $enabled, HOUR_IN_SECONDS );
+
+        return $enabled;
+    }
 
 	public static function get_access_token() {
 		$logger = new FileLogger();

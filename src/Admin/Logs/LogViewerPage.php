@@ -36,7 +36,7 @@ class LogViewerPage {
 	 * Renders the content of the admin page.
 	 */
 	public function render_page() {
-		if ( ! current_user_can( 'manage_options' ) ) { // Use your required capability
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) { // Use your required capability
 			return;
 		}
 

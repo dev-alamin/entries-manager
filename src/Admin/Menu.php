@@ -39,7 +39,7 @@ class Menu {
 	 *
 	 * Adds a top-level menu for WPForms Entries and a submenu for
 	 * plugin settings. Both are accessible only to users with
-	 * 'manage_options' capability.
+	 * 'can_manage_entr_mgr_entries' capability.
 	 *
 	 * @return void
 	 */
@@ -51,7 +51,7 @@ class Menu {
 		add_menu_page(
 			__( 'Forms Entries', 'entries-manager' ),
 			__( 'Forms Entries', 'entries-manager' ),
-			'manage_options',
+			'can_manage_entr_mgr_entries',
 			$parent_slug,
 			array( $this, 'render_page' ),
 			'dashicons-feedback',
@@ -62,7 +62,7 @@ class Menu {
 			$parent_slug,
 			__( 'WPForms Entry Sync Settings', 'entries-manager' ),
 			__( 'Settings', 'entries-manager' ),
-			'manage_options',
+			'can_manage_entr_mgr_entries',
 			$parent_slug . '-settings',
 			array( $this, 'render_settings_page' ),
 			65
@@ -72,7 +72,7 @@ class Menu {
 			$parent_slug,
 			__( 'Logs', 'entries-manager' ),
 			__( 'Logs', 'entries-manager' ),
-			'manage_options',
+			'can_manage_entr_mgr_entries',
 			$parent_slug . '-logs',
 			array( $this->log_viewer_page, 'render_page' )
 		);
@@ -85,7 +85,7 @@ class Menu {
 				$parent_slug,
 				__( 'Migration', 'entries-manager' ),
 				__( 'Migration', 'entries-manager' ),
-				'manage_options',
+				'can_manage_entr_mgr_entries',
 				$parent_slug . '-migration',
 				array( $this, 'render_migration_page' )
 			);

@@ -96,7 +96,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			'tools.php',
 			__( 'Scheduled Actions', 'action-scheduler' ),
 			__( 'Scheduled Actions', 'action-scheduler' ),
-			'manage_options',
+			'can_manage_entr_mgr_entries',
 			'action-scheduler',
 			array( $this, 'render_admin_ui' )
 		);

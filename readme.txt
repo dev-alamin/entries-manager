@@ -1,6 +1,6 @@
-=== EntryDashboard – Entry Manager for Forms ===
+=== EntryDashboard – Database Addon & Sync for WPForms, CF7, Elementor & More ===
 Contributors: coderalamin, entriesmanager
-Tags: form entries, submissions, wpforms submission, contact form 7 submission, google sheets sync
+Tags: google sheets sync, wpforms database, save to database, contact form 7, elementor forms, leads
 Requires at least: 5.4
 Tested up to: 6.8
 Stable tag: 1.0.2
@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Centralized dashboard to save, manage, search, and sync form submissions from WPForms, CF7, Elementor & more — turn WordPress into a mini-CRM.
+Saves, manages, and sync all form submissions to your WordPress database. The most powerful Database Addon for WPForms, Contact Form 7, and Elementor Forms. Includes Google Sheets sync.
 
 == Description ==
 
@@ -19,6 +19,12 @@ No more digging through emails or scattered plugin screens. With EntryDashboard,
 Whether you want to **search**, **filter**, **export**, or **sync with Google Sheets**, EntryDashboard makes it simple to treat form submissions like the valuable leads and data they truly are.  
 
 Think of it as your **mini-CRM**—but directly inside WordPress.
+
+[youtube https://www.youtube.com/watch?v=cQnP3gmlTH0]
+
+*Watch the quick demo to see EntryDashboard in action!*
+
+[What's New](https://entriesmanager.com/features/?utm_source=WordPress) | [Docs](https://entriesmanager.com/docs/?utm_source=WordPress) | [Video Tutorials](https://www.youtube.com/@EntriesManager) | [Get Help](https://entriesmanager.com/contact-us/?utm_source=WordPress)
 
 ---
 
@@ -166,17 +172,41 @@ The rest of the plugin's code, including `admin.css` and `admin.js`, is maintain
 
 == Frequently Asked Questions ==
 
-**Which plugins are supported?**  
-The free version supports WPForms, Contact Form 7, and Elementor Forms. Pro will add more integrations like Gravity Forms and Ninja Forms.  
+Which forms plugins are supported?
+EntryDashboard supports WPForms, Contact Form 7, and Elementor Forms in the free version. The Pro version will also support popular plugins like Gravity Forms and Ninja Forms, giving you more options to manage and sync your entries.
 
-**Is the Google Sheets connection secure?**  
-Yes. EntryDashboard uses official Google OAuth 2.0. You connect directly with Google, and we never store your password. Access can be revoked anytime.  
+How does WPForms Google Sheet Sync work?
+Our plugin uses official Google OAuth 2.0 for secure connection. Once connected, all your WPForms entries can be automatically synced to Google Sheets. Your Google credentials are never stored on your server, and you can revoke access at any time.
 
-**Can I export entries?**  
-Yes. CSV export is included free. Excel and PDF export will be part of Pro.  
+Can I export my form entries?
+Yes! You can export entries in CSV format from the dashboard. The Pro version will also include Excel and PDF export, making it easy to download, share, or archive your form data.
 
-**Will this affect my website speed?**  
-No. EntryDashboard only runs in your admin dashboard and won’t impact the front-end.  
+Does this plugin affect my website speed?
+No. EntryDashboard only runs in the WordPress admin dashboard. All heavy tasks, like syncing WPForms to Google Sheets, are handled in the background and won’t slow down your site’s front-end.
+
+Can I mark entries as read/unread?
+Absolutely! You can quickly mark entries as read or unread, favorite important submissions, and filter/search through your data instantly — all without leaving your dashboard.
+
+Is there a way to search or filter entries?
+Yes. EntryDashboard provides instant search and filter options by name, email, date, or entry ID, helping you quickly find any submission in seconds.
+
+Is it secure to use with my forms?
+Yes. EntryDashboard respects WordPress security best practices. All data is stored safely in your database, and sensitive tasks like Google Sheet sync are protected with OAuth authentication.
+
+Do I need a Google API key for syncing?
+No. EntryDashboard handles everything using Google OAuth 2.0, so you don’t need to generate or manage your own Google API key. The connection is secure, and you can control access directly from your Google account.
+
+Is there documentation for setting up WPForms Google Sheet Sync?
+Yes! We provide a step-by-step setup guide inside the plugin and on our website. You’ll find instructions for connecting your forms, syncing entries to Google Sheets, exporting data, and using advanced features. The documentation is beginner-friendly and ensures you can get started in minutes.
+
+Can I sync multiple forms to separate Google Sheets?
+Absolutely. EntryDashboard lets you connect each WPForms form to its own Google Sheet, keeping your data organized and easy to manage.
+
+How often does the plugin sync entries?
+The plugin supports real-time or scheduled syncing using WordPress cron jobs.
+
+Is there support if I face issues during setup?
+Yes. Our team provides dedicated support through WordPress.org and our website. Whether you’re having trouble connecting Google Sheets or exporting entries, we’re here to help.
 
 ---
 
@@ -187,22 +217,21 @@ No. EntryDashboard only runs in your admin dashboard and won’t impact the fron
 3. Detailed modal view of a single entry.  
 4. Bulk actions in use.  
 5. Google Sheets OAuth authentication screen.  
-6. Entry with notes added (mini-CRM functionality).  
+6. Entry with notes added (mini-CRM functionality).
+7. Choose which field need to show by default in table.
+8. Advanced Export, full control over fields.
 
 ---
 
 == Changelog ==
 
-= 1.0.0 =  
-* Initial release.  
-* Support for WPForms, Contact Form 7, Elementor Forms.  
-* Entry listing, modal view, notes, favorites, status management.  
-* Google Sheets sync (manual & auto).  
-* CSV export.  
-
----
-
-== Changelog ==
+### 1.0.3
+- Google Connection Tab alignment, description changed
+- Custom Capability Added
+- Fixed: Plugin Settings Page link
+- Fixed: Review request link
+- Fixed: Rest route false positive notice
+- Fixed: Browser Console Error
 
 ### 1.0.2
 - Resolved all remaining **SQL Injection** vulnerabilities by enforcing safe $wpdb->prepare() usage across all files (8 incidences total).
