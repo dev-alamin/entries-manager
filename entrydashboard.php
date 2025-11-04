@@ -3,7 +3,7 @@
  * Plugin Name: EntryDashboard – Entry Manager for Forms
  * Plugin URI:  https://entriesmanager.com/
  * Description: A centralized dashboard to manage, search, and sync form submissions from WPForms, Contact Form 7, Elementor, and more. Transform your WordPress into a mini-CRM.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      EntriesManager
  * Text Domain: entries-manager
  * Domain Path: /languages
@@ -37,7 +37,7 @@ require_once( plugin_dir_path( __FILE__ ) . '/vendor/woocommerce/action-schedule
  */
 
 if( ! defined( 'ENTR_MGR_VERSION' ) ) {
-    define( 'ENTR_MGR_VERSION', WP_DEBUG_LOG ? time() : '1.0.0' );
+    define( 'ENTR_MGR_VERSION', WP_DEBUG_LOG ? time() : '1.0.3' );
 }
 
 /**
