@@ -249,7 +249,19 @@ class Update_Entries {
 					'success' => false,
 					'message' => __( 'Invalid or missing entry ID.', 'entries-manager' ),
 				),
-				400
+				200
+			);
+		}
+
+        $is_authorized = Helper::is_google_authorized();
+
+		if ( ! $is_authorized ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Maybe you\'ve removed google connection, please do it from settings page.', 'entries-manager' ),
+				),
+				200
 			);
 		}
 
@@ -298,7 +310,7 @@ class Update_Entries {
 					'success' => false,
 					'message' => __( 'You have not authorize google, please do it from settings page.', 'entries-manager' ),
 				),
-				400
+				200
 			);
 		}
 
@@ -310,7 +322,7 @@ class Update_Entries {
 					'success' => false,
 					'message' => __( 'Invalid or missing entry ID.', 'entries-manager' ),
 				),
-				400
+				200
 			);
 		}
 
