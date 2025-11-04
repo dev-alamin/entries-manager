@@ -153,12 +153,15 @@ class Plugin {
 		 */
 		new Export_Entries_Action( new Export_Entries() );
 
-        add_action( 'init', function() {
-            if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-                Helper::update_option( 'last_cron_context', php_sapi_name() );
-                Helper::update_option( 'last_cron_time', time() );
-            }
-        });
+		add_action(
+			'init',
+			function () {
+				if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+					Helper::update_option( 'last_cron_context', php_sapi_name() );
+					Helper::update_option( 'last_cron_time', time() );
+				}
+			}
+		);
 
 		// If in admin area, load the Admin class for managing entries and settings
 		if ( is_admin() ) {
@@ -206,10 +209,10 @@ class Plugin {
 			as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 5, 'entr_mgr_every_five_minute_sync' );
 		}
 
-        // Schedule recurring refresh job only after first successful auth
-        if ( ! as_has_scheduled_action( 'entr_mgr_refresh_google_token' ) ) {
-            as_schedule_recurring_action( time() + 60, 45 * 60, 'entr_mgr_refresh_google_token' );
-        }
+		// Schedule recurring refresh job only after first successful auth
+		if ( ! as_has_scheduled_action( 'entr_mgr_refresh_google_token' ) ) {
+			as_schedule_recurring_action( time() + 60, 45 * 60, 'entr_mgr_refresh_google_token' );
+		}
 	}
 
 	/**
@@ -223,6 +226,6 @@ class Plugin {
 	public function unschedule_tasks() {
 		as_unschedule_all_actions( 'entr_mgr_every_five_minute_sync' );
 		as_unschedule_all_actions( 'entr_mgr_daily_sync' );
-        as_unschedule_action( 'entr_mgr_refresh_google_token' );
+		as_unschedule_action( 'entr_mgr_refresh_google_token' );
 	}
 }

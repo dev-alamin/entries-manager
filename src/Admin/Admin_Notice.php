@@ -275,62 +275,63 @@ class Admin_Notice {
 	 * background processing.
 	 */
 	public function cron_issue_notice() {
-        // Show only to admins
-        if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) {
-            return;
-        }
+		// Show only to admins
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) {
+			return;
+		}
 
-        // Check if WP Cron is disabled
-        $wp_cron_disabled = defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON;
+		// Check if WP Cron is disabled
+		$wp_cron_disabled = defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON;
 
-        // Try to detect a real system cron (CLI-triggered in the last 24h)
-        $last_cron_context = Helper::get_option( 'last_cron_context' );
-        $last_cron_time    = Helper::get_option( 'last_cron_time' );
+		// Try to detect a real system cron (CLI-triggered in the last 24h)
+		$last_cron_context = Helper::get_option( 'last_cron_context' );
+		$last_cron_time    = Helper::get_option( 'last_cron_time' );
 
-        $recent_system_cron = false;
+		$recent_system_cron = false;
 
-        if ( $last_cron_context === 'cli' && $last_cron_time && ( time() - $last_cron_time < DAY_IN_SECONDS ) ) {
-            $recent_system_cron = true;
-        }
+		if ( $last_cron_context === 'cli' && $last_cron_time && ( time() - $last_cron_time < DAY_IN_SECONDS ) ) {
+			$recent_system_cron = true;
+		}
 
-        // If WP Cron is disabled but no real cron activity, show warning
-        if ( $wp_cron_disabled && ! $recent_system_cron ) :
-            ?>
-            <div
-                x-data="{ show: true }"
-                x-show="show"
-                x-transition
-                class="mb-4 rounded-lg border border-red-400 bg-red-50 text-red-800 px-4 relative shadow-sm flex items-center gap-3"
-                role="alert">
-                <p>
-                    <?php
-                    echo wp_kses_post(
-                        sprintf(
-                            __(
-                                'Your site has the <code>DISABLE_WP_CRON</code> constant enabled, but no recent system cron activity was detected. This may prevent background tasks like Google Sheets syncing from running. Please ensure a real server cron job is configured. %s',
-                                'entries-manager'
-                            ),
-                            '<a href="' . esc_url( 'https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more.', 'entries-manager' ) . '</a>'
-                        )
-                    );
-                    ?>
-                </p>
+		// If WP Cron is disabled but no real cron activity, show warning
+		if ( $wp_cron_disabled && ! $recent_system_cron ) :
+			?>
+			<div
+				x-data="{ show: true }"
+				x-show="show"
+				x-transition
+				class="mb-4 rounded-lg border border-red-400 bg-red-50 text-red-800 px-4 relative shadow-sm flex items-center gap-3"
+				role="alert">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							__(
+                                /* translators: %s is the URL to the cron setup instructions. */
+								'Your site has the <code>DISABLE_WP_CRON</code> constant enabled, but no recent system cron activity was detected. This may prevent background tasks like Google Sheets syncing from running. Please ensure a real server cron job is configured. %s',
+								'entries-manager'
+							),
+							'<a href="' . esc_url( 'https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more.', 'entries-manager' ) . '</a>'
+						)
+					);
+					?>
+				</p>
 
-                <button
-                    @click="show = false;"
-                    class="ml-auto text-yellow-500 hover:text-yellow-700 transition"
-                    aria-label="<?php esc_attr_e( 'Dismiss notice', 'entries-manager' ); ?>">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 0 0-1.41
-                            1.41L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89
-                            4.9a1 1 0 0 0 1.41-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4z" />
-                    </svg>
-                </button>
-            </div>
-            <?php
-        endif;
-    }
+				<button
+					@click="show = false;"
+					class="ml-auto text-yellow-500 hover:text-yellow-700 transition"
+					aria-label="<?php esc_attr_e( 'Dismiss notice', 'entries-manager' ); ?>">
+					<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+						<path
+							d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 0 0-1.41
+							1.41L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89
+							4.9a1 1 0 0 0 1.41-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4z" />
+					</svg>
+				</button>
+			</div>
+			<?php
+		endif;
+	}
 
 
 	public function display_doc_link() {

@@ -287,41 +287,41 @@ class Helper {
 	 *
 	 * @return bool True if REST API is accessible, false otherwise.
 	 */
-    public static function is_rest_enabled() {
-        // Cache result for 1 hour to prevent false positives on first check.
-        $cached = self::get_transient( 'rest_check' );
-        if ( false !== $cached ) {
-            return (bool) $cached;
-        }
+	public static function is_rest_enabled() {
+		// Cache result for 1 hour to prevent false positives on first check.
+		$cached = self::get_transient( 'rest_check' );
+		if ( false !== $cached ) {
+			return (bool) $cached;
+		}
 
-        $url = site_url( '/wp-json/' );
-        $args = [
-            'timeout' => 5,
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
-        ];
+		$url  = site_url( '/wp-json/' );
+		$args = array(
+			'timeout' => 5,
+			'headers' => array(
+				'Accept' => 'application/json',
+			),
+		);
 
-        $response = wp_remote_get( $url, $args );
+		$response = wp_remote_get( $url, $args );
 
-        // If REST call fails, retry once after short delay.
-        if ( is_wp_error( $response ) ) {
-            usleep( 500000 ); // 0.5 sec
-            $response = wp_remote_get( $url, $args );
-        }
+		// If REST call fails, retry once after short delay.
+		if ( is_wp_error( $response ) ) {
+			usleep( 500000 ); // 0.5 sec
+			$response = wp_remote_get( $url, $args );
+		}
 
-        $enabled = false;
+		$enabled = false;
 
-        if ( ! is_wp_error( $response ) ) {
-            $code = wp_remote_retrieve_response_code( $response );
-            $enabled = ( $code >= 200 && $code < 300 );
-        }
+		if ( ! is_wp_error( $response ) ) {
+			$code    = wp_remote_retrieve_response_code( $response );
+			$enabled = ( $code >= 200 && $code < 300 );
+		}
 
-        // Store result for one hour to prevent repeated false alarms.
-        self::set_transient( 'rest_check', $enabled, HOUR_IN_SECONDS );
+		// Store result for one hour to prevent repeated false alarms.
+		self::set_transient( 'rest_check', $enabled, HOUR_IN_SECONDS );
 
-        return $enabled;
-    }
+		return $enabled;
+	}
 
 	public static function get_access_token() {
 		$logger = new FileLogger();
@@ -371,45 +371,45 @@ class Helper {
 		return false;
 	}
 
-    public static function refresh_access_token_proactively() {
-        $logger = new FileLogger();
+	public static function refresh_access_token_proactively() {
+		$logger = new FileLogger();
 
-        if ( self::is_user_revoked() ) {
-            $logger->log( 'User has revoked Google connection. Cannot refresh token.', 'INFO' );
-            return false;
-        }
+		if ( self::is_user_revoked() ) {
+			$logger->log( 'User has revoked Google connection. Cannot refresh token.', 'INFO' );
+			return false;
+		}
 
-        // This bypasses the expiration check and forces the refresh POST request
-        $response = wp_remote_post(
-            ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/refresh',
-            array(
-                'headers' => array( 'Content-Type' => 'application/json' ),
-                'body'    => wp_json_encode(
-                    array(
-                        'site' => self::get_settings_page_url(),
-                    )
-                ),
-            )
-        );
+		// This bypasses the expiration check and forces the refresh POST request
+		$response = wp_remote_post(
+			ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/refresh',
+			array(
+				'headers' => array( 'Content-Type' => 'application/json' ),
+				'body'    => wp_json_encode(
+					array(
+						'site' => self::get_settings_page_url(),
+					)
+				),
+			)
+		);
 
-        if ( is_wp_error( $response ) ) {
-            $logger->log( 'Scheduled token refresh failed: ' . $response->get_error_message(), 'ERROR' );
-            return false;
-        }
+		if ( is_wp_error( $response ) ) {
+			$logger->log( 'Scheduled token refresh failed: ' . $response->get_error_message(), 'ERROR' );
+			return false;
+		}
 
-        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-        if ( ! empty( $body['access_token'] ) ) {
-            self::update_option( 'google_access_token', sanitize_text_field( $body['access_token'] ) );
-            self::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
-            
-            // Success: The token is now refreshed and saved.
-            return true;
-        }
+		if ( ! empty( $body['access_token'] ) ) {
+			self::update_option( 'google_access_token', sanitize_text_field( $body['access_token'] ) );
+			self::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
 
-        $logger->log( 'Scheduled token refresh failed: Invalid refresh response', 'ERROR' );
-        return false;
-    }
+			// Success: The token is now refreshed and saved.
+			return true;
+		}
+
+		$logger->log( 'Scheduled token refresh failed: Invalid refresh response', 'ERROR' );
+		return false;
+	}
 
 	public static function has_access_token(): bool {
 		return (bool) self::get_option( 'google_access_token' );

@@ -226,12 +226,13 @@ Yes. Our team provides dedicated support through WordPress.org and our website. 
 == Changelog ==
 
 ### 1.0.3
-- Google Connection Tab alignment, description changed
-- Custom Capability Added
+- Improved: Google Connection Tab alignment, description changed
+- Featured: Custom Capability Added
 - Fixed: Plugin Settings Page link
 - Fixed: Review request link
 - Fixed: Rest route false positive notice
 - Fixed: Browser Console Error
+- Fixed: Google Connection Keep Alived
 
 ### 1.0.2
 - Resolved all remaining **SQL Injection** vulnerabilities by enforcing safe $wpdb->prepare() usage across all files (8 incidences total).

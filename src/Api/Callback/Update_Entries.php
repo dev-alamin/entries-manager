@@ -253,7 +253,7 @@ class Update_Entries {
 			);
 		}
 
-        $is_authorized = Helper::is_google_authorized();
+		$is_authorized = Helper::is_google_authorized();
 
 		if ( ! $is_authorized ) {
 			return new WP_REST_Response(
