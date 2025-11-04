@@ -371,6 +371,46 @@ class Helper {
 		return false;
 	}
 
+    public static function refresh_access_token_proactively() {
+        $logger = new FileLogger();
+
+        if ( self::is_user_revoked() ) {
+            $logger->log( 'User has revoked Google connection. Cannot refresh token.', 'INFO' );
+            return false;
+        }
+
+        // This bypasses the expiration check and forces the refresh POST request
+        $response = wp_remote_post(
+            ENTR_MGR_PROXY_BASE_URL . 'wp-json/swpfe/v1/refresh',
+            array(
+                'headers' => array( 'Content-Type' => 'application/json' ),
+                'body'    => wp_json_encode(
+                    array(
+                        'site' => self::get_settings_page_url(),
+                    )
+                ),
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            $logger->log( 'Scheduled token refresh failed: ' . $response->get_error_message(), 'ERROR' );
+            return false;
+        }
+
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        if ( ! empty( $body['access_token'] ) ) {
+            self::update_option( 'google_access_token', sanitize_text_field( $body['access_token'] ) );
+            self::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
+            
+            // Success: The token is now refreshed and saved.
+            return true;
+        }
+
+        $logger->log( 'Scheduled token refresh failed: Invalid refresh response', 'ERROR' );
+        return false;
+    }
+
 	public static function has_access_token(): bool {
 		return (bool) self::get_option( 'google_access_token' );
 	}

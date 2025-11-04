@@ -205,6 +205,11 @@ class Plugin {
 		if ( ! as_next_scheduled_action( 'entr_mgr_every_five_minute_sync' ) ) {
 			as_schedule_recurring_action( time(), MINUTE_IN_SECONDS * 5, 'entr_mgr_every_five_minute_sync' );
 		}
+
+        // Schedule recurring refresh job only after first successful auth
+        if ( ! as_has_scheduled_action( 'entr_mgr_refresh_google_token' ) ) {
+            as_schedule_recurring_action( time() + 60, 45 * 60, 'entr_mgr_refresh_google_token' );
+        }
 	}
 
 	/**
@@ -218,5 +223,6 @@ class Plugin {
 	public function unschedule_tasks() {
 		as_unschedule_all_actions( 'entr_mgr_every_five_minute_sync' );
 		as_unschedule_all_actions( 'entr_mgr_daily_sync' );
+        as_unschedule_action( 'entr_mgr_refresh_google_token' );
 	}
 }

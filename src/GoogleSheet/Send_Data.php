@@ -86,7 +86,7 @@ class Send_Data {
 			Helper::update_option( 'google_token_expires', time() + intval( $body['expires_in'] ?? 3600 ) );
 			Helper::update_option( 'user_remvoked_google_connection', false );
 
-					// 2. Fire the connection hook to schedule tasks!
+			// 2. Fire the connection hook to schedule tasks!
 			Helper::fire_connection_hook( true );
 
 			wp_safe_redirect( admin_url( 'admin.php?page=entrydashboard-entries-manager-settings&connected=true' ) );
@@ -104,13 +104,16 @@ class Send_Data {
 	 * @return array|WP_Error An array containing ['spreadsheet_id', 'sheet_title'] or a WP_Error on failure.
 	 */
 	protected function get_or_create_sheet_for_form( int $form_id ) {
-		// Enforce Free Version form limitation
-		if ( ! Helper::is_pro_version() ) {
-			$linked_forms = Helper::get_option( 'entr_mgr_linked_forms', array() );
-			if ( ! in_array( $form_id, $linked_forms ) && count( $linked_forms ) >= 1 ) {
-				return new WP_Error( 'limit_exceeded', 'The free version supports synchronizing data from only one form. Please upgrade to Pro to sync more forms.' );
-			}
-		}
+        if ( ! Helper::is_pro_version() ) {
+            $forms = (array) Helper::get_option( 'entr_mgr_linked_forms', [] );
+            $too_many = count( $forms ) >= 1 && ! in_array( $form_id, $forms, true );
+            if ( $too_many ) {
+                return new WP_Error(
+                    'limit_exceeded',
+                    __( 'Upgrade required to link multiple forms.', 'entries-manager' )
+                );
+            }
+        }
 
 		$spreadsheet_id = Helper::get_option( "gsheet_spreadsheet_id_{$form_id}" );
 		$sheet_title    = Helper::get_option( "gsheet_sheet_title_{$form_id}" );

@@ -48,10 +48,6 @@ $forms = Helper::get_all_forms();
 
 					<!-- Actions -->
 					<div class="flex flex-col items-center gap-2 mt-2">
-						<a href="<?php echo esc_url( ENTR_MGR_GOOGLE_PROXY_URL . '?site=' . rawurlencode( Helper::get_settings_page_url() ) ); ?>"
-							class="text-green-700 hover:text-green-900 underline font-semibold text-sm">
-			<?php esc_html_e( 'Switch Account', 'entries-manager' ); ?>
-						</a>
 						<span class="text-sm text-green-700 mt-2"><?php esc_html_e( 'Live data sync is active. Streaming enabled ✅', 'entries-manager' ); ?></span>
 					</div>
 				</div>

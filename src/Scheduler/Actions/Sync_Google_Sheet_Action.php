@@ -5,6 +5,7 @@ namespace Amin\FormsEntriesManager\Scheduler\Actions;
 defined( 'ABSPATH' ) || exit;
 
 use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
+use Amin\FormsEntriesManager\Utility\Helper;
 
 class Sync_Google_Sheet_Action {
 
@@ -26,5 +27,14 @@ class Sync_Google_Sheet_Action {
 
 		// Hook the task.
 		add_action( 'entr_mgr_every_five_minute_sync', array( $this->send_data, 'enqueue_unsynced_entries' ) );
+
+        // Keep alive google token
+        add_action(
+            'entr_mgr_refresh_google_token', 
+            array( 
+                '\\Amin\\FormsEntriesManager\\Utility\\Helper',
+                'refresh_access_token_proactively' 
+            ) 
+        );
 	}
 }
