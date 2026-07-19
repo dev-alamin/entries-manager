@@ -33,6 +33,7 @@ use Amin\FormsEntriesManager\Utility\FileHandler;
  */
 class Submit_Entry {
 
+
 	protected $logger;
 
 	public function __construct() {

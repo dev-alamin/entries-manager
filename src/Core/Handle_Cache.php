@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || exit;
 class Handle_Cache {
 
 
+
 	/**
 	 * Cache group name for object cache to avoid conflicts.
 	 *

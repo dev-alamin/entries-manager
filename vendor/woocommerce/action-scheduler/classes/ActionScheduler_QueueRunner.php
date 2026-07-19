@@ -186,11 +186,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 				break;
 			}
 			$this->process_action( $action_id, $context );
-<<<<<<< HEAD
-			++$processed_actions;
-=======
 			$processed_actions++;
->>>>>>> development
 
 			if ( $this->batch_limits_exceeded( $processed_actions + $this->processed_actions_count ) ) {
 				break;

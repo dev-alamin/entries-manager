@@ -16,6 +16,7 @@ use Amin\FormsEntriesManager\Admin\Logs\LogViewerPage;
 class Menu {
 
 
+
 	/**
 	 * LogViewer instance.
 	 *

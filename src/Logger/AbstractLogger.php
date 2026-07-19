@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 abstract class AbstractLogger {
 
 
+
 	/**
 	 * @var FileSystem The filesystem utility class instance.
 	 */

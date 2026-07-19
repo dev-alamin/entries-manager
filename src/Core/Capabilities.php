@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Capabilities {
 
+
 	/**
 	 * Adds custom WPForms entry management capabilities to the administrator role.
 	 *

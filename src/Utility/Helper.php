@@ -10,6 +10,7 @@ use WP_REST_Response;
 use Amin\FormsEntriesManager\Utility\DB;
 
 class Helper {
+
 	const OPTION_PREFIX = 'entr_mgr_';
 	protected static $logger;
 

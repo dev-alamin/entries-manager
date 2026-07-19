@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 class DB_Schema {
 
 
+
 	/**
 	 * Get the name of the main submissions table.
 	 *

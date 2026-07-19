@@ -11,6 +11,7 @@ use WP_Error;
 class Send_Data {
 
 
+
 	protected $logger;
 
 	public function __construct() {
@@ -599,7 +600,7 @@ class Send_Data {
 					$value = get_date_from_gmt( $entry->created_at, 'Y-m-d H:i:s' );
 					break;
 				case __( 'Name', 'entries-manager' ):
-						$value = $entry->name;
+					$value = $entry->name;
 					break;
 				case __( 'Email', 'entries-manager' ):
 					$value = $entry->email;

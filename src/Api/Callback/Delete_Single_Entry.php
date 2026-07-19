@@ -15,6 +15,7 @@ use WP_Error;
  * Handles the retrieval of entries from the custom database table.
  */
 class Delete_Single_Entry {
+
 	/**
 	 * Delete a specific form entry.
 	 *

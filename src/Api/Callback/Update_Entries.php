@@ -16,6 +16,7 @@ use Amin\FormsEntriesManager\GoogleSheet\Send_Data;
  * Handles the retrieval of entries from the custom database table.
  */
 class Update_Entries {
+
 	/**
 	 * Updates an existing entry in the database.
 	 *

@@ -108,7 +108,4 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 		parent::__wakeup();
 	}
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> development

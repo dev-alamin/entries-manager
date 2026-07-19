@@ -954,11 +954,7 @@ AND `group_id` = %d
 
 		if ( ! empty( $hooks ) ) {
 			$placeholders = array_fill( 0, count( $hooks ), '%s' );
-<<<<<<< HEAD
-			$where       .= ' AND hook IN (' . join( ', ', $placeholders ) . ')';
-=======
 			$where        .= ' AND hook IN (' . join( ', ', $placeholders ) . ')';
->>>>>>> development
 			$where_params = array_merge( $where_params, array_values( $hooks ) );
 		}
 
@@ -1046,13 +1042,8 @@ AND `group_id` = %d
 		$is_mariadb     = ( false !== strpos( $db_server_info, 'MariaDB' ) );
 
 		if ( $is_mariadb &&
-<<<<<<< HEAD
-			'5.5.5' === $db_version &&
-			PHP_VERSION_ID < 80016 // PHP 8.0.15 or older.
-=======
 		     '5.5.5' === $db_version &&
 		     PHP_VERSION_ID < 80016 // PHP 8.0.15 or older.
->>>>>>> development
 		) {
 			/*
 			 * Account for MariaDB version being prefixed with '5.5.5-' on older PHP versions.
@@ -1062,11 +1053,7 @@ AND `group_id` = %d
 		}
 
 		$is_supported = ( $is_mariadb && version_compare( $db_version, '10.6.0', '>=' ) ) ||
-<<<<<<< HEAD
-						( ! $is_mariadb && version_compare( $db_version, '8.0.1', '>=' ) );
-=======
 		                ( ! $is_mariadb && version_compare( $db_version, '8.0.1', '>=' ) );
->>>>>>> development
 
 		/**
 		 * Filter whether the database supports the SKIP LOCKED modifier for queries.

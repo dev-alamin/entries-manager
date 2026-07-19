@@ -16,6 +16,7 @@ use WP_Error;
 class Get_Entries {
 
 
+
 	/**
 	 * Retrieves a list of entries for a given form.
 	 *

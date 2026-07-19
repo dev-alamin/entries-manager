@@ -11,6 +11,7 @@ class Sync_Google_Sheet_Action {
 
 
 
+
 	protected $send_data;
 
 	public function __construct( Send_Data $send_data ) {

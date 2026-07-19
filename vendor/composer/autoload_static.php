@@ -4,19 +4,13 @@
 
 namespace Composer\Autoload;
 
-<<<<<<< HEAD
-class ComposerStaticInit8413add995c61eb7d8ea9210fadbbccf
-{
-    public static $prefixLengthsPsr4 = array (
-=======
-class ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9
+class ComposerStaticInit35d8de283c85dfdb9ab9ff36444be099
 {
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
             'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 57,
         ),
->>>>>>> development
         'A' => 
         array (
             'Amin\\FormsEntriesManager\\' => 25,
@@ -24,13 +18,10 @@ class ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9
     );
 
     public static $prefixDirsPsr4 = array (
-<<<<<<< HEAD
-=======
         'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 
         array (
             0 => __DIR__ . '/..' . '/dealerdirect/phpcodesniffer-composer-installer/src',
         ),
->>>>>>> development
         'Amin\\FormsEntriesManager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -38,41 +29,6 @@ class ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9
     );
 
     public static $classMap = array (
-<<<<<<< HEAD
-        'Amin\\FormsEntriesManager\\Admin\\Admin' => __DIR__ . '/../..' . '/src/Admin/Admin.php',
-        'Amin\\FormsEntriesManager\\Admin\\Admin_Notice' => __DIR__ . '/../..' . '/src/Admin/Admin_Notice.php',
-        'Amin\\FormsEntriesManager\\Admin\\Logs\\HandleLogAction' => __DIR__ . '/../..' . '/src/Admin/Logs/HandleLogAction.php',
-        'Amin\\FormsEntriesManager\\Admin\\Logs\\LogViewerPage' => __DIR__ . '/../..' . '/src/Admin/Logs/LogViewerPage.php',
-        'Amin\\FormsEntriesManager\\Admin\\Logs\\Log_List_Table' => __DIR__ . '/../..' . '/src/Admin/Logs/Log_List_Table.php',
-        'Amin\\FormsEntriesManager\\Admin\\Menu' => __DIR__ . '/../..' . '/src/Admin/Menu.php',
-        'Amin\\FormsEntriesManager\\Admin\\Options' => __DIR__ . '/../..' . '/src/Admin/Options.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Bulk_Action' => __DIR__ . '/../..' . '/src/Api/Callback/Bulk_Action.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Create_Entries' => __DIR__ . '/../..' . '/src/Api/Callback/Create_Entries.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Delete_Single_Entry' => __DIR__ . '/../..' . '/src/Api/Callback/Delete_Single_Entry.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Export_Entries' => __DIR__ . '/../..' . '/src/Api/Callback/Export_Entries.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Get_Entries' => __DIR__ . '/../..' . '/src/Api/Callback/Get_Entries.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Get_Forms' => __DIR__ . '/../..' . '/src/Api/Callback/Get_Forms.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Migrate' => __DIR__ . '/../..' . '/src/Api/Callback/Migrate.php',
-        'Amin\\FormsEntriesManager\\Api\\Callback\\Update_Entries' => __DIR__ . '/../..' . '/src/Api/Callback/Update_Entries.php',
-        'Amin\\FormsEntriesManager\\Api\\Route' => __DIR__ . '/../..' . '/src/Api/Route.php',
-        'Amin\\FormsEntriesManager\\Assets' => __DIR__ . '/../..' . '/src/Assets.php',
-        'Amin\\FormsEntriesManager\\Core\\Capabilities' => __DIR__ . '/../..' . '/src/Core/Capabilities.php',
-        'Amin\\FormsEntriesManager\\Core\\DB_Schema' => __DIR__ . '/../..' . '/src/Core/DB_Schema.php',
-        'Amin\\FormsEntriesManager\\Core\\Handle_Cache' => __DIR__ . '/../..' . '/src/Core/Handle_Cache.php',
-        'Amin\\FormsEntriesManager\\Core\\Submit_Entry' => __DIR__ . '/../..' . '/src/Core/Submit_Entry.php',
-        'Amin\\FormsEntriesManager\\GoogleSheet\\Send_Data' => __DIR__ . '/../..' . '/src/GoogleSheet/Send_Data.php',
-        'Amin\\FormsEntriesManager\\Logger\\AbstractLogger' => __DIR__ . '/../..' . '/src/Logger/AbstractLogger.php',
-        'Amin\\FormsEntriesManager\\Logger\\FileLogger' => __DIR__ . '/../..' . '/src/Logger/FileLogger.php',
-        'Amin\\FormsEntriesManager\\Plugin' => __DIR__ . '/../..' . '/src/Plugin.php',
-        'Amin\\FormsEntriesManager\\Scheduler\\Actions\\Export_Entries_Action' => __DIR__ . '/../..' . '/src/Scheduler/Actions/Export_Entries_Action.php',
-        'Amin\\FormsEntriesManager\\Scheduler\\Actions\\Migrate_Batch_Action' => __DIR__ . '/../..' . '/src/Scheduler/Actions/Migrate_Batch_Action.php',
-        'Amin\\FormsEntriesManager\\Scheduler\\Actions\\Sync_Google_Sheet_Action' => __DIR__ . '/../..' . '/src/Scheduler/Actions/Sync_Google_Sheet_Action.php',
-        'Amin\\FormsEntriesManager\\Scheduler\\Scheduler' => __DIR__ . '/../..' . '/src/Scheduler/Scheduler.php',
-        'Amin\\FormsEntriesManager\\Utility\\FileHandler' => __DIR__ . '/../..' . '/src/Utility/FileHandler.php',
-        'Amin\\FormsEntriesManager\\Utility\\FileSystem' => __DIR__ . '/../..' . '/src/Utility/FileSystem.php',
-        'Amin\\FormsEntriesManager\\Utility\\Helper' => __DIR__ . '/../..' . '/src/Utility/Helper.php',
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-=======
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PHPCSUtils\\AbstractSniffs\\AbstractArrayDeclarationSniff' => __DIR__ . '/..' . '/phpcsstandards/phpcsutils/PHPCSUtils/AbstractSniffs/AbstractArrayDeclarationSniff.php',
         'PHPCSUtils\\BackCompat\\BCFile' => __DIR__ . '/..' . '/phpcsstandards/phpcsutils/PHPCSUtils/BackCompat/BCFile.php',
@@ -124,21 +80,14 @@ class ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9
         'PHPCSUtils\\Utils\\TypeString' => __DIR__ . '/..' . '/phpcsstandards/phpcsutils/PHPCSUtils/Utils/TypeString.php',
         'PHPCSUtils\\Utils\\UseStatements' => __DIR__ . '/..' . '/phpcsstandards/phpcsutils/PHPCSUtils/Utils/UseStatements.php',
         'PHPCSUtils\\Utils\\Variables' => __DIR__ . '/..' . '/phpcsstandards/phpcsutils/PHPCSUtils/Utils/Variables.php',
->>>>>>> development
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-<<<<<<< HEAD
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8413add995c61eb7d8ea9210fadbbccf::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8413add995c61eb7d8ea9210fadbbccf::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit8413add995c61eb7d8ea9210fadbbccf::$classMap;
-=======
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd305dc1b2bad8c4d6b56db0881fad1a9::$classMap;
->>>>>>> development
+            $loader->prefixLengthsPsr4 = ComposerStaticInit35d8de283c85dfdb9ab9ff36444be099::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit35d8de283c85dfdb9ab9ff36444be099::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit35d8de283c85dfdb9ab9ff36444be099::$classMap;
 
         }, null, ClassLoader::class);
     }

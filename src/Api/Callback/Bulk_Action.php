@@ -9,6 +9,7 @@ use WP_REST_Response;
 use WP_Error;
 class Bulk_Action {
 
+
 	/**
 	 * Handles bulk actions on entries.
 	 *
@@ -70,7 +71,7 @@ class Bulk_Action {
 						...array_merge( $params, $ids )
 					);
 
-					   // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 					$affected    = $wpdb->query( $sql );
 					$updated_ids = $ids; // Assume all requested IDs were updated.
 				}
@@ -90,7 +91,7 @@ class Bulk_Action {
 				'success'     => true,
 				'message'     => $action === 'delete'
 				? sprintf(
-							// translators: %d: Number of deleted entries.
+								// translators: %d: Number of deleted entries.
 					_n(
 						'%d entry deleted.',
 						'%d entries deleted.',
@@ -100,7 +101,7 @@ class Bulk_Action {
 					$affected
 				)
 				: sprintf(
-							// translators: %d: Number of updated entries.
+								// translators: %d: Number of updated entries.
 					_n(
 						'%d entry updated.',
 						'%d entries updated.',

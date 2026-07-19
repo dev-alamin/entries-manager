@@ -1,8 +1,6 @@
 {
     "packages": [
         {
-<<<<<<< HEAD
-=======
             "name": "dealerdirect/phpcodesniffer-composer-installer",
             "version": "v1.1.2",
             "version_normalized": "1.1.2.0",
@@ -430,7 +428,6 @@
             "install-path": "../squizlabs/php_codesniffer"
         },
         {
->>>>>>> development
             "name": "woocommerce/action-scheduler",
             "version": "3.9.3",
             "version_normalized": "3.9.3.0",
@@ -475,12 +472,6 @@
                 "source": "https://github.com/woocommerce/action-scheduler/tree/3.9.3"
             },
             "install-path": "../woocommerce/action-scheduler"
-<<<<<<< HEAD
-        }
-    ],
-    "dev": false,
-    "dev-package-names": []
-=======
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -561,5 +552,4 @@
         "squizlabs/php_codesniffer",
         "wp-coding-standards/wpcs"
     ]
->>>>>>> development
 }

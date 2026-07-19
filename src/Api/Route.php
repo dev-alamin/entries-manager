@@ -34,6 +34,7 @@ use Amin\FormsEntriesManager\Utility\Helper;
  * * This class is responsible for defining the API routes and their corresponding callbacks.
  */
 class Route {
+
 	/**
 	 * Callback instances for handling various API routes.
 	 *
@@ -423,7 +424,7 @@ class Route {
 								if ( $timestamp === false ) {
 									return null; // or a fallback date/time string
 								}
-									return gmdate( 'Y-m-d H:i:s', $timestamp );
+										return gmdate( 'Y-m-d H:i:s', $timestamp );
 							},
 						),
 						'resent_at'        => array(
@@ -440,7 +441,7 @@ class Route {
 								if ( $timestamp === false ) {
 									return null; // or a fallback date/time
 								}
-									return gmdate( 'Y-m-d H:i:s', $timestamp );
+										return gmdate( 'Y-m-d H:i:s', $timestamp );
 							},
 						),
 					),

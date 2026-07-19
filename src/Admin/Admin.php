@@ -21,6 +21,7 @@ use Amin\FormsEntriesManager\Admin\Logs\HandleLogAction;
 class Admin {
 
 
+
 	/**
 	 * Assets instance.
 	 *

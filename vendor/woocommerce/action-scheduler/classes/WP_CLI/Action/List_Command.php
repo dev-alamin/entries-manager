@@ -129,8 +129,5 @@ class List_Command extends \ActionScheduler_WPCLI_Command {
 
 		}
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> development
 }

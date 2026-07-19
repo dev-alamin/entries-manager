@@ -3,36 +3,22 @@
         'name' => 'amin/entrydashboard',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-<<<<<<< HEAD
-        'reference' => '393a1f12963f58893a1095bb2b0affcb681e86cd',
-        'type' => 'library',
-        'install_path' => __DIR__ . '/../../',
-        'aliases' => array(),
-        'dev' => false,
-=======
-        'reference' => 'de1b6b2cf5c8505855c03d8f153d47fa2705740f',
+        'reference' => '7531a3fd058d2baf3adeb99b0836f3cb00b4beb1',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
->>>>>>> development
     ),
     'versions' => array(
         'amin/entrydashboard' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< HEAD
-            'reference' => '393a1f12963f58893a1095bb2b0affcb681e86cd',
-=======
-            'reference' => 'de1b6b2cf5c8505855c03d8f153d47fa2705740f',
->>>>>>> development
+            'reference' => '7531a3fd058d2baf3adeb99b0836f3cb00b4beb1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-<<<<<<< HEAD
-=======
         'dealerdirect/phpcodesniffer-composer-installer' => array(
             'pretty_version' => 'v1.1.2',
             'version' => '1.1.2.0',
@@ -78,7 +64,6 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
->>>>>>> development
         'woocommerce/action-scheduler' => array(
             'pretty_version' => '3.9.3',
             'version' => '3.9.3.0',
@@ -88,8 +73,6 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-<<<<<<< HEAD
-=======
         'wp-coding-standards/wpcs' => array(
             'pretty_version' => '3.2.0',
             'version' => '3.2.0.0',
@@ -99,6 +82,5 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
->>>>>>> development
     ),
 );

@@ -11,6 +11,7 @@ use Amin\FormsEntriesManager\Utility\Helper;
 
 class Migrate {
 
+
 	const SOURCE_TABLE    = 'wpforms_db';
 	const OPTION_LAST_ID  = ENTR_MGR_PREFIX . 'migration_last_id';
 	const OPTION_COMPLETE = ENTR_MGR_PREFIX . 'migration_complete';

@@ -2,8 +2,8 @@
 Contributors: coderalamin, entriesmanager
 Tags: google sheets sync, wpforms database, save to database, contact form 7, elementor forms, leads
 Requires at least: 5.4
-Tested up to: 6.8
-Stable tag: 1.0.3
+Tested up to: 7.0.2
+Stable tag: 1.0.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -172,40 +172,51 @@ The rest of the plugin's code, including `admin.css` and `admin.js`, is maintain
 
 == Frequently Asked Questions ==
 
-Which forms plugins are supported?
+### Which forms plugins are supported?
+
 EntryDashboard supports WPForms, Contact Form 7, and Elementor Forms in the free version. The Pro version will also support popular plugins like Gravity Forms and Ninja Forms, giving you more options to manage and sync your entries.
 
-How does WPForms Google Sheet Sync work?
+### How does WPForms Google Sheet Sync work?
+
 Our plugin uses official Google OAuth 2.0 for secure connection. Once connected, all your WPForms entries can be automatically synced to Google Sheets. Your Google credentials are never stored on your server, and you can revoke access at any time.
 
-Can I export my form entries?
+### Can I export my form entries?
+
 Yes! You can export entries in CSV format from the dashboard. The Pro version will also include Excel and PDF export, making it easy to download, share, or archive your form data.
 
-Does this plugin affect my website speed?
+### Does this plugin affect my website speed?
+
 No. EntryDashboard only runs in the WordPress admin dashboard. All heavy tasks, like syncing WPForms to Google Sheets, are handled in the background and won’t slow down your site’s front-end.
 
-Can I mark entries as read/unread?
+### Can I mark entries as read/unread?
+
 Absolutely! You can quickly mark entries as read or unread, favorite important submissions, and filter/search through your data instantly — all without leaving your dashboard.
 
-Is there a way to search or filter entries?
+### Is there a way to search or filter entries?
+
 Yes. EntryDashboard provides instant search and filter options by name, email, date, or entry ID, helping you quickly find any submission in seconds.
 
-Is it secure to use with my forms?
+### Is it secure to use with my forms?
 Yes. EntryDashboard respects WordPress security best practices. All data is stored safely in your database, and sensitive tasks like Google Sheet sync are protected with OAuth authentication.
 
-Do I need a Google API key for syncing?
+### Do I need a Google API key for syncing?
+
 No. EntryDashboard handles everything using Google OAuth 2.0, so you don’t need to generate or manage your own Google API key. The connection is secure, and you can control access directly from your Google account.
 
-Is there documentation for setting up WPForms Google Sheet Sync?
+### Is there documentation for setting up WPForms Google Sheet Sync?
+
 Yes! We provide a step-by-step setup guide inside the plugin and on our website. You’ll find instructions for connecting your forms, syncing entries to Google Sheets, exporting data, and using advanced features. The documentation is beginner-friendly and ensures you can get started in minutes.
 
-Can I sync multiple forms to separate Google Sheets?
+### Can I sync multiple forms to separate Google Sheets?
+
 Absolutely. EntryDashboard lets you connect each WPForms form to its own Google Sheet, keeping your data organized and easy to manage.
 
-How often does the plugin sync entries?
+### How often does the plugin sync entries?
+
 The plugin supports real-time or scheduled syncing using WordPress cron jobs.
 
-Is there support if I face issues during setup?
+### Is there support if I face issues during setup?
+
 Yes. Our team provides dedicated support through WordPress.org and our website. Whether you’re having trouble connecting Google Sheets or exporting entries, we’re here to help.
 
 ---
@@ -225,12 +236,9 @@ Yes. Our team provides dedicated support through WordPress.org and our website. 
 
 == Changelog ==
 
-<<<<<<< HEAD
 ### 1.0.4
 - Version compatibility
 
-=======
->>>>>>> development
 ### 1.0.3
 - Improved: Google Connection Tab alignment, description changed
 - Featured: Custom Capability Added

@@ -11,6 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * Handles the registration and enqueueing of admin assets.
  */
 class Assets {
+
 	/**
 	 * Constructor: Hook into admin asset loading.
 	 */

@@ -41,11 +41,7 @@ class ActionScheduler_RecurringActionScheduler {
 					time(),
 					DAY_IN_SECONDS,
 					self::RUN_SCHEDULED_RECURRING_ACTIONS_HOOK,
-<<<<<<< HEAD
-					array(),
-=======
 					[],
->>>>>>> development
 					'ActionScheduler',
 					true,
 					20

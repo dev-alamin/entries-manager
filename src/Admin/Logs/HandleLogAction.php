@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 class HandleLogAction {
 
 
+
 	/**
 	 * @var FileSystem
 	 */

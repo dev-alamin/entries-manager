@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 class FileLogger extends AbstractLogger {
 
 
+
 	/**
 	 * Logs a message to a daily log file.
 	 *

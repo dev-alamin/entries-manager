@@ -44,6 +44,7 @@ use Amin\FormsEntriesManager\Utility\Helper;
  * @since   1.0.0
  */
 class Plugin {
+
 	/**
 	 * Singleton instance of the plugin.
 	 *
@@ -84,10 +85,10 @@ class Plugin {
 			function () {
 				( new Capabilities() )->remove_cap();
 
-					// Unschedule all synchronization actions.
-					// User might not have revoked the connection before deactivating.
-					// So, we need to ensure that we clean up scheduled tasks here as well.
-					$this->unschedule_tasks();
+				// Unschedule all synchronization actions.
+				// User might not have revoked the connection before deactivating.
+				// So, we need to ensure that we clean up scheduled tasks here as well.
+				$this->unschedule_tasks();
 			}
 		);
 

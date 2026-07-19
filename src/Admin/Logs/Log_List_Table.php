@@ -16,6 +16,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class Log_List_Table extends \WP_List_Table {
 
 
+
 	private $fs;
 	private $log_dir;
 

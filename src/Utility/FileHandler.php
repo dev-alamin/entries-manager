@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 use Amin\FormsEntriesManager\Utility\FileSystem;
 
 class FileHandler {
+
 	private $private_dir;
 	private $logger;
 	private $file_system; // The new property for our FileSystem instance

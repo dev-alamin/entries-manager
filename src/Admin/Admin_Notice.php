@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Admin_Notice {
 
+
 	/**
 	 * Constructor.
 	 */
@@ -303,18 +304,18 @@ class Admin_Notice {
 				class="mb-4 rounded-lg border border-red-400 bg-red-50 text-red-800 px-4 relative shadow-sm flex items-center gap-3"
 				role="alert">
 				<p>
-					<?php
-					echo wp_kses_post(
-						sprintf(
-							__(
-                                /* translators: %s is the URL to the cron setup instructions. */
-								'Your site has the <code>DISABLE_WP_CRON</code> constant enabled, but no recent system cron activity was detected. This may prevent background tasks like Google Sheets syncing from running. Please ensure a real server cron job is configured. %s',
-								'entries-manager'
-							),
-							'<a href="' . esc_url( 'https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more.', 'entries-manager' ) . '</a>'
-						)
-					);
-					?>
+			<?php
+			echo wp_kses_post(
+				sprintf(
+					__(
+								/* translators: %s is the URL to the cron setup instructions. */
+						'Your site has the <code>DISABLE_WP_CRON</code> constant enabled, but no recent system cron activity was detected. This may prevent background tasks like Google Sheets syncing from running. Please ensure a real server cron job is configured. %s',
+						'entries-manager'
+					),
+					'<a href="' . esc_url( 'https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn more.', 'entries-manager' ) . '</a>'
+				)
+			);
+			?>
 				</p>
 
 				<button

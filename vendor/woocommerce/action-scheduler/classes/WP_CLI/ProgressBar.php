@@ -82,11 +82,7 @@ class ProgressBar {
 		}
 
 		$this->progress_bar->tick();
-<<<<<<< HEAD
-		++$this->total_ticks;
-=======
 		$this->total_ticks++;
->>>>>>> development
 
 		do_action( 'action_scheduler/progress_tick', $this->total_ticks ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}

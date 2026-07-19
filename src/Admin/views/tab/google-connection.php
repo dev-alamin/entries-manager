@@ -55,7 +55,7 @@ $forms = Helper::get_all_forms();
 
 			<!-- Info -->
 			<p class="!mb-6 text-gray-600 max-w-2xl !mx-auto text-center">
-				<?php esc_html_e( 'Your entries are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis.', 'entries-manager' ); ?>
+			<?php esc_html_e( 'Your entries are now syncing automatically with your Google Sheets in real-time. This connection allows you to streamline your data collection and analysis.', 'entries-manager' ); ?>
 			</p>
 
 			<!-- Connected Sheets -->
@@ -75,7 +75,7 @@ $forms = Helper::get_all_forms();
 					$spreadsheet_id = Helper::get_option( 'gsheet_spreadsheet_id_' . $form_id );
 
 					if ( $form_title && $spreadsheet_id ) :
-						$sheet_link = 'https://docs.google.com/spreadsheets/d/' . esc_attr( $spreadsheet_id );
+							$sheet_link = 'https://docs.google.com/spreadsheets/d/' . esc_attr( $spreadsheet_id );
 						?>
 								<div class="flex items-center space-x-2">
 									<span class="text-sm font-medium text-green-700"><?php echo esc_html( $form_title ); ?>:</span>
@@ -86,7 +86,7 @@ $forms = Helper::get_all_forms();
 										<span><?php echo esc_html__( 'View Sheet', 'entries-manager' ); ?></span>
 									</a>
 								</div>
-							<?php
+								<?php
 					endif;
 				}
 			} else {

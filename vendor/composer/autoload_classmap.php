@@ -6,41 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-<<<<<<< HEAD
-    'Amin\\FormsEntriesManager\\Admin\\Admin' => $baseDir . '/src/Admin/Admin.php',
-    'Amin\\FormsEntriesManager\\Admin\\Admin_Notice' => $baseDir . '/src/Admin/Admin_Notice.php',
-    'Amin\\FormsEntriesManager\\Admin\\Logs\\HandleLogAction' => $baseDir . '/src/Admin/Logs/HandleLogAction.php',
-    'Amin\\FormsEntriesManager\\Admin\\Logs\\LogViewerPage' => $baseDir . '/src/Admin/Logs/LogViewerPage.php',
-    'Amin\\FormsEntriesManager\\Admin\\Logs\\Log_List_Table' => $baseDir . '/src/Admin/Logs/Log_List_Table.php',
-    'Amin\\FormsEntriesManager\\Admin\\Menu' => $baseDir . '/src/Admin/Menu.php',
-    'Amin\\FormsEntriesManager\\Admin\\Options' => $baseDir . '/src/Admin/Options.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Bulk_Action' => $baseDir . '/src/Api/Callback/Bulk_Action.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Create_Entries' => $baseDir . '/src/Api/Callback/Create_Entries.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Delete_Single_Entry' => $baseDir . '/src/Api/Callback/Delete_Single_Entry.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Export_Entries' => $baseDir . '/src/Api/Callback/Export_Entries.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Get_Entries' => $baseDir . '/src/Api/Callback/Get_Entries.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Get_Forms' => $baseDir . '/src/Api/Callback/Get_Forms.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Migrate' => $baseDir . '/src/Api/Callback/Migrate.php',
-    'Amin\\FormsEntriesManager\\Api\\Callback\\Update_Entries' => $baseDir . '/src/Api/Callback/Update_Entries.php',
-    'Amin\\FormsEntriesManager\\Api\\Route' => $baseDir . '/src/Api/Route.php',
-    'Amin\\FormsEntriesManager\\Assets' => $baseDir . '/src/Assets.php',
-    'Amin\\FormsEntriesManager\\Core\\Capabilities' => $baseDir . '/src/Core/Capabilities.php',
-    'Amin\\FormsEntriesManager\\Core\\DB_Schema' => $baseDir . '/src/Core/DB_Schema.php',
-    'Amin\\FormsEntriesManager\\Core\\Handle_Cache' => $baseDir . '/src/Core/Handle_Cache.php',
-    'Amin\\FormsEntriesManager\\Core\\Submit_Entry' => $baseDir . '/src/Core/Submit_Entry.php',
-    'Amin\\FormsEntriesManager\\GoogleSheet\\Send_Data' => $baseDir . '/src/GoogleSheet/Send_Data.php',
-    'Amin\\FormsEntriesManager\\Logger\\AbstractLogger' => $baseDir . '/src/Logger/AbstractLogger.php',
-    'Amin\\FormsEntriesManager\\Logger\\FileLogger' => $baseDir . '/src/Logger/FileLogger.php',
-    'Amin\\FormsEntriesManager\\Plugin' => $baseDir . '/src/Plugin.php',
-    'Amin\\FormsEntriesManager\\Scheduler\\Actions\\Export_Entries_Action' => $baseDir . '/src/Scheduler/Actions/Export_Entries_Action.php',
-    'Amin\\FormsEntriesManager\\Scheduler\\Actions\\Migrate_Batch_Action' => $baseDir . '/src/Scheduler/Actions/Migrate_Batch_Action.php',
-    'Amin\\FormsEntriesManager\\Scheduler\\Actions\\Sync_Google_Sheet_Action' => $baseDir . '/src/Scheduler/Actions/Sync_Google_Sheet_Action.php',
-    'Amin\\FormsEntriesManager\\Scheduler\\Scheduler' => $baseDir . '/src/Scheduler/Scheduler.php',
-    'Amin\\FormsEntriesManager\\Utility\\FileHandler' => $baseDir . '/src/Utility/FileHandler.php',
-    'Amin\\FormsEntriesManager\\Utility\\FileSystem' => $baseDir . '/src/Utility/FileSystem.php',
-    'Amin\\FormsEntriesManager\\Utility\\Helper' => $baseDir . '/src/Utility/Helper.php',
-    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-=======
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'PHPCSUtils\\AbstractSniffs\\AbstractArrayDeclarationSniff' => $vendorDir . '/phpcsstandards/phpcsutils/PHPCSUtils/AbstractSniffs/AbstractArrayDeclarationSniff.php',
     'PHPCSUtils\\BackCompat\\BCFile' => $vendorDir . '/phpcsstandards/phpcsutils/PHPCSUtils/BackCompat/BCFile.php',
@@ -92,5 +57,4 @@ return array(
     'PHPCSUtils\\Utils\\TypeString' => $vendorDir . '/phpcsstandards/phpcsutils/PHPCSUtils/Utils/TypeString.php',
     'PHPCSUtils\\Utils\\UseStatements' => $vendorDir . '/phpcsstandards/phpcsutils/PHPCSUtils/Utils/UseStatements.php',
     'PHPCSUtils\\Utils\\Variables' => $vendorDir . '/phpcsstandards/phpcsutils/PHPCSUtils/Utils/Variables.php',
->>>>>>> development
 );

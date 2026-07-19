@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class LogViewerPage {
 
+
 	/**
 	 * @var FileLogger The logger instance.
 	 */
@@ -62,8 +63,8 @@ class LogViewerPage {
 					'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
 					esc_html__( 'Security check failed while viewing log.', 'entries-manager' )
 				);
-				$this->render_log_list(); // Default back to the list
-				return;
+					$this->render_log_list(); // Default back to the list
+					return;
 			}
 
 			// If the nonce is valid, proceed to render the log view
@@ -95,22 +96,22 @@ class LogViewerPage {
 		<div class="wrap">
 			<h1><?php esc_html_e( 'EntryDashboard Logs', 'entries-manager' ); ?></h1>
 			
-			<?php if ( $message ) : ?>
+		<?php if ( $message ) : ?>
 				<div class="notice notice-<?php echo esc_attr( $message_type ); ?> is-dismissible">
 					<p><?php echo esc_html( $message ); ?></p>
 				</div>
-			<?php endif; ?>
+		<?php endif; ?>
 
 			<div class="">
 				<h2><?php esc_html_e( 'Log Files', 'entries-manager' ); ?></h2>
 				<p><?php esc_html_e( 'View and download log files. Logs are cleaned up automatically after 30 days.', 'entries-manager' ); ?></p>
 				
-				<?php
-				// We use Log_List_Table to render the actual list.
-				$log_list_table = new \Amin\FormsEntriesManager\Admin\Logs\Log_List_Table( $log_files );
-				$log_list_table->prepare_items();
-				$log_list_table->display();
-				?>
+		<?php
+		// We use Log_List_Table to render the actual list.
+		$log_list_table = new \Amin\FormsEntriesManager\Admin\Logs\Log_List_Table( $log_files );
+		$log_list_table->prepare_items();
+		$log_list_table->display();
+		?>
 			</div>
 
 			<div class="card">
@@ -118,19 +119,19 @@ class LogViewerPage {
 				<p><?php esc_html_e( 'You can manually trigger the log cleanup process.', 'entries-manager' ); ?></p>
 
 				<a href="
-				<?php
-				echo esc_url(
-					add_query_arg(
-						array(
-							'action'   => 'entr_mgr_clear_logs',
-							'_wpnonce' => wp_create_nonce( 'entr_mgr_log_clear' ),
-						),
-						admin_url( 'admin-post.php' ) // 👈 important: always specify base URL
-					)
-				);
-				?>
+		<?php
+		echo esc_url(
+			add_query_arg(
+				array(
+					'action'   => 'entr_mgr_clear_logs',
+					'_wpnonce' => wp_create_nonce( 'entr_mgr_log_clear' ),
+				),
+				admin_url( 'admin-post.php' ) // 👈 important: always specify base URL
+			)
+		);
+		?>
 				" class="button button-primary">
-					<?php esc_html_e( 'Clear Logs Now', 'entries-manager' ); ?>
+		<?php esc_html_e( 'Clear Logs Now', 'entries-manager' ); ?>
 				</a>
 			</div>
 		</div>
@@ -160,27 +161,27 @@ class LogViewerPage {
 		?>
 		<div class="wrap">
 			<h1>
-			<?php
-			/* translators: %s is the log file name */
-			printf( esc_html__( 'Viewing Log File: %s', 'entries-manager' ), esc_html( $file_name ) );
-			?>
+		<?php
+		/* translators: %s is the log file name */
+		printf( esc_html__( 'Viewing Log File: %s', 'entries-manager' ), esc_html( $file_name ) );
+		?>
 			</h1>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::LOG_PAGE_SLUG ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Back to Logs', 'entries-manager' ); ?></a>
 			<a href="
-			<?php
-			echo esc_url(
-				add_query_arg(
-					array(
-						'action'   => 'entr_mgr_download_log',
-						'file'     => $file_name,
-						'_wpnonce' => wp_create_nonce( 'entrydashboard-download' ),
-					),
-					admin_url( 'admin-post.php' ) // 👈 important: always specify base URL
-				)
-			);
-			?>
+		<?php
+		echo esc_url(
+			add_query_arg(
+				array(
+					'action'   => 'entr_mgr_download_log',
+					'file'     => $file_name,
+					'_wpnonce' => wp_create_nonce( 'entrydashboard-download' ),
+				),
+				admin_url( 'admin-post.php' ) // 👈 important: always specify base URL
+			)
+		);
+		?>
 			" class="button button-primary">
-				<?php esc_html_e( 'Download Log', 'entries-manager' ); ?>
+		<?php esc_html_e( 'Download Log', 'entries-manager' ); ?>
 			</a>
 
 			<div class="card" style="margin-top: 20px; max-width:fit-content;">

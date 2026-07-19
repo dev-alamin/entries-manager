@@ -15,6 +15,7 @@ use WP_Error;
  * Handles the retrieval of entries from the custom database table.
  */
 class Create_Entries {
+
 	/**
 	 * Handle creation of a new WPForms entry saved into custom DB table using rest.
 	 *

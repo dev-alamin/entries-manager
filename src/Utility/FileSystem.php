@@ -11,6 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * file access method (direct, FTP, etc.).
  */
 class FileSystem {
+
 	/**
 	 * @var \WP_Filesystem_Base The instance of the WP Filesystem API.
 	 */
