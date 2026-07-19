@@ -36,17 +36,6 @@ jobs:
       - name: Install PHP Dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Build Admin UI (React/Tailwind)
-        run: |
-          npm ci
-          npm run build
-
       - name: Prepare Bundle
         run: |
           mkdir -p entrydashboard
