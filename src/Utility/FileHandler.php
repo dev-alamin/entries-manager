@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 use Amin\FormsEntriesManager\Utility\FileSystem;
 
 class FileHandler {
-
 	private $private_dir;
 	private $logger;
 	private $file_system; // The new property for our FileSystem instance
@@ -29,7 +28,7 @@ class FileHandler {
 	/**
 	 * Processes and stores a list of uploaded files.
 	 *
-	 * @param array $file_paths An array of file paths to process.
+	 * @param  array $file_paths An array of file paths to process.
 	 * @return array An array of new filenames on success, or an empty array on failure.
 	 */
 	public function process_files( $file_paths ) {
@@ -58,7 +57,7 @@ class FileHandler {
 	/**
 	 * Generates a unique filepath to prevent overwriting existing files.
 	 *
-	 * @param string $filename The original filename.
+	 * @param  string $filename The original filename.
 	 * @return string The unique filepath.
 	 */
 	private function generate_unique_filepath( $filename ) {

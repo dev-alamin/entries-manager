@@ -17,6 +17,7 @@ use Error;
  */
 class Get_Forms {
 
+
 	/**
 	 * Get list of forms with their entry counts and unread counts.
 	 *
@@ -68,7 +69,7 @@ class Get_Forms {
 	/**
 	 * Retrieve a list of unique form field keys for a given form ID.
 	 *
-	 * @param WP_REST_Request $request The REST request object containing 'form_id'.
+	 * @param  WP_REST_Request $request The REST request object containing 'form_id'.
 	 * @return \WP_REST_Response|\WP_Error List of field keys or a WP_Error on failure.
 	 */
 	public function get_form_fields( WP_REST_Request $request ) {
@@ -109,7 +110,7 @@ class Get_Forms {
 	/**
 	 * Fetches unique field keys and builds a schema for a given form ID.
 	 *
-	 * @param int $form_id The form ID to fetch fields for.
+	 * @param  int $form_id The form ID to fetch fields for.
 	 * @return array An array containing the full list of fields and a schema.
 	 */
 	private function fetch_fields_from_db( $form_id ) {
@@ -150,7 +151,7 @@ class Get_Forms {
 	/**
 	 * Checks if a field key is a system key that should be ignored.
 	 *
-	 * @param string $key The field key to check.
+	 * @param  string $key The field key to check.
 	 * @return bool
 	 */
 	private function is_system_key( $key ) {

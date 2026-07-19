@@ -11,7 +11,6 @@ defined( 'ABSPATH' ) || exit;
  * file access method (direct, FTP, etc.).
  */
 class FileSystem {
-
 	/**
 	 * @var \WP_Filesystem_Base The instance of the WP Filesystem API.
 	 */
@@ -20,7 +19,7 @@ class FileSystem {
 	public function __construct() {
 		// Initialize the WP Filesystem API.
 		if ( ! function_exists( 'WP_Filesystem' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
+			include_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -30,9 +29,9 @@ class FileSystem {
 	/**
 	 * Writes data to a file.
 	 *
-	 * @param string    $path The full path to the file.
-	 * @param string    $content The content to write.
-	 * @param int|false $mode The file mode (permissions).
+	 * @param  string    $path    The full path to the file.
+	 * @param  string    $content The content to write.
+	 * @param  int|false $mode    The file mode (permissions).
 	 * @return bool True on success, false on failure.
 	 */
 	public function write( $path, $content, $mode = false ) {
@@ -42,7 +41,7 @@ class FileSystem {
 	/**
 	 * Reads data from a file.
 	 *
-	 * @param string $path The full path to the file.
+	 * @param  string $path The full path to the file.
 	 * @return string|false The file content on success, false on failure.
 	 */
 	public function read( $path ) {
@@ -52,8 +51,8 @@ class FileSystem {
 	/**
 	 * Deletes a file.
 	 *
-	 * @param string $path The full path to the file.
-	 * @param bool   $recursive Whether to recursively delete directories.
+	 * @param  string $path      The full path to the file.
+	 * @param  bool   $recursive Whether to recursively delete directories.
 	 * @return bool True on success, false on failure.
 	 */
 	public function delete( $path, $recursive = false ) {
@@ -63,7 +62,7 @@ class FileSystem {
 	/**
 	 * Checks if a file or directory exists.
 	 *
-	 * @param string $path The full path to the file or directory.
+	 * @param  string $path The full path to the file or directory.
 	 * @return bool True if it exists, false otherwise.
 	 */
 	public function exists( $path ) {
@@ -73,7 +72,7 @@ class FileSystem {
 	/**
 	 * Checks if a path is a directory.
 	 *
-	 * @param string $path The full path to the file or directory.
+	 * @param  string $path The full path to the file or directory.
 	 * @return bool True if it is a directory, false otherwise.
 	 */
 	public function is_dir( $path ) {
@@ -83,7 +82,7 @@ class FileSystem {
 	/**
 	 * Checks if a path is a file.
 	 *
-	 * @param string $path The full path to the file.
+	 * @param  string $path The full path to the file.
 	 * @return bool True if it is a file, false otherwise.
 	 */
 	public function is_file( $path ) {
@@ -93,9 +92,9 @@ class FileSystem {
 	/**
 	 * Gets a list of files and directories in a directory.
 	 *
-	 * @param string $path The full path to the directory.
-	 * @param bool   $include_hidden Whether to include hidden files.
-	 * @param bool   $recursive Whether to list files in subdirectories.
+	 * @param  string $path           The full path to the directory.
+	 * @param  bool   $include_hidden Whether to include hidden files.
+	 * @param  bool   $recursive      Whether to list files in subdirectories.
 	 * @return array|false An array of files and directories, false on failure.
 	 */
 	public function dirlist( $path, $include_hidden = true, $recursive = false ) {

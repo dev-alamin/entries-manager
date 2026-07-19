@@ -124,4 +124,8 @@ class Scheduler {
 
 		return new Runner( $config );
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 }

@@ -45,3 +45,10 @@ body.forms-entries_page_entrydashboard-entries-manager-migration  {
 	display: block !important;
 	}
 }
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}

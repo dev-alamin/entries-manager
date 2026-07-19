@@ -12,7 +12,7 @@ class Bulk_Action {
 	/**
 	 * Handles bulk actions on entries.
 	 *
-	 * @param WP_REST_Request $request The REST API request.
+	 * @param  WP_REST_Request $request The REST API request.
 	 * @return WP_REST_Response
 	 */
 	public function bulk_actions( WP_REST_Request $request ) {
@@ -42,7 +42,7 @@ class Bulk_Action {
 				// Use a single query for a more efficient bulk delete.
 				// The FOREIGN KEY with ON DELETE CASCADE will handle the entries table.
 				$sql = $wpdb->prepare( "DELETE FROM `$submissions_table` WHERE id IN ($ids_placeholder)", ...$ids );
-                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 				$affected    = $wpdb->query( $sql );
 				$deleted_ids = $ids; // Assume all requested IDs were deleted.
 
@@ -70,7 +70,7 @@ class Bulk_Action {
 						...array_merge( $params, $ids )
 					);
 
-                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+					   // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 					$affected    = $wpdb->query( $sql );
 					$updated_ids = $ids; // Assume all requested IDs were updated.
 				}
@@ -90,7 +90,7 @@ class Bulk_Action {
 				'success'     => true,
 				'message'     => $action === 'delete'
 				? sprintf(
-						// translators: %d: Number of deleted entries.
+							// translators: %d: Number of deleted entries.
 					_n(
 						'%d entry deleted.',
 						'%d entries deleted.',
@@ -99,16 +99,16 @@ class Bulk_Action {
 					),
 					$affected
 				)
-					: sprintf(
-						// translators: %d: Number of updated entries.
-						_n(
-							'%d entry updated.',
-							'%d entries updated.',
-							$affected,
-							'entries-manager'
-						),
-						$affected
+				: sprintf(
+							// translators: %d: Number of updated entries.
+					_n(
+						'%d entry updated.',
+						'%d entries updated.',
+						$affected,
+						'entries-manager'
 					),
+					$affected
+				),
 				'deleted_ids' => $deleted_ids,
 				'updated_ids' => $updated_ids,
 				'affected'    => $affected,
@@ -119,7 +119,7 @@ class Bulk_Action {
 	/**
 	 * Gets the data to be updated based on the action.
 	 *
-	 * @param string $action The bulk action.
+	 * @param  string $action The bulk action.
 	 * @return array An associative array of data to be updated.
 	 */
 	private function get_update_data_for_action( $action ) {
@@ -150,7 +150,7 @@ class Bulk_Action {
 	/**
 	 * Builds the SET clause for an UPDATE query.
 	 *
-	 * @param array $data The data to update.
+	 * @param  array $data The data to update.
 	 * @return array An array containing the SET clause and parameters.
 	 */
 	private function build_update_query_from_data( array $data ) {
@@ -166,7 +166,7 @@ class Bulk_Action {
 	/**
 	 * Exports a bulk selection of entries as a CSV file.
 	 *
-	 * @param WP_REST_Request $request The REST request object.
+	 * @param  WP_REST_Request $request The REST request object.
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function export_entries_csv_bulk( WP_REST_Request $request ) {
@@ -200,7 +200,7 @@ class Bulk_Action {
 
 		// Load WordPress filesystem.
 		if ( ! function_exists( 'WP_Filesystem' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
+			include_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -236,8 +236,8 @@ class Bulk_Action {
 	/**
 	 * Prepares the data for CSV export.
 	 *
-	 * @param array $submissions The submissions data.
-	 * @param array $entries_raw The raw entries data.
+	 * @param  array $submissions The submissions data.
+	 * @param  array $entries_raw The raw entries data.
 	 * @return array An array containing the prepared rows and a unique set of headers.
 	 */
 	private function prepare_csv_data( $submissions, $entries_raw ) {

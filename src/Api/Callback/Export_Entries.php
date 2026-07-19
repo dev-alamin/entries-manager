@@ -74,7 +74,7 @@ class Export_Entries {
 	 * calculates the total entries, creates an initial job state, and
 	 * schedules the first batch for processing.
 	 *
-	 * @param WP_REST_Request $request The REST request object.
+	 * @param  WP_REST_Request $request The REST request object.
 	 * @return WP_REST_Response|WP_Error The response object.
 	 */
 	public function start_export_job( WP_REST_Request $request ) {
@@ -123,37 +123,6 @@ class Export_Entries {
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$total_entries = (int) $wpdb->get_var( $count_query );
-
-		if ( $total_entries === 0 ) {
-			// ... error handling ...
-		}
-
-		// Step 2: If low volume, fetch directly (L140-L151)
-		if ( $total_entries <= 10000 ) {
-            // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-			$select_query = $wpdb->prepare(
-				"SELECT * FROM {$submissions_table} " . ( ! empty( $where_sql ) ? $where_sql : '' ) . ' ORDER BY created_at ASC',
-				...$query_args
-			);
-
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$low_entries = $wpdb->get_results( $select_query, ARRAY_A );
-
-			// Fix for the IN clause:
-			$submission_ids  = array_column( $low_entries, 'id' );
-			$ids_placeholder = implode( ',', array_fill( 0, count( $submission_ids ), '%d' ) );
-
-            // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.NotPrepared
-			$all_entry_data = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT submission_id, field_key, field_value FROM {$entries_table} WHERE submission_id IN ($ids_placeholder)",
-					...$submission_ids
-				),
-				ARRAY_A
-			);
-
-			$this->export_entries_otg( $low_entries, $all_entry_data );
-		}
 
 		// Generate a unique ID for this export job
 		$job_id = 'export_' . $form_id . '_' . wp_generate_password( 12, false );
@@ -209,7 +178,7 @@ class Export_Entries {
 	 * queries the database for the current batch of entries, writes them to a
 	 * temporary CSV file, and then schedules the next batch or the finalization job.
 	 *
-	 * @param string $job_id The ID of the export job to process.
+	 * @param  string $job_id The ID of the export job to process.
 	 * @return void
 	 */
 	public function process_export_batch( string $job_id ): void {
@@ -227,10 +196,9 @@ class Export_Entries {
 		$submissions_table = Helper::get_submission_table();
 		$entries_table     = Helper::get_data_table();
 
-		// Build query for submissions
-		$query_args    = array();
-		$where_clauses = array( 'form_id = %d' );
-		$query_args[]  = $job_state['form_id'];
+		// Build WHERE clause without adding 'WHERE'
+		$where_clauses = array( 'form_id = %d', 'id > %d' );
+		$query_args    = array( $job_state['form_id'], $job_state['last_id'] );
 
 		if ( ! empty( $job_state['filters']['date_from'] ) ) {
 			$where_clauses[] = 'created_at >= %s';
@@ -241,34 +209,22 @@ class Export_Entries {
 			$query_args[]    = $job_state['filters']['date_to'];
 		}
 
-		$where_clauses[] = 'id > %d';
-		$query_args[]    = $job_state['last_id'];
-
+		// implode WITHOUT prepending WHERE
 		$where_sql = implode( ' AND ', $where_clauses );
 
-		if ( ! empty( $where_sql ) ) {
-			$where_sql = 'WHERE ' . $where_sql;
-		}
-
-		// Combine all prepared values into a single array
-		// $query_args contains the values for the WHERE clause placeholders.
-		// We only need to append the batch size for the LIMIT %d placeholder.
-		$final_prepared_values = array_merge(
-			$query_args,
-			array( $job_state['batch_size'] ) // The value for the single LIMIT %d placeholder
+		// Prepare the final query — add WHERE only once here
+		$sql = $wpdb->prepare(
+			"
+            SELECT id, name, email, status, note, is_favorite, created_at
+            FROM {$submissions_table}
+            WHERE {$where_sql}
+            ORDER BY id ASC
+            LIMIT %d
+            ",
+			...array_merge( $query_args, array( $job_state['batch_size'] ) )
 		);
 
-		$submissions = $wpdb->get_results(
-			$wpdb->prepare(
-				// The SQL template: Use simple LIMIT %d because OFFSET is handled by 'id > %d'
-				"SELECT id, name, email, status, note, is_favorite, created_at 
-                FROM {$submissions_table} 
-                " . ( ! empty( $where_sql ) ? 'WHERE ' . $where_sql : '' ) . ' 
-                ORDER BY id ASC LIMIT %d',
-				...$final_prepared_values
-			),
-			ARRAY_A
-		);
+		$submissions = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( empty( $submissions ) ) {
 			as_schedule_single_action(
@@ -332,7 +288,7 @@ class Export_Entries {
 	 * has been processed. It combines all partial files, deletes them, and
 	 * updates the job state to 'complete' with the final file path and URL.
 	 *
-	 * @param string $job_id The ID of the export job to finalize.
+	 * @param  string $job_id The ID of the export job to finalize.
 	 * @return void
 	 */
 	public function finalize_export_file( string $job_id ): void {
@@ -344,7 +300,7 @@ class Export_Entries {
 		$final_file_path = $upload_dir['path'] . '/' . $job_id . '.csv';
 		// Use WP_Filesystem API for robust file operations
 		if ( ! function_exists( 'WP_Filesystem' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
+			include_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -389,7 +345,7 @@ class Export_Entries {
 	/**
 	 * Retrieves the progress of an ongoing export job.
 	 *
-	 * @param WP_REST_Request $request The REST request, must contain 'job_id'.
+	 * @param  WP_REST_Request $request The REST request, must contain 'job_id'.
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_export_progress( WP_REST_Request $request ) {
@@ -430,9 +386,9 @@ class Export_Entries {
 	 * This optimized version only writes the header for the first batch and
 	 * streamlines the data processing for each entry.
 	 *
-	 * @param string $job_id The main job ID.
-	 * @param int    $page The current batch number.
-	 * @param array  $entries The entry data to write.
+	 * @param  string $job_id  The main job ID.
+	 * @param  int    $page    The current batch number.
+	 * @param  array  $entries The entry data to write.
 	 * @return void
 	 */
 	private function write_batch_to_csv( string $job_id, int $page, array $entries, array $header ): void {
@@ -509,7 +465,7 @@ class Export_Entries {
 	/**
 	 * REST API endpoint to securely serve a completed export file.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param  WP_REST_Request $request
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function download_export_file( WP_REST_Request $request ) {
@@ -570,7 +526,7 @@ class Export_Entries {
 	/**
 	 * REST API endpoint to securely delete a completed export file.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param  WP_REST_Request $request
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function delete_export_file( WP_REST_Request $request ) {
@@ -619,7 +575,7 @@ class Export_Entries {
 		}
 	}
 
-	public function export_entries_otg( $submissions, $entries_raw ) {
+	public function export_entries_otg( $submissions, $entries_raw, $as_download = true ) {
 		if ( empty( $submissions ) ) {
 			return new \WP_Error(
 				'no_data',
@@ -628,29 +584,31 @@ class Export_Entries {
 			);
 		}
 
-		// Merge the data from both tables
 		$merged_entries = $this->merge_entries_data( $submissions, $entries_raw );
+		$all_keys       = $this->get_header_from_entries( $merged_entries );
 
-		// Get headers from all entries
-		$all_keys = $this->get_header_from_entries( $merged_entries );
-
-		// Build the CSV content in memory
-		$csv_content  = "\xEF\xBB\xBF"; // UTF-8 BOM
-		$csv_content .= Helper::get_csv_line( $all_keys );
+		$csv  = "\xEF\xBB\xBF"; // UTF-8 BOM
+		$csv .= Helper::get_csv_line( $all_keys );
 
 		foreach ( $merged_entries as $entry ) {
 			$row = array();
 			foreach ( $all_keys as $key ) {
 				$row[] = $entry[ $key ] ?? '';
 			}
-			$csv_content .= Helper::get_csv_line( $row );
+			$csv .= Helper::get_csv_line( $row );
 		}
 
-		// Set headers and echo
-		header( 'Content-Type: text/csv' );
+		if ( ! $as_download ) {
+			return $csv;
+		}
+
+		if ( ob_get_length() ) {
+			ob_end_clean();
+		}
+
+		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename="entr-mgr-entries-' . time() . '.csv"' );
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $csv_content;
+		echo $csv;
 		exit;
 	}
 
@@ -672,8 +630,8 @@ class Export_Entries {
 	 * Merges submissions data with their corresponding entry fields,
 	 * de-duplicating core fields like 'name' and 'email' based on value.
 	 *
-	 * @param array $submissions An array of submissions from the submissions table.
-	 * @param array $entries_raw An array of raw entry data.
+	 * @param  array $submissions An array of submissions from the submissions table.
+	 * @param  array $entries_raw An array of raw entry data.
 	 * @return array The merged array of entries.
 	 */
 	private function merge_entries_data( array $submissions, array $entries_raw ): array {

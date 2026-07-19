@@ -22,6 +22,8 @@ class LogViewerPage {
 	 */
 	protected $fs;
 
+	const LOG_PAGE_SLUG = 'entrydashboard-entries-manager-logs';
+
 	/**
 	 * Constructor to initialize the class properties.
 	 */
@@ -34,7 +36,7 @@ class LogViewerPage {
 	 * Renders the content of the admin page.
 	 */
 	public function render_page() {
-		if ( ! current_user_can( 'manage_options' ) ) { // Use your required capability
+		if ( ! current_user_can( 'can_manage_entr_mgr_entries' ) ) { // Use your required capability
 			return;
 		}
 
@@ -114,11 +116,22 @@ class LogViewerPage {
 			<div class="card">
 				<h2><?php esc_html_e( 'Clear Old Logs', 'entries-manager' ); ?></h2>
 				<p><?php esc_html_e( 'You can manually trigger the log cleanup process.', 'entries-manager' ); ?></p>
-				<form method="post" action="">
-					<input type="hidden" name="action" value="clear_logs">
-					<?php wp_nonce_field( 'entr_mgr_log_clear' ); ?>
-					<input type="submit" name="submit" class="button button-danger" value="<?php esc_attr_e( 'Clear Logs Now', 'entries-manager' ); ?>">
-				</form>
+
+				<a href="
+				<?php
+				echo esc_url(
+					add_query_arg(
+						array(
+							'action'   => 'entr_mgr_clear_logs',
+							'_wpnonce' => wp_create_nonce( 'entr_mgr_log_clear' ),
+						),
+						admin_url( 'admin-post.php' ) // 👈 important: always specify base URL
+					)
+				);
+				?>
+				" class="button button-primary">
+					<?php esc_html_e( 'Clear Logs Now', 'entries-manager' ); ?>
+				</a>
 			</div>
 		</div>
 		<?php
@@ -152,20 +165,24 @@ class LogViewerPage {
 			printf( esc_html__( 'Viewing Log File: %s', 'entries-manager' ), esc_html( $file_name ) );
 			?>
 			</h1>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=entrydashboard-logs' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Back to Logs', 'entries-manager' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::LOG_PAGE_SLUG ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Back to Logs', 'entries-manager' ); ?></a>
 			<a href="
 			<?php
 			echo esc_url(
 				add_query_arg(
 					array(
-						'action'   => 'download_log',
+						'action'   => 'entr_mgr_download_log',
 						'file'     => $file_name,
 						'_wpnonce' => wp_create_nonce( 'entrydashboard-download' ),
-					)
+					),
+					admin_url( 'admin-post.php' ) // 👈 important: always specify base URL
 				)
 			);
 			?>
-						" class="button button-primary"><?php esc_html_e( 'Download Log', 'entries-manager' ); ?></a>
+			" class="button button-primary">
+				<?php esc_html_e( 'Download Log', 'entries-manager' ); ?>
+			</a>
+
 			<div class="card" style="margin-top: 20px; max-width:fit-content;">
 				<pre style="white-space: pre-wrap; word-wrap: break-word;"><?php echo esc_html( $content ); ?></pre>
 			</div>

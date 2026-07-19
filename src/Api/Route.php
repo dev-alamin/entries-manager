@@ -34,8 +34,6 @@ use Amin\FormsEntriesManager\Utility\Helper;
  * * This class is responsible for defining the API routes and their corresponding callbacks.
  */
 class Route {
-
-
 	/**
 	 * Callback instances for handling various API routes.
 	 *
@@ -425,7 +423,7 @@ class Route {
 								if ( $timestamp === false ) {
 									return null; // or a fallback date/time string
 								}
-								return gmdate( 'Y-m-d H:i:s', $timestamp );
+									return gmdate( 'Y-m-d H:i:s', $timestamp );
 							},
 						),
 						'resent_at'        => array(
@@ -442,7 +440,7 @@ class Route {
 								if ( $timestamp === false ) {
 									return null; // or a fallback date/time
 								}
-								return gmdate( 'Y-m-d H:i:s', $timestamp );
+									return gmdate( 'Y-m-d H:i:s', $timestamp );
 							},
 						),
 					),
@@ -706,7 +704,7 @@ class Route {
 	 * This method checks the current user's capabilities
 	 * based on the requested method of the route.
 	 *
-	 * @param string $method The HTTP method of the request.
+	 * @param  string $method The HTTP method of the request.
 	 * @return bool True if the user has permission, false otherwise.
 	 */
 	private function permission_callback_by_method( string $method ) {

@@ -6,13 +6,14 @@
  * for managing WPForms entries within the plugin.
  *
  * @package advanced-'entries-manager'
- * @since 1.0.0
+ * @since   1.0.0
  */
 namespace Amin\FormsEntriesManager\Core;
 
 defined( 'ABSPATH' ) || exit;
 
 class Capabilities {
+
 	/**
 	 * Adds custom WPForms entry management capabilities to the administrator role.
 	 *

@@ -2,7 +2,11 @@
 
 namespace Action_Scheduler\WP_CLI\Action;
 
+<<<<<<< HEAD
 use function WP_CLI\Utils\get_flag_value;
+=======
+use function \WP_CLI\Utils\get_flag_value;
+>>>>>>> development
 
 /**
  * WP-CLI command: action-scheduler action create
@@ -61,7 +65,11 @@ class Create_Command extends \ActionScheduler_WPCLI_Command {
 
 			$function_args = array_filter(
 				$function_args,
+<<<<<<< HEAD
 				static function ( $key ) {
+=======
+				static function( $key ) {
+>>>>>>> development
 					return in_array( $key, array( 'start', 'interval', 'hook', 'callback_args', 'group', 'unique', 'priority' ), true );
 				},
 				ARRAY_FILTER_USE_KEY
@@ -72,7 +80,11 @@ class Create_Command extends \ActionScheduler_WPCLI_Command {
 
 			$function_args = array_filter(
 				$function_args,
+<<<<<<< HEAD
 				static function ( $key ) {
+=======
+				static function( $key ) {
+>>>>>>> development
 					return in_array( $key, array( 'start', 'cron', 'hook', 'callback_args', 'group', 'unique', 'priority' ), true );
 				},
 				ARRAY_FILTER_USE_KEY
@@ -83,7 +95,11 @@ class Create_Command extends \ActionScheduler_WPCLI_Command {
 
 			$function_args = array_filter(
 				$function_args,
+<<<<<<< HEAD
 				static function ( $key ) {
+=======
+				static function( $key ) {
+>>>>>>> development
 					return in_array( $key, array( 'hook', 'callback_args', 'group', 'unique', 'priority' ), true );
 				},
 				ARRAY_FILTER_USE_KEY
@@ -91,7 +107,11 @@ class Create_Command extends \ActionScheduler_WPCLI_Command {
 		} else { // Enqueue single action.
 			$function_args = array_filter(
 				$function_args,
+<<<<<<< HEAD
 				static function ( $key ) {
+=======
+				static function( $key ) {
+>>>>>>> development
 					return in_array( $key, array( 'start', 'hook', 'callback_args', 'group', 'unique', 'priority' ), true );
 				},
 				ARRAY_FILTER_USE_KEY
@@ -149,4 +169,8 @@ class Create_Command extends \ActionScheduler_WPCLI_Command {
 			)
 		);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 }

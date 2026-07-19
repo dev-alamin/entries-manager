@@ -131,7 +131,7 @@ defined( 'ABSPATH' ) || exit;
 				class="!w-full !px-3 !py-[6px] !border !border-gray-300 !rounded-r-lg !rounded-tl-none !rounded-bl-none !text-gray-800 !font-medium !focus:outline-none !focus:ring-2 !focus:ring-indigo-500 !transition !hover:border-indigo-500"
 				:placeholder="entrMgrStrings.searchPlaceholder.replace('%s', searchType)"
 				x-model="searchQuery"
-				@input.debounce.400ms="handleSearchInput" />
+				@input.debounce.500ms="handleSearchInput()" />
 
 			<div
 				x-show="searchQuery && !entries.length && !loading"

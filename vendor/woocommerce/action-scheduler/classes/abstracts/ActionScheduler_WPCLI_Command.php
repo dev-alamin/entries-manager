@@ -79,4 +79,8 @@ abstract class ActionScheduler_WPCLI_Command extends \WP_CLI_Command {
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 }

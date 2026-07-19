@@ -4,7 +4,11 @@ namespace Action_Scheduler\WP_CLI\Action;
 
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping output is not necessary in WP CLI.
 
+<<<<<<< HEAD
 use function WP_CLI\Utils\get_flag_value;
+=======
+use function \WP_CLI\Utils\get_flag_value;
+>>>>>>> development
 
 /**
  * WP-CLI command: action-scheduler action next
@@ -67,4 +71,8 @@ class Next_Command extends \ActionScheduler_WPCLI_Command {
 
 		\WP_CLI::warning( 'No matching next action.' );
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 }

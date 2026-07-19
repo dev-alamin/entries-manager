@@ -269,10 +269,10 @@ function formTable(form) {
     },
 
     // Filter and pagination handlers, now correctly calling the new fetchEntries
-    handleSearchInput: _.debounce(function () {
+    handleSearchInput() {
       this.currentPage = 1;
       this.fetchEntries();
-    }, 500),
+    },
 
     handleStatusChange() {
       this.currentPage = 1;
@@ -589,6 +589,7 @@ function formTable(form) {
       });
     },
    async toggleGoogleSheetSync(index) {
+    const btn = event.currentTarget;
     const entry = this.entries[index];
     const entryId = entry.id;
     const nonce = entrMgrSettings.nonce;
@@ -596,6 +597,9 @@ function formTable(form) {
     const isCurrentlySynced = !!entry.synced; // use consistent property
     const action = isCurrentlySynced ? "unsync" : "sync";
     const apiUrl = `${entrMgrSettings.restUrl}entrydashboard/v1/entries/${entryId}/${action}`;
+
+    // add class to this button .animate-spin
+    btn.classList.add("animate-spin");
 
     try {
         const response = await fetch(apiUrl, {
@@ -613,24 +617,26 @@ function formTable(form) {
         const data = await response.json();
 
         if (data.success) {
-        window.dispatchEvent(new CustomEvent("toast", {
-            detail: {
-            message: entrMgrStrings.syncDone,
-            type: "success",
-            },
-        }));
-        } else {
-        window.dispatchEvent(new CustomEvent("toast", {
-            detail: {
-            message: entrMgrStrings.syncFailed + " " + (data?.message || ""),
-            type: "error",
-            },
-        }));
-        }
+            // Update local entry state
+            entry.synced = isCurrentlySynced ? 0 : 1;
+            this.updateEntry(index, { synced_to_gsheet: entry.synced });
 
-        // Update local entry state
-        entry.synced = isCurrentlySynced ? 0 : 1;
-        this.updateEntry(index, { synced_to_gsheet: entry.synced });
+            window.dispatchEvent(new CustomEvent("toast", {
+                detail: {
+                message: entrMgrStrings.syncDone,
+                type: "success",
+                },
+            }));
+        } else {
+            entry.synced = 0;
+
+            window.dispatchEvent(new CustomEvent("toast", {
+                detail: {
+                message: data?.message || "",
+                type: "error",
+                },
+            }));
+        }
 
     } catch (error) {
         this.$dispatch("toast", {
@@ -638,6 +644,9 @@ function formTable(form) {
             message: error,
         });
     }
+
+    btn.classList.remove("animate-spin");
+    
     },
 
     printEntry(index) {
@@ -916,10 +925,10 @@ function entriesApp() {
       }
     },
 
-    handleSearchInput: _.debounce(function () {
+    handleSearchInput() {
       this.currentPage = 1;
       this.fetchEntries();
-    }, 500),
+    },
 
     handleFilterChange() {
       this.currentPage = 1;

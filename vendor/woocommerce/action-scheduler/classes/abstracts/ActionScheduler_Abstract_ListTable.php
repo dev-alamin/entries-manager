@@ -449,6 +449,10 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		}
 
 		return implode( ' AND ', $filter );
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 	}
 
 	/**
@@ -586,7 +590,11 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		$action_count = 0;
 		foreach ( $this->row_actions[ $column_name ] as $action_key => $action ) {
 
+<<<<<<< HEAD
 			++$action_count;
+=======
+			$action_count++;
+>>>>>>> development
 
 			if ( ! method_exists( $this, 'row_action_' . $action_key ) ) {
 				continue;

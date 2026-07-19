@@ -11,7 +11,6 @@ defined( 'ABSPATH' ) || exit;
  * Handles the registration and enqueueing of admin assets.
  */
 class Assets {
-
 	/**
 	 * Constructor: Hook into admin asset loading.
 	 */
@@ -34,28 +33,29 @@ class Assets {
 				'version'   => $version,
 				'in_footer' => false,
 			),
-			'entr-mgr-admin-js'     => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
-				'deps'      => array(),
-				'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
-				'in_footer' => true,
-			),
 			'entr-mgr-collapse'     => array(
 				'src'       => ENTR_MGR_ASSETS_URL . 'admin/collapse.js',
 				'deps'      => array(),
 				'version'   => null,
-				'in_footer' => true,
+				'in_footer' => false,
 			),
-			'entr-mgr-alpine'       => array(
-				'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
-				'deps'      => array( 'entr-mgr-collapse' ),
-				'version'   => null,
-				'in_footer' => true,
-			),
+			// 'entr-mgr-alpine'       => array(
+			// 'src'       => ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js',
+			// 'deps'      => array( 'entr-mgr-collapse' ),
+			// 'version'   => null,
+			// 'in_footer' => false,
+			// 'strategy'  => 'defer',
+			// ),
 			'entr-mgr-lottie'       => array(
 				'src'       => ENTR_MGR_ASSETS_URL . 'admin/lottie-player.js',
 				'deps'      => array(),
 				'version'   => '5.12.0',
+				'in_footer' => true,
+			),
+			'entr-mgr-admin-js'     => array(
+				'src'       => ENTR_MGR_ASSETS_URL . 'admin/admin.js',
+				'deps'      => array(),
+				'version'   => filemtime( ENTR_MGR_PATH . 'assets/admin/admin.js' ),
 				'in_footer' => true,
 			),
 		);
@@ -81,7 +81,7 @@ class Assets {
 	/**
 	 * Register and enqueue assets on specific admin pages.
 	 *
-	 * @param string $hook
+	 * @param  string $hook
 	 * @return void
 	 */
 	public function register_assets( $hook ) {
@@ -93,7 +93,8 @@ class Assets {
 				'forms-entries_page_entrydashboard-entries-manager-migration',
 			),
 			true
-		) ) {
+		)
+		) {
 			return;
 		}
 
@@ -122,7 +123,10 @@ class Assets {
 			wp_enqueue_script( $handle );
 		}
 
+		// Pull out these scripts separately to control load order
+		wp_enqueue_script( 'entr-mgr-alpine-js', ENTR_MGR_ASSETS_URL . 'admin/alpine.min.js', array( 'entr-mgr-collapse' ), '3.10.5', true );
 		wp_enqueue_script( 'lodash.min.js' );
+
 		// Get the existing custom columns from the database.
 		$initial_columns = Helper::get_option( 'cusom_form_columns_settings', array() );
 		// Localize main admin JS

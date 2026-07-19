@@ -278,4 +278,8 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	public function enable_comment_counting() {
 		wp_defer_comment_counting( false );
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 }

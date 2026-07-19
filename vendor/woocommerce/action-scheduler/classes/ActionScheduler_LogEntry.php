@@ -75,3 +75,7 @@ class ActionScheduler_LogEntry {
 		return $this->message;
 	}
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> development

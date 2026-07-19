@@ -64,7 +64,7 @@ class Migrate {
 	/**
 	 * Process one batch of entries.
 	 *
-	 * @param int $batch_size
+	 * @param  int $batch_size
 	 * @return void
 	 */
 	public function migrate_from_wpformsdb_plugin( int $batch_size = self::BATCH_SIZE ): void {

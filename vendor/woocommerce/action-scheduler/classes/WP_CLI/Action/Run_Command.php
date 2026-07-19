@@ -122,7 +122,11 @@ class Run_Command extends \ActionScheduler_WPCLI_Command {
 			return;
 		}
 
+<<<<<<< HEAD
 		++$this->action_counts['ignored'];
+=======
+		$this->action_counts['ignored']++;
+>>>>>>> development
 		\WP_CLI::debug( sprintf( 'Action %d was ignored.', $action_id ) );
 	}
 
@@ -143,7 +147,11 @@ class Run_Command extends \ActionScheduler_WPCLI_Command {
 			return;
 		}
 
+<<<<<<< HEAD
 		++$this->action_counts['executed'];
+=======
+		$this->action_counts['executed']++;
+>>>>>>> development
 		\WP_CLI::debug( sprintf( 'Action %d was executed.', $action_id ) );
 	}
 
@@ -165,7 +173,11 @@ class Run_Command extends \ActionScheduler_WPCLI_Command {
 			return;
 		}
 
+<<<<<<< HEAD
 		++$this->action_counts['failed'];
+=======
+		$this->action_counts['failed']++;
+>>>>>>> development
 		\WP_CLI::debug( sprintf( 'Action %d failed execution: %s', $action_id, $e->getMessage() ) );
 	}
 
@@ -187,7 +199,14 @@ class Run_Command extends \ActionScheduler_WPCLI_Command {
 			return;
 		}
 
+<<<<<<< HEAD
 		++$this->action_counts['invalid'];
 		\WP_CLI::debug( sprintf( 'Action %d failed validation: %s', $action_id, $e->getMessage() ) );
 	}
+=======
+		$this->action_counts['invalid']++;
+		\WP_CLI::debug( sprintf( 'Action %d failed validation: %s', $action_id, $e->getMessage() ) );
+	}
+
+>>>>>>> development
 }

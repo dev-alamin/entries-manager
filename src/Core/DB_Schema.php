@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 class DB_Schema {
 
+
 	/**
 	 * Get the name of the main submissions table.
 	 *
@@ -45,7 +46,7 @@ class DB_Schema {
 	public static function create_tables() {
 		global $wpdb;
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		$submissions_table = self::submissions_table();
 		$entries_table     = self::entries_table();
@@ -88,8 +89,7 @@ class DB_Schema {
             PRIMARY KEY  (id),
             KEY idx_submission_id (submission_id),
             KEY idx_field_key (field_key),
-            UNIQUE KEY submission_field_key (submission_id, field_key),
-            FOREIGN KEY (submission_id) REFERENCES $submissions_table(id) ON DELETE CASCADE
+            UNIQUE KEY submission_field_key (submission_id, field_key)
         ) $charset_collate;";
 
 		dbDelta( $sql_submissions );

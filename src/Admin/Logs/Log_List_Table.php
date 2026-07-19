@@ -7,13 +7,14 @@ use Amin\FormsEntriesManager\Utility\FileSystem;
 defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+	include_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
  * Custom WP_List_Table for displaying log files.
  */
 class Log_List_Table extends \WP_List_Table {
+
 
 	private $fs;
 	private $log_dir;
