@@ -1,0 +1,84 @@
+name: Generate Plugin ZIP & Deploy
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify version consistency
+        run: |
+          HEADER_VER=$(grep "^Version:" entrydashboard.php | awk '{print $2}' | tr -d '\r')
+          STABLE_TAG=$(grep "Stable tag:" readme.txt | awk '{print $3}' | tr -d '\r')
+          TAG_VER=${GITHUB_REF_NAME#v}
+
+          echo "Header: $HEADER_VER | readme.txt Stable tag: $STABLE_TAG | Git tag: $TAG_VER"
+
+          if [ "$HEADER_VER" != "$STABLE_TAG" ] || [ "$HEADER_VER" != "$TAG_VER" ]; then
+            echo "::error::Version mismatch — header=$HEADER_VER stable_tag=$STABLE_TAG git_tag=$TAG_VER"
+            exit 1
+          fi
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install PHP Dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Build Admin UI (React/Tailwind)
+        run: |
+          npm ci
+          npm run build
+
+      - name: Prepare Bundle
+        run: |
+          mkdir -p entrydashboard
+          # Copy everything into the bundle folder
+          cp -r src entrydashboard/
+          cp -r vendor entrydashboard/
+          cp -r languages entrydashboard/
+          cp -r assets entrydashboard/
+          cp entrydashboard.php entrydashboard/
+          cp readme.txt entrydashboard/
+          cp composer.json entrydashboard/
+          if [ -f composer.lock ]; then cp composer.lock entrydashboard/; fi
+
+          # Strip dev-only artifacts that shouldn't ship even if they got built into src/assets
+          find entrydashboard/ -name "*.map" -delete
+          rm -rf entrydashboard/src/**/*.jsx 2>/dev/null || true
+
+      - name: Create ZIP
+        run: zip -r entries-manager.zip entrydashboard/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: entries-manager.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to WordPress.org SVN
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SLUG: entries-manager
+          BUILD_DIR: entrydashboard/
